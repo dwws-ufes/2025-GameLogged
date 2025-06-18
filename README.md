@@ -83,11 +83,11 @@ O live-reload funciona para alterações nos arquivos de código, mas não para 
 
 Você PRECISA reconstruir as imagens usando a flag --build sempre que alterar:
 
-O arquivo `pom.xml` do backend (para adicionar, remover ou atualizar dependências Maven).
+- O arquivo `pom.xml` do backend (para adicionar, remover ou atualizar dependências Maven).
 
-O arquivo `package.json` do frontend (para adicionar, remover ou atualizar pacotes NPM).
+- O arquivo `package.json` do frontend (para adicionar, remover ou atualizar pacotes NPM).
 
-Qualquer um dos Dockerfiles.
+- Qualquer um dos Dockerfiles.
 
 O comando para forçar a reconstrução é:
 
