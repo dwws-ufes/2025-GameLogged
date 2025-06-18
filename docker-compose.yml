@@ -1,0 +1,67 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: gamelogged-bd
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: gamelogged
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - gamelogged-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./gamelogged-backend
+      dockerfile: Dockerfile
+    container_name: gamelogged-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DOCKER_COMPOSE_ENABLED=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/gamelogged?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    command: mvn spring-boot:run
+    volumes:
+      - ./gamelogged-backend:/app
+      - ~/.m2:/root/.m2
+    networks:
+      - gamelogged-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+
+  frontend:
+    build:
+      context: ./gamelogged-frontend
+      dockerfile: Dockerfile
+    container_name: gamelogged-frontend
+    ports:
+      - "3000:5173"
+    command: npm run dev -- --host
+    volumes:
+      - ./gamelogged-frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - gamelogged-network
+    depends_on:
+      - backend
+
+networks:
+  gamelogged-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
