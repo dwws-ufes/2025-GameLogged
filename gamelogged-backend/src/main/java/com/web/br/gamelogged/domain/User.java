@@ -3,13 +3,10 @@ package com.web.br.gamelogged.domain;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="user")
@@ -34,6 +31,20 @@ public class User implements Serializable {
 
     @Column(length = 200)
     private String biography;
+
+    @OneToMany(mappedBy = "user")
+    private Set<GameInteraction> gameInteractions;
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_followers",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private Set<User> followers = new HashSet<>();
+
+    @ManyToMany(mappedBy = "followers")
+    private Set<User> following = new HashSet<>();
 
     public User() {
         // Default constructor
@@ -85,5 +96,29 @@ public class User implements Serializable {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public Set<GameInteraction> getGameInteractions() {
+        return gameInteractions;
+    }
+
+    public void setGameInteractions(Set<GameInteraction> gameInteractions) {
+        this.gameInteractions = gameInteractions;
+    }
+
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<User> followers) {
+        this.followers = followers;
+    }
+
+    public Set<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<User> following) {
+        this.following = following;
     }
 }
