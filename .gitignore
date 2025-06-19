@@ -168,4 +168,4 @@ fabric.properties
 # Local History for Visual Studio Code
 .history/
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Java,Eclipse,Intellij,VisualStudioCode
+.idea
