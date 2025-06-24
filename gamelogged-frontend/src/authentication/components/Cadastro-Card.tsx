@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
+import { Separator } from "@/components/ui/separator";
 
 interface CadastroCardProps {
     onSwitchToLogin: () => void;
@@ -79,6 +80,7 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
             <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
                 {isLoading ? 'Cadastrando...' : 'Cadastrar'}
             </Button>
+            <Separator className="my-4" />
             <Button variant="outline" className="w-full" onClick={onSwitchToLogin}>
                 Já possui uma conta? Faça o login
             </Button>

@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
+import { Separator } from "@/components/ui/separator";
 
 interface LoginCardProps {
     onSwitchToRegister: () => void;
@@ -59,13 +60,13 @@ function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
                                     Esqueceu a senha?
                                 </a>
                             </div>
-                            <Input 
-                                id="password" 
+                            <Input
+                                id="password"
                                 name="password"
-                                type="password" 
+                                type="password"
                                 value={formData.password}
                                 onChange={handleInputChange}
-                                required 
+                                required
                             />
                         </div>
                     </div>
@@ -74,6 +75,7 @@ function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
                 <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
                     {isLoading ? 'Entrando...' : 'Login'}
                 </Button>
+                <Separator className="my-4" />
                 <Button variant="outline" className="w-full" onClick={onSwitchToRegister}>
                     Não tem uma conta? Cadastre-se
                 </Button>
