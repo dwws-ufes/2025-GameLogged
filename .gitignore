@@ -161,7 +161,7 @@ fabric.properties
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
-!.vscode/launch.json
+!.vscode/launch.json.
 !.vscode/extensions.json
 *.code-workspace
 
@@ -169,3 +169,5 @@ fabric.properties
 .history/
 
 .idea
+
+gamelogged-backend/src/main/resources/firebase-service-account.json
