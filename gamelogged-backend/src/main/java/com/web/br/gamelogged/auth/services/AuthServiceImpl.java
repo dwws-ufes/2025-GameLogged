@@ -12,8 +12,12 @@ import com.web.br.gamelogged.user.service.UserService;
 @Service
 public class AuthServiceImpl implements AuthService {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public AuthServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     public void cadastrarUsuario(String email, String password, String nickname) throws FirebaseAuthException {
         CreateRequest request = new CreateRequest()

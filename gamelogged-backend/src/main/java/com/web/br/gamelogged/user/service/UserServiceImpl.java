@@ -1,6 +1,7 @@
 package com.web.br.gamelogged.user.service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,18 @@ import com.web.br.gamelogged.user.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void createUser(String uuid, String nickname) {
         User newUser = new User();
         newUser.setUuid(uuid);
-        newUser.setCreationDate(Date.from(Instant.now()));
+        newUser.setCreationDate(LocalDateTime.now());
         newUser.setNickname(nickname);
 
         userRepository.save(newUser);
