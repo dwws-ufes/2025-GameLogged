@@ -5,5 +5,6 @@ import com.google.firebase.auth.FirebaseAuthException;
 public interface AuthService {
 
     void cadastrarUsuario(String email, String password, String nickname) throws FirebaseAuthException;
-    
+
+    String validarTokenFirebase(String idToken) throws FirebaseAuthException;
 }

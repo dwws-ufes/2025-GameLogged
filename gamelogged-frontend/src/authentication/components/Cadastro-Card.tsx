@@ -49,6 +49,19 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
                             required
                         />
                     </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="nickname">Apelido</Label>
+                        <Input
+                            id="nickname"
+                            name="nickname"
+                            type="text"
+                            placeholder="Apelido"
+                            value={formData.nickname}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
                     <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="password">Senha</Label>

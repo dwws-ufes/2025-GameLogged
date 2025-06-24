@@ -11,11 +11,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +33,24 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody AuthRequest request) {
+    @PostMapping("/validarLogin")
+    public ResponseEntity<Map<String, String>> validateLogin(@Valid @RequestHeader("Authorization") String auth) {
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Login successful");
-        return ResponseEntity.ok(response);
+         String token = auth.replace("Bearer ", "").trim();
+        try {
+            authService.validarTokenFirebase(token);
+            response.put("token", token);
+            response.put("message", "Login validado");
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            response.put("error", "Credenciais inválidas.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
+        } catch (Exception e) {
+            response.put("error", "Erro inesperado.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/cadastro")
@@ -46,12 +61,12 @@ public class AuthController {
             authService.cadastrarUsuario(request.getEmail(), request.getPassword(), request.getNickname());
             response.put("message", "Cadastro successful");
             return ResponseEntity.ok(response);
-        }catch (FirebaseAuthException e) {
+        } catch (FirebaseAuthException e) {
             switch (e.getErrorCode()) {
                 case ALREADY_EXISTS:
                     response.put("message", "E-mail já cadastrado");
                 default:
-                     response.put("message", "Erro inesperado durante cadastro");
+                    response.put("message", "Erro inesperado durante cadastro");
             }
             return ResponseEntity.badRequest().body(response);
         }

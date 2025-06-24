@@ -15,34 +15,33 @@ export class AuthController {
     return AuthController.instance;
   }
 
-  public async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  public async login(credentials: LoginCredentials): Promise<void> {
     const validation = AuthValidationService.validateLoginCredentials(credentials);
     if (!validation.isValid) {
       throw new Error(validation.message);
     }
 
     try {
-      const response = await authAPI.login(credentials);
-      AuthStateService.setAuthData(response);
-      return response;
+      const token = await authAPI.login(credentials);
+      AuthStateService.setAuthData(token);
     } catch (error) {
       console.error('Login failed:', error);
       throw new Error('Credenciais inválidas');
     }
   }
 
-  public async register(userData: RegisterData & { confirmPassword: string }): Promise<AuthResponse> {
+  public async register(userData: RegisterData & { confirmPassword: string }): Promise<void> {
     const validation = AuthValidationService.validateRegisterData(userData);
     if (!validation.isValid) {
       throw new Error(validation.message);
     }
 
     try {
-      const response = await authAPI.cadastro({
+      await authAPI.cadastro({
         email: userData.email,
-        password: userData.password
+        password: userData.password,
+        nickname: userData.nickname
       });
-      return response;
     } catch (error) {
       throw new Error('Erro ao criar conta. Email pode já estar em uso.');
     }
@@ -58,10 +57,6 @@ export class AuthController {
 
   public isAuthenticated(): boolean {
     return AuthStateService.isAuthenticated();
-  }
-
-  public getCurrentUser(): any | null {
-    return AuthStateService.getUser();
   }
 
   public getToken(): string | null {

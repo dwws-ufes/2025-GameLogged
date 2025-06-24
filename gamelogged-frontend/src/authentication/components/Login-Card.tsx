@@ -4,14 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
 
 interface LoginCardProps {
     onSwitchToRegister: () => void;
-    onLoginSuccess?: () => void;
 }
 
-function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
+function LoginCard({ onSwitchToRegister }: LoginCardProps) {
     const authViewModel = new AuthViewModel();
+    const navigate = useNavigate();
     const {
         formData,
         isLoading,
@@ -23,7 +24,7 @@ function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
     const onSubmit = async (e: React.FormEvent) => {
         const success = await handleSubmit(e);
         if (success) {
-            onLoginSuccess?.();
+            navigate('/home');
         }
     };
     return (
