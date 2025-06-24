@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { AuthController } from '@/controllers/AuthController';
-import type { LoginCredentials, RegisterData } from '@/types/auth';
+import { AuthController } from '@/authentication/controllers/AuthController';
+import type { LoginCredentials, RegisterData } from '../dto/auth';
 
 export class AuthViewModel {
   private authController: AuthController;

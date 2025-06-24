@@ -1,7 +1,7 @@
 import { authAPI } from '@/services/APIService';
-import type { LoginCredentials, RegisterData, AuthResponse } from '@/types/auth';
-import { AuthValidationService} from '@/services/AuthValidationService';
-import { AuthStateService } from '@/services/AuthStateService';
+import type { LoginCredentials, RegisterData, AuthResponse } from '../dto/auth';
+import { AuthValidationService} from '@/authentication/services/AuthValidationService';
+import { AuthStateService } from '@/authentication/services/AuthStateService';
 
 export class AuthController {
   private static instance: AuthController;

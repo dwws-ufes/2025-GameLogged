@@ -1,4 +1,4 @@
-import type { AuthResponse } from "@/types/auth";
+import type { AuthResponse } from "../dto/auth";
 
 export class AuthStateService {
   private static readonly TOKEN_KEY = 'authToken';

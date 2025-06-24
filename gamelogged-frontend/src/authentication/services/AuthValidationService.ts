@@ -1,4 +1,4 @@
-import type { LoginCredentials, RegisterData} from '@/types/auth';
+import type { LoginCredentials, RegisterData} from '../dto/auth';
 
 export class AuthValidationService {
   public static validateEmail(email: string): { isValid: boolean; message?: string } {

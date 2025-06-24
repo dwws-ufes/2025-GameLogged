@@ -1,9 +1,9 @@
 import './Landing-Page.css'
 import { useState } from 'react';
-import Balatro from '../blocks/Backgrounds/Balatro/Balatro';
+import Balatro from '../../blocks/Backgrounds/Balatro/Balatro';
 import DecryptedText from '@/blocks/TextAnimations/DecryptedText/DecryptedText';
-import LoginCard from './components/Login-Card';
-import CadastroCard from './components/Cadastro-Card';
+import LoginCard from '../../authentication/components/Login-Card';
+import CadastroCard from '../../authentication/components/Cadastro-Card';
 
 function LandingPage() {
     const [isLoginMode, setIsLoginMode] = useState(true);

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AuthViewModel } from "@/viewModels/AuthViewModel";
+import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
 
 interface CadastroCardProps {
     onSwitchToLogin: () => void;
@@ -24,7 +24,7 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
             alert('Cadastro realizado com sucesso! Você pode fazer login agora.');
         }
     };
-    
+
     return (<Card className="w-full max-w-sm">
         <CardHeader>
             <CardTitle>Cadastro</CardTitle>
@@ -52,26 +52,26 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
                         <div className="flex items-center">
                             <Label htmlFor="password">Senha</Label>
                         </div>
-                        <Input 
-                            id="password" 
+                        <Input
+                            id="password"
                             name="password"
-                            type="password" 
+                            type="password"
                             value={formData.password}
                             onChange={handleInputChange}
-                            required 
+                            required
                         />
                     </div>
                     <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="confirmPassword">Repita a Senha</Label>
                         </div>
-                        <Input 
-                            id="confirmPassword" 
+                        <Input
+                            id="confirmPassword"
                             name="confirmPassword"
-                            type="password" 
+                            type="password"
                             value={formData.confirmPassword}
                             onChange={handleInputChange}
-                            required 
+                            required
                         />
                     </div>
                 </div>
