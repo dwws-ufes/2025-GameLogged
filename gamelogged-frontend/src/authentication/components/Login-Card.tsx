@@ -45,7 +45,7 @@ function LoginCard({ onSwitchToRegister }: LoginCardProps) {
                                 id="email"
                                 name="email"
                                 type="email"
-                                placeholder="m@example.com"
+                                placeholder="example@domain.com"
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 required
@@ -70,12 +70,13 @@ function LoginCard({ onSwitchToRegister }: LoginCardProps) {
                                 required
                             />
                         </div>
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading ? 'Entrando...' : 'Login'}
+                        </Button>
                     </div>
                 </form>
-            </CardContent><CardFooter className="flex-col gap-2">
-                <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
-                    {isLoading ? 'Entrando...' : 'Login'}
-                </Button>
+            </CardContent>
+            <CardFooter className="flex-col gap-2">
                 <Separator className="my-4" />
                 <Button variant="outline" className="w-full" onClick={onSwitchToRegister}>
                     Não tem uma conta? Cadastre-se

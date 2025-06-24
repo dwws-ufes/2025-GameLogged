@@ -43,3 +43,8 @@
     font-family: 'Venite Adoremus';
     margin-top: 1vh;
 }
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+}
