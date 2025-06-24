@@ -20,7 +20,6 @@ services:
   backend:
     build:
       context: ./gamelogged-backend
-      dockerfile: Dockerfile
     container_name: gamelogged-backend
     ports:
       - "8080:8080"
@@ -44,7 +43,6 @@ services:
   frontend:
     build:
       context: ./gamelogged-frontend
-      dockerfile: Dockerfile
     container_name: gamelogged-frontend
     ports:
       - "3000:5173"
