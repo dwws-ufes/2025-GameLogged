@@ -30,5 +30,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(newUser);
     }
 
+    @Override
+    public User findByUuid(String uuid) {
+        return userRepository.findByUuid(uuid).orElse(null);
+    }
+
     
 }

@@ -1,4 +1,4 @@
-import { authAPI } from '@/services/APIService';
+import { authAPI, userAPI } from '@/services/APIService';
 import type { LoginCredentials, RegisterData, AuthResponse } from '../dto/auth';
 import { AuthValidationService} from '@/authentication/services/AuthValidationService';
 import { AuthStateService } from '@/authentication/services/AuthStateService';
@@ -62,4 +62,19 @@ export class AuthController {
   public getToken(): string | null {
     return AuthStateService.getToken();
   }
+
+  public async getUserNickname(): Promise<string | null> {
+    const token = AuthStateService.getToken();
+   
+    if (!token) {
+      return null;
+    }
+
+    const response = await userAPI.getUserByToken(token);
+
+    return response && response.nickname ? response.nickname : null;
+
+
+  }
+
 }

@@ -119,4 +119,8 @@ export class AuthViewModel {
   public logout(): void {
     this.authController.logout();
   }
+
+  public async getUserNickname(): Promise<string | null> {
+    return this.authController.getUserNickname();
+  }
 }

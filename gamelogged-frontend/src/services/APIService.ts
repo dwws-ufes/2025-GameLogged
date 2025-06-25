@@ -5,6 +5,7 @@ const API_BASE_URL = 'http://localhost:8080';
 export const API_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/auth/validarLogin`,
     CADASTRO: `${API_BASE_URL}/auth/cadastro`,
+    USER_BY_TOKEN: `${API_BASE_URL}/user/findByToken`,
 };
 
 
@@ -63,6 +64,17 @@ export const authAPI = {
         return await APIService.getInstance().request(API_ENDPOINTS.CADASTRO, {
             method: 'POST',
             body: JSON.stringify(userData),
+        });
+    },
+};
+
+export const userAPI = {
+    getUserByToken: async (token: string) => {
+        return await APIService.getInstance().request(API_ENDPOINTS.USER_BY_TOKEN, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
         });
     },
 };
