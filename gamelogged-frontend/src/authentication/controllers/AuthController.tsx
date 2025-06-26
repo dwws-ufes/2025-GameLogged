@@ -70,7 +70,7 @@ export class AuthController {
       return null;
     }
 
-    const response = await userAPI.getUserByToken(token);
+    const response = await userAPI.getCurrentUser();
 
     return response && response.nickname ? response.nickname : null;
 

@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/auth/validarLogin`,
     CADASTRO: `${API_BASE_URL}/auth/cadastro`,
     USER_BY_TOKEN: `${API_BASE_URL}/user/findByToken`,
+    USER: `${API_BASE_URL}/user/current`,
 };
 
 
@@ -69,6 +70,16 @@ export const authAPI = {
 };
 
 export const userAPI = {
+
+    getCurrentUser: async () => {
+        return await APIService.getInstance().request(API_ENDPOINTS.USER, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    },
+
     getUserByToken: async (token: string) => {
         return await APIService.getInstance().request(API_ENDPOINTS.USER_BY_TOKEN, {
             method: 'GET',
