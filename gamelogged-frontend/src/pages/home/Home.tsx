@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import GameCard from '@/components/ui/GameCard'; 
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const igdbApi = {
   fetchPaginatedGames: async (limit: number, offset: number) => {
@@ -50,6 +52,7 @@ function HomePage() {
 
   const goToNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
   const goToPreviousPage = () => setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <div className="text-center p-10">Carregando jogos...</div>;
@@ -59,13 +62,19 @@ function HomePage() {
     return <div className="text-center p-10 text-red-500">{error}</div>;
   }
 
+  const handleGameClick = (gameName: string) => {
+    navigate(`/game/${encodeURIComponent(gameName)}`);
+  }
+
   return (
     <div className="container mx-auto px-24 py-8">
       <h1 className="text-2xl font-bold mb-6">Catálogo de Jogos</h1>
-
+    
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {games.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <button onClick={() => handleGameClick(game.name)}>
+            <GameCard key={game.id} game={game} />
+          </button>
         ))}
       </div>
 

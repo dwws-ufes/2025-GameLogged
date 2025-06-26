@@ -4,6 +4,7 @@ import HomePage from "./pages/home/Home";
 import LandingPage from "./pages/landing-page/LandingPage";
 import Layout from './components/layout/Layout';
 import { Toaster } from "@/components/ui/sonner"
+import GamePage from './pages/game/Game';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route element={<Layout />}>
           <Route path="/home" element={<HomePage />} />
+          <Route path="/game/:gameName" element={<GamePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
