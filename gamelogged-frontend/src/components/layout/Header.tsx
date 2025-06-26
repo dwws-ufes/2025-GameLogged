@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Settings, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import {Avatar, AvatarFallback, AvatarImage} from '@radix-ui/react-avatar';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar.tsx';
 
 type Theme = 'light' | 'dark';
 
@@ -65,13 +65,12 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-        </div>
-        <div className="flex flex-row flex-wrap items-center gap-12 rounded-lg">
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <Button className={"cursor-pointer rounded-full p-0"} variant="ghost">
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </Button>
         </div>
       </nav>
     </header>
