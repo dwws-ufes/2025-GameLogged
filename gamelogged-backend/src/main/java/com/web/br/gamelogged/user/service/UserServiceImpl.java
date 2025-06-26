@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.web.br.gamelogged.domain.User;
 import com.web.br.gamelogged.user.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void createUser(String uuid, String nickname) {
         User newUser = new User();
         newUser.setUuid(uuid);
