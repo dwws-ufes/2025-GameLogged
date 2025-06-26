@@ -5,9 +5,9 @@ import GameCard from '@/components/ui/GameCard';
 const igdbApi = {
   fetchPaginatedGames: async (limit: number, offset: number) => {
     console.log(`Buscando na API: limit=${limit}, offset=${offset}`);
-    // Aqui você faria a chamada real para a API do IGDB
-    // Por enquanto, vamos simular uma resposta com dados falsos.
-    // O 'id' precisa ser único para cada item e página para evitar problemas de chave no React.
+
+    // TODO: implementar consulta no igdb 
+
     return Array.from({ length: limit }, (_, index) => ({
       id: offset + index + 1,
       name: `Game #${offset + index + 1}`,
