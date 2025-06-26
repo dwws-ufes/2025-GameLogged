@@ -2,7 +2,7 @@ package com.web.br.gamelogged.domain;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public class User implements Serializable {
     private String nickname;
 
     @Column(nullable = false)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     private String profilePictureUrl;
 
@@ -74,11 +74,11 @@ public class User implements Serializable {
         this.nickname = nickname;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

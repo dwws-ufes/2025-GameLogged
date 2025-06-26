@@ -1,26 +1,16 @@
-import type { AuthResponse } from "../dto/auth";
-
 export class AuthStateService {
-  private static readonly TOKEN_KEY = 'authToken';
-  private static readonly USER_KEY = 'user';
+  private static readonly TOKEN_KEY: string = "auth_token";
 
-  public static setAuthData(response: AuthResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, response.token);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
+  public static setAuthData(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   public static getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  public static getUser(): any | null {
-    const userStr = localStorage.getItem(this.USER_KEY);
-    return userStr ? JSON.parse(userStr) : null;
-  }
-
   public static clearAuthData(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
   }
 
   public static isAuthenticated(): boolean {

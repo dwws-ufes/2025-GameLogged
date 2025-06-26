@@ -1,17 +1,28 @@
 import './Landing-Page.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Balatro from '../../blocks/Backgrounds/Balatro/Balatro';
 import DecryptedText from '@/blocks/TextAnimations/DecryptedText/DecryptedText';
 import LoginCard from '../../authentication/components/Login-Card';
 import CadastroCard from '../../authentication/components/Cadastro-Card';
+import { useNavigate } from 'react-router-dom';
+import { AuthViewModel } from '@/authentication/viewModels/AuthViewModel';
 
 function LandingPage() {
     const [isLoginMode, setIsLoginMode] = useState(true);
+    const authViewModel = new AuthViewModel();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (authViewModel.isAuthenticated()) {
+            navigate('/home');
+        }
+    }, [authViewModel, navigate]);
 
     return (
         <>
 
-            <div style={{ width: '70%', height: '100%', position: 'absolute', opacity:0.8}}>
+            <div style={{ width: '70%', height: '100%', position: 'absolute', opacity: 0.8 }}>
                 <Balatro
                     isRotate={false}
                     mouseInteraction={false}

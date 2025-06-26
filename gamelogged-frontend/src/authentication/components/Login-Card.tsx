@@ -4,14 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
 
 interface LoginCardProps {
     onSwitchToRegister: () => void;
-    onLoginSuccess?: () => void;
 }
 
-function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
+function LoginCard({ onSwitchToRegister }: LoginCardProps) {
     const authViewModel = new AuthViewModel();
+    const navigate = useNavigate();
     const {
         formData,
         isLoading,
@@ -23,7 +24,7 @@ function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
     const onSubmit = async (e: React.FormEvent) => {
         const success = await handleSubmit(e);
         if (success) {
-            onLoginSuccess?.();
+            navigate('/home');
         }
     };
     return (
@@ -44,7 +45,7 @@ function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
                                 id="email"
                                 name="email"
                                 type="email"
-                                placeholder="m@example.com"
+                                placeholder="example@domain.com"
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 required
@@ -69,12 +70,13 @@ function LoginCard({ onSwitchToRegister, onLoginSuccess }: LoginCardProps) {
                                 required
                             />
                         </div>
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading ? 'Entrando...' : 'Login'}
+                        </Button>
                     </div>
                 </form>
-            </CardContent><CardFooter className="flex-col gap-2">
-                <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
-                    {isLoading ? 'Entrando...' : 'Login'}
-                </Button>
+            </CardContent>
+            <CardFooter className="flex-col gap-2">
                 <Separator className="my-4" />
                 <Button variant="outline" className="w-full" onClick={onSwitchToRegister}>
                     Não tem uma conta? Cadastre-se

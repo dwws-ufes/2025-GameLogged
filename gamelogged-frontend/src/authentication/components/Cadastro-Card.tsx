@@ -29,7 +29,8 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
     return (<Card className="w-full max-w-sm">
         <CardHeader>
             <CardTitle>Cadastro</CardTitle>
-        </CardHeader>        <CardContent>
+        </CardHeader>        
+        <CardContent>
             <form onSubmit={onSubmit}>
                 <div className="flex flex-col gap-6">
                     {error && (
@@ -43,8 +44,21 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
                             id="email"
                             name="email"
                             type="email"
-                            placeholder="m@example.com"
+                            placeholder="example@domain.com"
                             value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="nickname">Apelido</Label>
+                        <Input
+                            id="nickname"
+                            name="nickname"
+                            type="text"
+                            placeholder="Apelido"
+                            value={formData.nickname}
                             onChange={handleInputChange}
                             required
                         />
@@ -57,6 +71,7 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
                             id="password"
                             name="password"
                             type="password"
+                            placeholder="Deve ter pelo menos 6 caracteres"
                             value={formData.password}
                             onChange={handleInputChange}
                             required
@@ -75,11 +90,13 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
                             required
                         />
                     </div>
+                    <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
+                        {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+                    </Button>
                 </div>
-            </form>        </CardContent><CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
-                {isLoading ? 'Cadastrando...' : 'Cadastrar'}
-            </Button>
+            </form>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
             <Separator className="my-4" />
             <Button variant="outline" className="w-full" onClick={onSwitchToLogin}>
                 Já possui uma conta? Faça o login

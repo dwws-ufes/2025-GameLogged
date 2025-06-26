@@ -5,15 +5,12 @@ export interface LoginCredentials {
 
 export interface RegisterData {
     email: string;
+    nickname: string;
     password: string;
 }
 
 export interface AuthResponse {
     token: string;
-    user: {
-        id: string;
-        email: string;
-    };
 }
 
 export interface ApiError {

@@ -61,6 +61,7 @@ export class AuthViewModel {
   public useRegisterViewModel() {
     const [formData, setFormData] = useState<RegisterData & { confirmPassword: string }>({
       email: '',
+      nickname: '',
       password: '',
       confirmPassword: ''
     });
@@ -96,7 +97,7 @@ export class AuthViewModel {
     };
 
     const clearForm = () => {
-      setFormData({ email: '', password: '', confirmPassword: '' });
+      setFormData({ email: '', password: '', confirmPassword: '', nickname: '' });
       setError(null);
     };
 
@@ -114,11 +115,12 @@ export class AuthViewModel {
     return this.authController.isAuthenticated();
   }
 
-  public getCurrentUser() {
-    return this.authController.getCurrentUser();
-  }
 
   public logout(): void {
     this.authController.logout();
+  }
+
+  public async getUserNickname(): Promise<string | null> {
+    return this.authController.getUserNickname();
   }
 }
