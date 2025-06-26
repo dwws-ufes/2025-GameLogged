@@ -6,11 +6,11 @@ import { AuthViewModel } from '../../authentication/viewModels/AuthViewModel';
 function Layout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [nickname, setNickname] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authViewModel = new AuthViewModel();
     const auth = authViewModel.isAuthenticated();
-    const navigate = useNavigate();
     setIsAuthenticated(auth);
 
     if (auth) {
