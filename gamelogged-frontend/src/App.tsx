@@ -1,15 +1,17 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/home/Home";
-import LandingPage from "./pages/landing-page/Landing-Page"; 
+import LandingPage from "./pages/landing-page/LandingPage";
 import Layout from './components/layout/Layout';
+import { Toaster } from "@/components/ui/sonner"
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position='bottom-center' expand={false} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route element={<Layout/>}>
+        <Route element={<Layout />}>
           <Route path="/home" element={<HomePage />} />
         </Route>
       </Routes>
