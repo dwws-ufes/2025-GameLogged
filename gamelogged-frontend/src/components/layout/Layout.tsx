@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom'; 
 import Header from './Header'
-import { AuthViewModel } from '../../authentication/viewModels/AuthViewModel';
+import { AuthController } from '../../authentication/controllers/AuthController';
 
 function Layout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,14 +9,14 @@ function Layout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const authViewModel = new AuthViewModel();
-    const auth = authViewModel.isAuthenticated();
+    const authController = AuthController.getInstance();
+    const auth = authController.isAuthenticated();
     setIsAuthenticated(auth);
 
     if (auth) {
       const fetchNickname = async () => {
         try {
-          const name = await authViewModel.getUserNickname();
+          const name = await authController.getUserNickname();
           setNickname(name);
         } catch {
           setNickname(null);

@@ -2,37 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
 import { Separator } from "@/components/ui/separator";
-import { useNavigate } from "react-router-dom";
+import { AuthController } from "../controllers/AuthController";
 
 interface LoginCardProps {
     onSwitchToRegister: () => void;
 }
 
 function LoginCard({ onSwitchToRegister }: LoginCardProps) {
-    const authViewModel = new AuthViewModel();
-    const navigate = useNavigate();
     const {
         formData,
         isLoading,
         error,
         handleInputChange,
         handleSubmit
-    } = authViewModel.useLoginViewModel();
+    } = AuthController.useLoginForm();
 
-    const onSubmit = async (e: React.FormEvent) => {
-        const success = await handleSubmit(e);
-        if (success) {
-            navigate('/home');
-        }
-    };
     return (
         <Card className="w-full max-w-sm">
             <CardHeader>
                 <CardTitle>Login</CardTitle>
             </CardHeader>            <CardContent>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-6">
                         {error && (
                             <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">

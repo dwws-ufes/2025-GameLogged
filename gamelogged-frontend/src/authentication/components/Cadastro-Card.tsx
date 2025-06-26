@@ -2,36 +2,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AuthViewModel } from "@/authentication/viewModels/AuthViewModel";
 import { Separator } from "@/components/ui/separator";
+import { AuthController } from "../controllers/AuthController";
 
 interface CadastroCardProps {
     onSwitchToLogin: () => void;
 }
 
 function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
-    const authViewModel = new AuthViewModel();
     const {
         formData,
         isLoading,
         error,
         handleInputChange,
         handleSubmit
-    } = authViewModel.useRegisterViewModel();
+    } = AuthController.useRegisterForm();
 
-    const onSubmit = async (e: React.FormEvent) => {
-        const success = await handleSubmit(e, onSwitchToLogin);
-        if (success) {
-            alert('Cadastro realizado com sucesso! Você pode fazer login agora.');
-        }
-    };
 
     return (<Card className="w-full max-w-sm">
         <CardHeader>
             <CardTitle>Cadastro</CardTitle>
         </CardHeader>        
         <CardContent>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                     {error && (
                         <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
@@ -90,7 +83,7 @@ function CadastroCard({ onSwitchToLogin }: CadastroCardProps) {
                             required
                         />
                     </div>
-                    <Button type="submit" className="w-full" onClick={onSubmit} disabled={isLoading}>
+                    <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? 'Cadastrando...' : 'Cadastrar'}
                     </Button>
                 </div>

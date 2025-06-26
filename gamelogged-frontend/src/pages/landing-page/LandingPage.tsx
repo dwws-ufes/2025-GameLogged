@@ -1,23 +1,22 @@
-import './Landing-Page.css'
+import './LandingPage.css'
 import { useEffect, useState } from 'react';
 import Balatro from '../../blocks/Backgrounds/Balatro/Balatro';
 import DecryptedText from '@/blocks/TextAnimations/DecryptedText/DecryptedText';
 import LoginCard from '../../authentication/components/Login-Card';
 import CadastroCard from '../../authentication/components/Cadastro-Card';
 import { useNavigate } from 'react-router-dom';
-import { AuthViewModel } from '@/authentication/viewModels/AuthViewModel';
+import { AuthController } from '@/authentication/controllers/AuthController';
 
 function LandingPage() {
     const [isLoginMode, setIsLoginMode] = useState(true);
-    const authViewModel = new AuthViewModel();
-
+    const authController = AuthController.getInstance();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (authViewModel.isAuthenticated()) {
+        if (authController.isAuthenticated()) {
             navigate('/home');
         }
-    }, [authViewModel, navigate]);
+    }, [authController, navigate]);
 
     return (
         <>
