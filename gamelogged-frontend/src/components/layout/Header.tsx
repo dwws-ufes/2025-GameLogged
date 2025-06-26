@@ -4,6 +4,9 @@ import { Settings, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar.tsx';
+import {AuthController} from "@/authentication/controllers/AuthController.ts";
+import {AuthStateService} from "@/authentication/services/AuthStateService.ts";
+import {useNavigate} from "react-router-dom";
 
 type Theme = 'light' | 'dark';
 
@@ -12,7 +15,10 @@ interface HeaderProps {
   nickname: string | null;
 }
 
+
 function Header({ isAuthenticated, nickname }: HeaderProps) {
+  const authController = AuthController.getInstance();
+  const navigate = useNavigate();
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
@@ -21,6 +27,7 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
 
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
+
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -32,6 +39,12 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
   const toggleTheme = () => {
     setTheme(currentTheme => (currentTheme === 'dark' ? 'light' : 'dark'));
   };
+
+  const logout = () => {
+    authController.logout();
+    navigate('');
+  }
+
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-md">
@@ -51,9 +64,11 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Abrir configurações</span>
+              <Button className={"cursor-pointer rounded-full p-0"} variant="ghost">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -63,14 +78,17 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
                   Mudar para tema {theme === 'dark' ? 'Claro' : 'Escuro'}
                 </span>
               </DropdownMenuItem>
+              {
+                isAuthenticated ? (
+                    <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                      <span>
+                  Logout
+                </span>
+                    </DropdownMenuItem>
+                ) : null
+              }
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button className={"cursor-pointer rounded-full p-0"} variant="ghost">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </Button>
         </div>
       </nav>
     </header>
