@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Settings, Moon, Sun } from 'lucide-react';
+import { Settings, Moon, Sun, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar.tsx';
@@ -45,7 +45,11 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
     navigate('');
   }
 
-
+  const handleProfileClick = () => {
+    if (isAuthenticated) {
+      navigate('/perfil');
+    }
+  }
   return (
     <header className="bg-white dark:bg-gray-800 shadow-md">
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -81,12 +85,19 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
               {
                 isAuthenticated ? (
                     <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                      <LogOut className="mr-2 h-4 w-4" />
                       <span>
                   Logout
                 </span>
                     </DropdownMenuItem>
                 ) : null
               }
+              <DropdownMenuItem onClick={handleProfileClick} className={"cursor-pointer"}>
+                <User className="mr-2 h-4 w-4" />
+                <span>
+                  Perfil
+                </span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
