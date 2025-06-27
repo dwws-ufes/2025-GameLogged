@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Settings, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useNavigate } from 'react-router-dom';
 
 type Theme = 'light' | 'dark';
 
@@ -12,6 +13,7 @@ interface HeaderProps {
 }
 
 function Header({ isAuthenticated, nickname }: HeaderProps) {
+  const navigate = useNavigate();
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
@@ -32,11 +34,15 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
     setTheme(currentTheme => (currentTheme === 'dark' ? 'light' : 'dark'));
   };
 
+  const redirectToHome = () => {
+    navigate('/');
+  }
+
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-md">
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header className="block absolute border-box top-0 w-full z-50">
+      <nav className="container border-none z-15 bg-transparent mx-15 px-6 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-800 dark:text-white">
-          <a>GameLogged</a>
+          <a onClick={redirectToHome} className='cursor-pointer'>GameLogged</a>
         </div>
         
         <div className="flex items-center gap-4">

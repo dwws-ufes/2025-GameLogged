@@ -5,6 +5,7 @@ import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Separator } from "@/components/ui/separator";
+import GamePlataform from "@/components/ui/game-plataform";
 const loadGame = {
     fetchGame: async () => {
         //console.log(`Buscando na API: limit=${limit}, offset=${offset}`);
@@ -14,7 +15,7 @@ const loadGame = {
         return {
             'screenshot_url': 'https://images.igdb.com/igdb/image/upload/t_1080p_2x/bkgxmg2m4h8wf5g9tblh.jpg',
             'game_cover_url': 'https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co93cr.jpg',
-            'plataforms': ["PlayStation 5", "Xbox Series X/S", "PC"],
+            'plataforms': ["PlayStation 5", "Xbox Series X/S", "PC", "Nintendo Switch"],
             'release_date': '2023-10-20',
             'genres': ["Ação", "Aventura"],
         }
@@ -79,11 +80,11 @@ function GamePage() {
                             <img src={gameDetails['game_cover_url']} alt={`${gameName} Cover`} className="w-48 h-72 object-cover" />
                         </div>
 
-                        <div className="game-rating w-56 dark:bg-gray-800 bg-white p-4 rounded-lg shadow-md mt-4">
+                        <div className="game-rating w-56 bg-white p-4 rounded-lg text-white shadow-md mt-4">
                             <div className="rating-chart-content">
                                 <div className="rating-header mb-4">
-                                    <h2 className="text-2xl font-bold mb-2">Avaliações</h2>
-                                    <h2 className="text-2xl font-bold mb-2">{mediaNotas}</h2>
+                                    <h2 className="text-2xl text-black font-bold mb-2">Avaliações</h2>
+                                    <h2 className="text-2xl text-black font-bold mb-2">{mediaNotas}</h2>
                                 </div>
                                 <div className="rating-chart">
                                     <ChartContainer config={chartConfig}>
@@ -104,21 +105,39 @@ function GamePage() {
                             </div>
                         </div>
                     </div>
-                    <div className="col">
-                        <h2 className="text-2xl font-bold mb-4">Sobre o Jogo</h2>
-                        <p className="text-gray-700">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
+                    <div className="col game-info text-white">
+                        <div className="row">
+                            <div className="col-game-info">
+                                <span className="game-title font-bold mb-4">{gameName}</span>
+                            </div>
+                            <div className="col-auto mb-4">
+                                <span className="game-release-date text-white">Lançamento: {new Date(gameDetails['release_date']).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span>
+                            </div>
+                            <div className="col-auto mb-4">
+                                <span className="game-genres text-white">A 2D metroidvania with an emphasis on close combat and exploration in which the player enters the once-prosperous now-bleak insect kingdom of Hallownest, travels through its various districts, meets friendly inhabitants, fights hostile ones and uncovers the kingdom's history while improving their combat abilities and movement arsenal by fighting bosses and accessing out-of-the-way areas.</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="col">
-                        <h2 className="text-2xl font-bold mb-4">Sobre o Jogo</h2>
-                        <p className="text-gray-700">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
+                    <div className="col text-white game-plataforms-column">
+                        <div className="row">
+                            <p className="text-sm font-semibold mb-2">Disponivel nas Plataformas</p>
+                        </div>
+                        <div className="row game-platforms">
+                            <GamePlataform platforms={gameDetails['plataforms'] || []} />
+                        </div>
+                        <div className="row game-platforms mt-4">
+                            <div className="col-auto">
+                                <p className="text-sm font-semibold mb-2">Gêneros</p>
+                            </div>
+                            <div className="col-game-info">
+
+                                <GamePlataform platforms={gameDetails['genres'] || []} />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div >
+            </div >
+        </div>
     );
 }
 

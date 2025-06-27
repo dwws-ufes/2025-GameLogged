@@ -63,7 +63,7 @@ function HomePage() {
   }
 
   const handleGameClick = (gameName: string) => {
-    navigate(`/game/${encodeURIComponent(gameName)}`);
+    navigate(`/games/${encodeURIComponent(gameName)}`);
   }
 
   return (
