@@ -27,6 +27,11 @@ public class Review implements Serializable {
     @Enumerated(EnumType.STRING)
     private PlatformType platformType;
 
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private GameInteraction gameInteraction;
+
     public Review() {
         // Default constructor
     }
@@ -69,5 +74,13 @@ public class Review implements Serializable {
 
     public void setPlatformType(PlatformType platformType) {
         this.platformType = platformType;
+    }
+
+    public GameInteraction getGameInteraction() {
+        return gameInteraction;
+    }
+
+    public void setGameInteraction(GameInteraction gameInteraction) {
+        this.gameInteraction = gameInteraction;
     }
 }
