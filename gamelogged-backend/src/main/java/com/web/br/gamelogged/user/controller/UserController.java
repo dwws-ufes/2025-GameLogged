@@ -23,12 +23,9 @@ public class UserController {
 
     private final UserService userService;
 
-    private final AuthService authService;
-
     @Autowired
-    public UserController(UserService userService, AuthService authService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.authService = authService;
     }
 
     @GetMapping("/current")
@@ -49,31 +46,4 @@ public class UserController {
                 "biography", user.getBiography() != null ? user.getBiography() : "",
                 "creationDate", user.getCreationDate() != null ? user.getCreationDate().toString() : ""));
     }
-
-    // @GetMapping("/findByToken")
-    // public ResponseEntity<Map<String, String>> findByToken(@RequestHeader("Authorization") String authHeader) {
-
-    //     try {
-    //         String token = authHeader.replace("Bearer ", "").trim();
-    //         String uuid = authService.validarTokenFirebase(token);
-
-    //         User user = userService.findByUuid(uuid);
-
-    //         if (user == null) {
-    //             return ResponseEntity.status(404).body(Map.of("error", "Usuário não encontrado."));
-    //         }
-
-    //         return ResponseEntity.ok(Map.of(
-    //                 "uuid", user.getUuid() != null ? user.getUuid() : "",
-    //                 "nickname", user.getNickname() != null ? user.getNickname() : "",
-    //                 "profilePictureUrl", user.getProfilePictureUrl() != null ? user.getProfilePictureUrl() : "",
-    //                 "biography", user.getBiography() != null ? user.getBiography() : "",
-    //                 "creationDate", user.getCreationDate() != null ? user.getCreationDate().toString() : ""));
-
-    //     } catch (FirebaseAuthException ex) {
-    //         return ResponseEntity.status(401).body(Map.of("error", "Token inválido ou expirado."));
-    //     }
-
-    // }
-
 }
