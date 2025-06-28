@@ -1,0 +1,17 @@
+.profile-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.profile-tab{
+
+}
+.game-tab{
+
+}
+.review-tab{
+
+}
+.friend-tab{
+
+}
