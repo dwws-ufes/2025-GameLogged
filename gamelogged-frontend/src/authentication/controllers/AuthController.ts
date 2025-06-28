@@ -3,7 +3,7 @@ import type { LoginCredentials, RegisterData} from '../dto/auth';
 import { AuthValidationService } from '@/authentication/services/AuthValidationService';
 import { AuthStateService } from '@/authentication/services/AuthStateService';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {type NavigateFunction, useNavigate} from 'react-router-dom';
 import { toast } from "sonner"
 
 export class AuthController {
