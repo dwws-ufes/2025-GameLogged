@@ -1,17 +1,88 @@
 .profile-tabs {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
 }
-.profile-tab{
+
+.profile-tabs-statitics-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-size: xx-large;
+}
+
+.profile-tabs-bio-rating-title {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    font-size: x-large;
+}
+
+.profile-tab-statistics-number {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-size: xxx-large;
+}
+
+.profile-tab-bio-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 20%;
+    margin-top: 2vh;
+}
+
+.profile-tab-statistics {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 80%;
+    margin-top: 2vh;
+    margin-left: 2vh;
+    margin-right: 2vh;
+}
+
+.profile-tab-statistics-elements {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin: 0 1vh;
+}
+
+.profile-tab-statistic-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.profile-tab {
 
 }
-.game-tab{
+
+.game-tab {
 
 }
-.review-tab{
+
+.review-tab {
 
 }
-.friend-tab{
 
+.friend-tab {
+
+}
+
+.divider {
+    display: block;
+    height: 1px;
+    width: 100%;
+    margin: 1vh 0;
+    background-color: rgba(255, 255, 255, 0.45);
 }

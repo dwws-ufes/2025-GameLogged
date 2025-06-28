@@ -19,7 +19,6 @@ function PerfilPage() {
             </div>
 
             <Tabs defaultValue="profile" className="Perfil-page-tabs">
-                //TODO: Colocar icones nas abas
                 <TabsList>
                     <TabsTrigger value="profile">
                         Profile
