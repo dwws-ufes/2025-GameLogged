@@ -27,9 +27,6 @@ function PerfilPage() {
           </Tabs>
       </div>
 
-
-
-
   );
 }
 export default PerfilPage;
