@@ -49,6 +49,7 @@ function GamePage() {
 
     useEffect(() => {
         const fetchGameDetails = async () => {
+            setProgress(50);
             const details = await gameController.searchGameByName(gameName || '');
             setGameDetails(details)
             setIsLoading(false);
@@ -90,7 +91,7 @@ function GamePage() {
             <div className="flex flex-col min-h-screen content comfortaa">
                 <div className="game-screenshot">
                     <div className="gradient"></div>
-                    <img className="screenshot" src={gameDetails["screenshot"]} alt={`${gameName} Screenshot`} />
+                    <img className="screenshot" src={gameDetails["screenshot"] ? gameDetails["screenshot"] : gameDetails["coverUrl"]} alt={`${gameName} Screenshot`} />
                 </div>
                 <div className="col game-details p-4">
                     <div className="content-game flex flex-row">
