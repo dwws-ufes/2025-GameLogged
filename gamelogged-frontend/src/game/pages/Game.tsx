@@ -19,7 +19,7 @@ import { GameController } from "../controllers/GameController";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import { DialogDemo } from "@/components/ui/dialog-review";
+import { DialogReview } from "@/components/ui/dialog-review";
 
 
 const loadGame = {
@@ -103,7 +103,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogDemo />
+                                    <DialogReview />
                                     <Rating defaultValue={0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <RatingButton key={index} className="rating-button mt-6 self-center" size={30} />

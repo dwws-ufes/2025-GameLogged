@@ -25,4 +25,13 @@ export class GameController {
         return game;
     }
 
+    public async sendReview(gameName: string, event: React.FormEvent<HTMLFormElement>) {
+
+    const formData = new FormData(event.currentTarget);
+    const playStatus = formData.get("playStatus");
+    const plataforma = formData.get("plataform");
+    const nota = formData.get("nota");
+    const review = formData.get("review");
+}
+
 }

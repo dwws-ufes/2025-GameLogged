@@ -16,27 +16,37 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Textarea } from "./textarea";
 import { Separator } from "@radix-ui/react-separator";
 import favIcon from "@/assets/icons/heart.png";
+import { GameController } from "@/game/controllers/GameController";
+import { useState } from "react";
 
-export function DialogDemo() {
+export function DialogReview() {
     const gameName = "Game Name";
     const releaseYear = "2023";
+    const gameController = GameController.getInstance();
+    const [nota, setNota] = useState(0);
+
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        console.log("Formulário enviado!");
+        gameController.sendReview(gameName, event);
+    }
 
     return (
         <Dialog>
-            <form>
-                <DialogTrigger asChild>
-                    <Button className="bg-blue-500 review-button text-white font-bold w-full hover:bg-blue-800" size="sm" variant="outline">Fazer Review</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[900px] sm:max-h-[1000px]">
-                    <DialogHeader>
-                        <DialogTitle>{gameName} - {releaseYear}</DialogTitle>
-                    </DialogHeader>
+            <DialogTrigger asChild>
+                <Button className="bg-blue-500 review-button text-white font-bold w-full hover:bg-blue-800" size="sm" variant="outline">Fazer Review</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[900px] sm:max-h-[1000px]">
+                <DialogHeader>
+                    <DialogTitle>{gameName} - {releaseYear}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit}>
                     <div className="flex flex-row gap-2">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-center justify-center">
                             <img src="https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co93cr.jpg" className="w-70 h-72 object-cover rounded" />
                             <div>
-                                <Label htmlFor="playStatus" className="mt-10 w-full">Situação</Label>
-                                <select name="playStatus">
+                                <Label htmlFor="playStatus" className="mt-10 w-full mb-2">Situação</Label>
+                                <select name="playStatus " className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
                                     <option value="PLAYED">Jogado</option>
                                     <option value="PLAYING">Jogando</option>
                                     <option value="COMPLETED">Finalizado</option>
@@ -55,16 +65,16 @@ export function DialogDemo() {
                             <div className="flex flex-row gap-4 mt-6">
 
                                 <div className="flex flex-col mr-20">
-                                    <Label htmlFor="nota">Nota</Label>
+                                    <Label htmlFor="nota" className="mb-2">Nota</Label>
                                     <Rating defaultValue={0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
-                                            <RatingButton key={index} className="rating-button self-center" size={30} />
+                                            <RatingButton key={index} className="rating-button self-center" name="nota" size={30} />
                                         ))}
                                     </Rating>
                                 </div>
                                 <div>
-                                    <Label htmlFor="nota">Plataforma</Label>
-                                    <select name="plataform">
+                                    <Label htmlFor="plataforma" >Plataforma</Label>
+                                    <select name="plataform" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
                                         <option value="PLAYED">Jogado</option>
                                         <option value="PLAYING">Jogando</option>
                                         <option value="COMPLETED">Finalizado</option>
@@ -75,17 +85,20 @@ export function DialogDemo() {
                                 </div>
                             </div>
                             <Label htmlFor="review" className="mt-5">Review</Label>
-                            <Textarea placeholder="Type your message here." className="h-80" />
+                            <Textarea name="review" placeholder="Type your message here." className="h-80" />
                         </div>
                     </div>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancelar</Button>
-                        </DialogClose>
-                        <Button type="submit">Enviar</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </form>
+                </form>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="outline">Cancelar</Button>
+                    </DialogClose>
+                    <Button type="submit">Enviar</Button>
+                </DialogFooter>
+            </DialogContent>
+
         </Dialog >
     )
 }
+
+
