@@ -21,6 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { DialogReview } from "@/components/ui/dialog-review";
 import { PlayStatus } from "../enum/PlayStatus";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
 
 const loadGame = {
@@ -236,7 +237,7 @@ function GamePage() {
         ) : (
             <div className="flex flex-col items-center justify-center h-screen">
 
-                <Progress value={progress} className="w-[30%]" />
+                <Spinner />
             </div>
         )
     );

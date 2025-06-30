@@ -18,6 +18,7 @@ import { Separator } from "@radix-ui/react-separator";
 import favIcon from "@/assets/icons/heart.png";
 import { GameController } from "@/game/controllers/GameController";
 import { useState, useRef } from "react";
+import { PlayStatus } from "@/game/enum/PlayStatus";
 
 type DialogReviewProps = {
     gameName: string;
@@ -65,19 +66,12 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms }: Di
                             <img src={imageUrl} className="w-70 h-72 object-cover rounded" />
                             <div>
                                 <Label htmlFor="playStatus" className="mt-10 w-full mb-2">Situação</Label>
-                                <select name="playStatus" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
-                                    <option value="PLAYED">Jogado</option>
-                                    <option value="PLAYING">Jogando</option>
-                                    <option value="COMPLETED">Finalizado</option>
-                                    <option value="ABANDONED">Abandonado</option>
-                                    <option value="SHELVED">Na estante</option>
-                                    <option value="WISHLIST">Wishlist</option>
+                                <select name="playStatus" defaultValue={PlayStatus.NONE} className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                                    {Object.entries(PlayStatus).map(([value, label]) => (
+                                        <option key={value} value={value}>{label}</option>
+                                    ))}
                                 </select>
                             </div>
-                            <button className="text-white font-bold mr-3 flex items-center justify-center flex-col mt-10">
-                                <img src={favIcon} alt="Status Icon" className="w-12 h-12" />
-                                Curtir
-                            </button>
                         </div>
                         <Separator orientation="vertical" className="mx-4" />
                         <div className="flex flex-col gap-4 w-full">

@@ -8,11 +8,11 @@ export type PlayStatus =
     | "NONE";
 
 export const PlayStatus = {
-    PLAYED: "PLAYED",
-    PLAYING: "PLAYING",
-    COMPLETED: "COMPLETED",
-    ABANDONED: "ABANDONED",
-    SHELVED: "SHELVED",
-    WISHLIST: "WISHLIST",
-    NONE : "NONE"
+    NONE : "Não jogado",
+    PLAYED: "Jogado",
+    PLAYING: "Jogando",
+    COMPLETED: "Finalizado",
+    ABANDONED: "Abandonado",
+    SHELVED: "Na estante",
+    WISHLIST: "Wishlist",
 } as const;
