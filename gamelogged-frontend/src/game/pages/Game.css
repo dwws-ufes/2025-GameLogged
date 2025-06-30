@@ -1,0 +1,135 @@
+.game-screenshot {
+    align-items: center;
+    display: flex;
+    flex-direction: unset;
+    justify-content: center;
+    left: 0;
+    margin: 0;
+    max-height: 450px;
+    overflow: hidden;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+
+.game-details {
+    background: transparent;
+}
+
+.screenshot {
+    -webkit-mask-image: linear-gradient(to top, transparent 25%, black 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 25%, black 100%);
+    transform: translateY(-25%);
+    height: auto;
+    width: 100%;
+}
+
+.content {
+    background: black;
+}
+
+.gradient {
+    bottom: 0;
+    max-height: 350px;
+    z-index: 1;
+}
+
+.game-cover img {
+    border-radius: 12px;
+    position: relative;
+    top: -165px;
+    z-index: 3;
+
+}
+
+.col {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    margin: 0vh 8vw;
+}
+
+.row {
+    display: flex;
+    min-height: fit-content;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.game-rating {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 5vh;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.game-button {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: -250px;
+    border-radius: 10px 10px 10px 10px;
+    background: #ffffff75;
+    width: min-content;
+}
+
+.rating-header {
+    justify-self: center;
+    justify-items: center;
+}
+
+.rating-chart-content {
+    padding: 1vh;
+}
+
+.game-info {
+    flex: 2 1 0%;
+    position: relative;
+    top: -70px;
+}
+
+.game-title {
+    font-size: 2.5rem;
+}
+
+.col-game-info {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.col-auto {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: auto;
+    padding-left: 0.25rem;
+}
+
+.game-plataforms-column {
+
+    margin-top: calc(var(--spacing) * 8);
+
+}
+
+.rating-button {
+    color: gold;
+}
+
+.game-buttons-content {
+    margin-top: 80px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.status-bttn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review-button {
+    margin-left: 0;
+}
