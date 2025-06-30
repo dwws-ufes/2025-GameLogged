@@ -103,7 +103,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogReview />
+                                    <DialogReview gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()}/>
                                     <Rating defaultValue={0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <RatingButton key={index} className="rating-button mt-6 self-center" size={30} />

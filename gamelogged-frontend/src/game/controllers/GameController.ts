@@ -25,7 +25,7 @@ export class GameController {
         return game;
     }
 
-    public async sendReview(gameName: string, event: React.FormEvent<HTMLFormElement>) {
+    public async sendReview(gameName: string, event: any) {
 
     const formData = new FormData(event.currentTarget);
     const playStatus = formData.get("playStatus");

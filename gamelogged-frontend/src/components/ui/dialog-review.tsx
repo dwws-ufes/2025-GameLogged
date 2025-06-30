@@ -17,19 +17,37 @@ import { Textarea } from "./textarea";
 import { Separator } from "@radix-ui/react-separator";
 import favIcon from "@/assets/icons/heart.png";
 import { GameController } from "@/game/controllers/GameController";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
-export function DialogReview() {
-    const gameName = "Game Name";
-    const releaseYear = "2023";
+type DialogReviewProps = {
+    gameName: string;
+    releaseYear: string;
+    imageUrl: string;
+};
+
+export function DialogReview({ gameName, releaseYear, imageUrl }: DialogReviewProps) {
     const gameController = GameController.getInstance();
     const [nota, setNota] = useState(0);
+    const formRef = useRef<HTMLFormElement>(null);
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        console.log("Formulário enviado!");
-        gameController.sendReview(gameName, event);
+    function handleSubmit() {
+
+        if (!formRef.current) {
+            console.error("Referência do formulário não encontrada.");
+            return;
+        }
+
+
+        const formData = new FormData(formRef.current);
+
+
+        const reviewData = Object.fromEntries(formData.entries());
+        reviewData.nota = nota.toString();
+        console.log("Dados da Review:", reviewData);
+
+        gameController.sendReview(gameName, reviewData);
     }
+
 
     return (
         <Dialog>
@@ -40,13 +58,13 @@ export function DialogReview() {
                 <DialogHeader>
                     <DialogTitle>{gameName} - {releaseYear}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit}>
+                <form ref={formRef}>
                     <div className="flex flex-row gap-2">
                         <div className="flex flex-col items-center justify-center">
-                            <img src="https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co93cr.jpg" className="w-70 h-72 object-cover rounded" />
+                            <img src={imageUrl} className="w-70 h-72 object-cover rounded" />
                             <div>
                                 <Label htmlFor="playStatus" className="mt-10 w-full mb-2">Situação</Label>
-                                <select name="playStatus " className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                                <select name="playStatus" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
                                     <option value="PLAYED">Jogado</option>
                                     <option value="PLAYING">Jogando</option>
                                     <option value="COMPLETED">Finalizado</option>
@@ -66,7 +84,7 @@ export function DialogReview() {
 
                                 <div className="flex flex-col mr-20">
                                     <Label htmlFor="nota" className="mb-2">Nota</Label>
-                                    <Rating defaultValue={0}>
+                                    <Rating onValueChange={setNota} defaultValue={0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <RatingButton key={index} className="rating-button self-center" name="nota" size={30} />
                                         ))}
@@ -93,12 +111,10 @@ export function DialogReview() {
                     <DialogClose asChild>
                         <Button variant="outline">Cancelar</Button>
                     </DialogClose>
-                    <Button type="submit">Enviar</Button>
+                    <Button type="submit" onClick={handleSubmit}>Enviar</Button>
                 </DialogFooter>
             </DialogContent>
 
         </Dialog >
     )
 }
-
-
