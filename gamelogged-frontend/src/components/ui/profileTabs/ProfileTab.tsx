@@ -1,6 +1,10 @@
 import "./profileTabs.css"
+import CountUp from './CountUp'
 
 function ProfileTab() {
+
+    const placeholderqtdgames = 100; // Placeholder for total games played, can be replaced with actual data
+
     return (
         <div className="profile-tabs-profile">
             <div className={"profile-tab-bio-rating"}>
@@ -18,25 +22,32 @@ function ProfileTab() {
             <div className={"profile-tab-statistics-elements"}>
                 <div className={"profile-tab-statistics"}>
                     <div className={"profile-tab-statistic-element"}>
-                        <span className={"profile-tab-statistics-number"}>
-                            393
-                        </span>
+                        <CountUp
+                            from={0}
+                            to={placeholderqtdgames}
+                            duration={0.5}
+                            className={"profile-tab-statistics-number"}/>
                         <h1 className={"profile-tabs-statitics-title"}>
                             Total Games Played
                         </h1>
                     </div>
                     <div className={"profile-tab-statistic-element"}>
-                        <span className={"profile-tab-statistics-number"}>
-                            00
-                        </span>
+                        <CountUp
+                            from={0}
+                            to={placeholderqtdgames}
+                            duration={0.5}
+                            className={"profile-tab-statistics-number"}
+                        />
                         <h1 className={"profile-tabs-statitics-title"}>
                             Total Reviews Written
                         </h1>
                     </div>
                     <div className={"profile-tab-statistic-element"}>
-                        <span className={"profile-tab-statistics-number"}>
-                            00
-                        </span>
+                        <CountUp
+                            from={0}
+                            to={placeholderqtdgames}
+                            duration={0.5}
+                            className={"profile-tab-statistics-number"}/>
                         <h1 className={"profile-tabs-statitics-title"}>
                             Total Friends
                         </h1>
