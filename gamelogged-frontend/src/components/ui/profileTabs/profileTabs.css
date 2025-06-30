@@ -19,6 +19,45 @@
     height: 100%;
 }
 
+.profile-tabs-friends {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.profile-tabs-friends-bottons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1vh;
+    width: auto;
+    height: 100%;
+    align-self: center;
+    justify-content: space-between;
+    margin-top: 1vh;
+}
+
+.profile-tabs-friends-botton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 120px;
+    font-size: large;
+    cursor: pointer;
+    border-radius: 4px;
+    background: rgba(37, 37, 175, 0.65);
+}
+
+.profile-tabs-friends-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
 .profile-tabs-statitics-title {
     display: flex;
     flex-direction: column;
@@ -41,12 +80,6 @@
     align-items: start;
     width: 100%;
     font-size: xx-large;
-}
-
-.profile-tabs-reviews.custom-card-size .game-card {
-    width: 150px; /* ou o valor desejado */
-    height: 200px; /* ou o valor desejado */
-    transform: scale(0.9); /* opcional: reduz proporcionalmente */
 }
 
 .profile-tab-statistics-number {
@@ -98,14 +131,6 @@
     width: 100%;
     height: 100%;
     padding: 2vh 10vh 2vh 10vh;
-}
-
-.profile-tab-grid-container .game-card {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
 }
 
 .divider {

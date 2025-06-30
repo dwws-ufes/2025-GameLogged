@@ -1,9 +1,18 @@
 function FriendTab() {
     return (
-        <div className="FriendTab">
-            <h2>Friend Tab</h2>
-            <p>This is the Friend tab content.</p>
-            {/* Add your friend-related content here */}
+        <div className="profile-tabs-friends">
+            <div className={"profile-tabs-friends-bottons"}>
+                <button className={"profile-tabs-friends-botton"}>
+                    Seguindo
+                </button>
+                <button className={"profile-tabs-friends-botton"}>
+                    Seguidores
+                </button>
+            </div>
+            <div className={"profile-tabs-friends-list"}>
+                
+            </div>
+
         </div>
     );
 }
