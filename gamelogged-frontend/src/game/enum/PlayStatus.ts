@@ -4,7 +4,8 @@ export type PlayStatus =
     | "COMPLETED"
     | "ABANDONED"
     | "SHELVED"
-    | "WISHLIST";
+    | "WISHLIST"
+    | "NONE";
 
 export const PlayStatus = {
     PLAYED: "PLAYED",
@@ -12,5 +13,6 @@ export const PlayStatus = {
     COMPLETED: "COMPLETED",
     ABANDONED: "ABANDONED",
     SHELVED: "SHELVED",
-    WISHLIST: "WISHLIST"
+    WISHLIST: "WISHLIST",
+    NONE : "NONE"
 } as const;
