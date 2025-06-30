@@ -11,6 +11,18 @@
     flex-wrap: wrap;
 }
 
+.review-button {
+    background-color: #1e40af;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.review-button:hover {
+    background-color: #1e3a8a;
+}
 
 .game-details {
     background: transparent;

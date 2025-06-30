@@ -18,6 +18,8 @@ import playIconFull from "@/assets/icons/play-verde.png";
 import { GameController } from "../controllers/GameController";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton"
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { DialogDemo } from "@/components/ui/dialog-review";
 
 
 const loadGame = {
@@ -101,7 +103,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <Button className="bg-blue-500 text-white font-bold w-full hover:bg-blue-800" size="sm">Fazer Review</Button>
+                                    <DialogDemo />
                                     <Rating defaultValue={0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <RatingButton key={index} className="rating-button mt-6 self-center" size={30} />
