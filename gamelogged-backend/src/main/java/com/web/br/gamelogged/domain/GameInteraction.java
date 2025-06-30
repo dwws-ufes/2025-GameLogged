@@ -20,12 +20,15 @@ public class GameInteraction implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne
-    @JoinColumn(name = "review_id", nullable = false)
+    @OneToOne(mappedBy = "gameInteraction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Review review;
 
     @Enumerated(EnumType.STRING)
     private PlayStatus playStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
 
     public GameInteraction() {
         //  Default constructor
@@ -61,6 +64,14 @@ public class GameInteraction implements Serializable {
 
     public void setPlayStatus(PlayStatus playStatus) {
         this.playStatus = playStatus;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
 

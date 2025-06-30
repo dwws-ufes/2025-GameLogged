@@ -1,4 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import defaultImage from '@/images/default.jpg';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -89,3 +90,29 @@ export const userAPI = {
         });
     },
 };
+
+export const gameAPI = {
+
+    fetchPaginatedGames: async (limit: number, offset: number) => {
+        const response = await fetch(`http://localhost:8080/game/igdb/paginated?limit=${limit}&offset=${offset}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error("Failed to fetch games from IGDB");
+        }
+    
+        const data = await response.json();
+        return data.map((game: any) => ({
+          id: game.id,
+          name: game.name,
+          coverUrl: game.cover?.url
+            ? `https:${game.cover.url.replace('t_thumb', 't_cover_big_2x')}`
+            : defaultImage,
+            hasCover: !!game.cover,
+        }));
+    }
+}

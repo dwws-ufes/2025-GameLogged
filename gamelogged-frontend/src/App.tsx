@@ -5,6 +5,7 @@ import LandingPage from "./pages/landing-page/LandingPage";
 import Layout from './components/layout/Layout';
 import { Toaster } from "@/components/ui/sonner"
 import GamePage from './pages/game/Game';
+import PerfilPage from "@/pages/perfil/PerfilPage.tsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/home" element={<HomePage />} />
           <Route path="/games/:gameName" element={<GamePage />} />
+          <Route path="/perfil" element={<PerfilPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
