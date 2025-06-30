@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Settings, Moon, Sun, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { useNavigate } from 'react-router-dom';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar.tsx';
 import {AuthController} from "@/authentication/controllers/AuthController.ts";
 import {AuthStateService} from "@/authentication/services/AuthStateService.ts";
@@ -56,7 +55,7 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
     }
   }
   return (
-    <header className="block absolute border-box top-0 w-full z-50">
+    <header className="block bg-transparent absolute border-box top-0 w-full z-50">
       <nav className="container border-none z-15 bg-transparent mx-15 px-6 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-800 dark:text-white">
           <a onClick={redirectToHome} className='cursor-pointer'>GameLogged</a>
