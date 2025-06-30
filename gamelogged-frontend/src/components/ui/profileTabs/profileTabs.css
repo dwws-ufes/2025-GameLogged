@@ -12,6 +12,13 @@
     height: 100%;
 }
 
+.profile-tabs-reviews {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
 .profile-tabs-statitics-title {
     display: flex;
     flex-direction: column;
@@ -26,6 +33,20 @@
     align-items: start;
     width: 100%;
     font-size: x-large;
+}
+
+.profile-tabs-review-game-title {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    font-size: xx-large;
+}
+
+.profile-tabs-reviews.custom-card-size .game-card {
+    width: 150px; /* ou o valor desejado */
+    height: 200px; /* ou o valor desejado */
+    transform: scale(0.9); /* opcional: reduz proporcionalmente */
 }
 
 .profile-tab-statistics-number {

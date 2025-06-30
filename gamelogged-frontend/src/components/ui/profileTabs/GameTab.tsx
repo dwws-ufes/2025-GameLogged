@@ -1,6 +1,6 @@
 import "./profileTabs.css"
 import GameCard from '@/components/ui/GameCard';
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 const igdbApi = {
     fetchPaginatedGames: async (limit: number, offset: number) => {
