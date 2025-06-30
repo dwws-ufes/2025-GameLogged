@@ -2,7 +2,7 @@ import "./profileTabs.css"
 
 function ProfileTab() {
     return (
-        <div className="profile-tabs">
+        <div className="profile-tabs-profile">
             <div className={"profile-tab-bio-rating"}>
                 <h1 className={"profile-tabs-bio-rating-title"}>
                     Bio
