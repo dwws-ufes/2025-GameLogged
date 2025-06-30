@@ -23,9 +23,10 @@ type DialogReviewProps = {
     gameName: string;
     releaseYear: string;
     imageUrl: string;
+    plataforms: string[];
 };
 
-export function DialogReview({ gameName, releaseYear, imageUrl }: DialogReviewProps) {
+export function DialogReview({ gameName, releaseYear, imageUrl, plataforms }: DialogReviewProps) {
     const gameController = GameController.getInstance();
     const [nota, setNota] = useState(0);
     const formRef = useRef<HTMLFormElement>(null);
@@ -93,12 +94,9 @@ export function DialogReview({ gameName, releaseYear, imageUrl }: DialogReviewPr
                                 <div>
                                     <Label htmlFor="plataforma" >Plataforma</Label>
                                     <select name="plataform" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
-                                        <option value="PLAYED">Jogado</option>
-                                        <option value="PLAYING">Jogando</option>
-                                        <option value="COMPLETED">Finalizado</option>
-                                        <option value="ABANDONED">Abandonado</option>
-                                        <option value="SHELVED">Na estante</option>
-                                        <option value="WISHLIST">Wishlist</option>
+                                        {(plataforms || []).map((plataform) => (
+                                            <option key={plataform} value={plataform}>{plataform}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>

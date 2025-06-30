@@ -103,7 +103,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogReview gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()}/>
+                                    <DialogReview gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']}/>
                                     <Rating defaultValue={0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <RatingButton key={index} className="rating-button mt-6 self-center" size={30} />
@@ -205,7 +205,7 @@ function GamePage() {
                                 </div>
                                 <Separator className="my-4" />
                                 <div className="col-auto mb-4">
-                                    <div className="row ml-0 review-button">
+                                    <div className="row ml-0 reviews-button">
                                         <Button className="bg-blue-500 text-white hover:bg-blue-800 font-bold " size="sm">Reviews</Button>
                                     </div>
                                 </div>
