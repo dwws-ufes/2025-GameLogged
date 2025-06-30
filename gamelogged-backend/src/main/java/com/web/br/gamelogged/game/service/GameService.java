@@ -8,4 +8,6 @@ public interface GameService {
     void updateGameAverageRating(Integer igdbId, Double newRating);
 
     Game findGameByIgdbId(Integer igdbId);
+
+    Game findOrCreateGameByIgdbId(Integer igdbId);
 }

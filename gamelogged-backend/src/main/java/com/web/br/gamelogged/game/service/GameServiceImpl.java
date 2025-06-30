@@ -50,4 +50,16 @@ public class GameServiceImpl implements GameService {
     public Game findGameByIgdbId(Integer igdbId) {
         return gameRepository.findByIgdbId(igdbId).orElse(null);
     }
+
+    @Override
+    public Game findOrCreateGameByIgdbId(Integer igdbId) {
+        return gameRepository.findByIgdbId(igdbId)
+                .orElseGet(() -> {
+                    Game newGame = new Game();
+                    newGame.setIgdbId(igdbId);
+                    newGame.setAverageRating(0.0);
+                    newGame.setTotalUserRatings(0);
+                    return gameRepository.save(newGame);
+                });
+    }
 }
