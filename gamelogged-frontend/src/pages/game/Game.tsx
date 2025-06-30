@@ -95,7 +95,7 @@ function GamePage() {
                         </div>
                         <div className="game-button items-center p-4 shadow-md mt-4">
                             <div className="game-buttons-content items-center">
-                                <Button className="bg-blue-500 text-white font-bold w-full" size="sm">Fazer Review</Button>
+                                <Button className="bg-blue-500 text-white font-bold w-full hover:bg-blue-800" size="sm">Fazer Review</Button>
                                 <Rating defaultValue={0}>
                                     {Array.from({ length: 5 }).map((_, index) => (
                                         <RatingButton key={index} className="rating-button mt-6 self-center" size={30} />
@@ -198,7 +198,7 @@ function GamePage() {
                             <Separator className="my-4" />
                             <div className="col-auto mb-4">
                                 <div className="row ml-0 review-button">
-                                    <Button className="bg-white text-black hover:bg-gray-200 font-bold" size="sm">Reviews</Button>
+                                    <Button className="bg-blue-500 text-white hover:bg-blue-800 font-bold " size="sm">Reviews</Button>
                                 </div>
                             </div>
                         </div>
