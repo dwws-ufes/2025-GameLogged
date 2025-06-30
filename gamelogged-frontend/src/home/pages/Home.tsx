@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import GameCard from '@/components/ui/GameCard'; 
+import GameCard from '@/components/ui/GameCard';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { gameAPI } from '@/services/APIService';
+import { HomeController } from '../controllers/HomeController';
 
 function HomePage() {
   const GAMES_PER_PAGE = 24;
 
   const [games, setGames] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true); 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const homeController = HomeController.getInstance();
+  const isAuthenticated = homeController.isAuthenticated;
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -20,8 +23,8 @@ function HomePage() {
 
       try {
         const offset = (currentPage - 1) * GAMES_PER_PAGE;
-        const newGames = await gameAPI.fetchPaginatedGames(GAMES_PER_PAGE, offset);
-        
+        const newGames = await homeController.fetchGames(GAMES_PER_PAGE, offset);
+
         setGames(newGames);
         setHasNextPage(newGames.length === GAMES_PER_PAGE);
 
@@ -34,7 +37,7 @@ function HomePage() {
     };
 
     fetchGames();
-  }, [currentPage]); 
+  }, [currentPage]);
 
   const goToNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
   const goToPreviousPage = () => setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
@@ -55,13 +58,15 @@ function HomePage() {
   return (
     <div className="container mx-auto px-24 py-8">
       <h1 className="text-2xl font-bold mb-6">Catálogo de Jogos</h1>
-    
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-        {games.map((game) => (
-          <button onClick={() => handleGameClick(game.name)}>
-            <GameCard key={game.id} game={game} />
-          </button>
-        ))}
+        {games
+          .filter((game) => game.hasCover)
+          .map((game) => (
+            <button key={game.id} onClick={() => handleGameClick(game.name)} style={{borderRadius:'20px'}}>
+              <GameCard game={game} />
+            </button>
+          ))}
       </div>
 
       <div className="flex justify-center items-center mt-10 space-x-4">
