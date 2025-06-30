@@ -14,6 +14,7 @@ import favIcon from "@/assets/icons/heart.png";
 import favIconFull from "@/assets/icons/heart-red.png";
 import controleIconFull from "@/assets/icons/controle-roxo.png";
 import playIconFull from "@/assets/icons/play-verde.png";
+import { GameController } from "../controllers/GameController";
 
 
 const loadGame = {
@@ -32,9 +33,11 @@ const loadGame = {
     },
 };
 
+
 function GamePage() {
     const { gameName } = useParams<{ gameName: string }>();
     const [gameDetails, setGameDetails] = useState<any>({});
+    const [aa, setAa] = useState<any>(null);
     const isUserAuthenticated = AuthController.getInstance().isAuthenticated();
     const isLiked = true;
     const isPlaying = true;
@@ -43,7 +46,7 @@ function GamePage() {
     useEffect(() => {
         const fetchGameDetails = async () => {
             try {
-                const details = await loadGame.fetchGame();
+                const details = await GameController.getInstance().searchGameByName(gameName || '');
                 setGameDetails(details);
                 console.log(details);
             } catch (error) {
@@ -85,13 +88,13 @@ function GamePage() {
         <div className="flex flex-col min-h-screen content comfortaa">
             <div className="game-screenshot">
                 <div className="gradient"></div>
-                <img className="screenshot" src={gameDetails['screenshot_url']} alt={`${gameName} Screenshot`} />
+                <img className="screenshot" src={gameDetails["screenshot"]} alt={`${gameName} Screenshot`} />
             </div>
             <div className="col game-details p-4">
                 <div className="content-game flex flex-row">
                     <div className="mb-4 flex-col justify-items-center">
                         <div className="game-cover">
-                            <img src={gameDetails['game_cover_url']} alt={`${gameName} Cover`} className="w-48 h-72 object-cover" />
+                            <img src={gameDetails['coverUrl']} alt={`${gameName} Cover`} className="w-48 h-72 object-cover" />
                         </div>
                         <div className="game-button items-center p-4 shadow-md mt-4">
                             <div className="game-buttons-content items-center">
@@ -189,11 +192,11 @@ function GamePage() {
                             <div className="col-auto mb-4">
                                 <span className="game-release-date text-white">
                                     <span>O jogo foi lançado no dia </span>
-                                    <span className="font-bold" style={{ color: 'burlywood' }}>{new Date(gameDetails['release_date']).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span>
+                                    <span className="font-bold" style={{ color: 'burlywood' }}>{new Date(gameDetails['firstReleaseDate'] * 1000).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span>
                                 </span>
                             </div>
                             <div className="col-auto mb-4">
-                                <span className="game-genres text-base text-white">A 2D metroidvania with an emphasis on close combat and exploration in which the player enters the once-prosperous now-bleak insect kingdom of Hallownest, travels through its various districts, meets friendly inhabitants, fights hostile ones and uncovers the kingdom's history while improving their combat abilities and movement arsenal by fighting bosses and accessing out-of-the-way areas.</span>
+                                <span className="game-genres text-base text-white">{gameDetails['summary']}</span>
                             </div>
                             <Separator className="my-4" />
                             <div className="col-auto mb-4">
@@ -208,7 +211,7 @@ function GamePage() {
                             <p className="text-sm font-semibold mb-2">Disponivel nas Plataformas</p>
                         </div>
                         <div className="row game-platforms">
-                            <GamePlataform platforms={gameDetails['plataforms'] || []} />
+                            <GamePlataform platforms={gameDetails['platforms'] || []} />
                         </div>
                         <div className="row game-platforms mt-4">
                             <div className="col-auto">

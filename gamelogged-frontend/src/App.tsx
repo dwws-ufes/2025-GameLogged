@@ -1,11 +1,11 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/home/Home";
-import LandingPage from "./pages/landing-page/LandingPage";
+import HomePage from "./home/pages/Home";
+import LandingPage from "./authentication/pages/LandingPage";
 import Layout from './components/layout/Layout';
 import { Toaster } from "@/components/ui/sonner"
-import GamePage from './pages/game/Game';
-import PerfilPage from "@/pages/perfil/PerfilPage.tsx";
+import GamePage from './game/pages/Game';
+import PerfilPage from "@/perfil/pages/PerfilPage";
 
 function App() {
   return (

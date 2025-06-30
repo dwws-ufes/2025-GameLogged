@@ -21,6 +21,7 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 25%, black 100%);
     transform: translateY(-25%);
     height: auto;
+    width: 100%;
 }
 
 .content {
@@ -38,6 +39,7 @@
     position: relative;
     top: -165px;
     z-index: 3;
+
 }
 
 .col {
