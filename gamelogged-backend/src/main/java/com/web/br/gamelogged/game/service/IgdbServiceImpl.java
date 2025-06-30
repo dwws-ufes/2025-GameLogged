@@ -21,7 +21,7 @@ public class IgdbServiceImpl implements IgdbService {
 
     @Override
     public List<Map<String, Object>> fetchPaginatedGames(int limit, int offset) {
-        String body = String.format("fields id,name,cover.url; limit %d; offset %d;", limit, offset);
+        String body = String.format("fields id,name,cover.url; limit %d; offset %d; where cover != null & themes != 42;", limit, offset);
 
         return webClient.post()
                 .uri("/games")
