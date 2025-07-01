@@ -67,22 +67,7 @@ export class GameController {
             toast.error("Erro ao alterar o status do jogo. Tente novamente mais tarde.");
         }
     }
-
-    public async changeGameRating(gameId: number, rating: number) {
-        if (!this.isUserAuthenticated) {
-            toast.error("Você precisa estar logado para avaliar o jogo.");
-            return;
-        }
-
-        try {
-            //await gameAPI.changeGameRating(gameName, rating);
-            toast.success("Avaliação do jogo alterada com sucesso!");
-        } catch (error) {
-            console.error("Erro ao alterar a avaliação do jogo:", error);
-            toast.error("Erro ao alterar a avaliação do jogo. Tente novamente mais tarde.");
-        }
-    }
-    
+ 
 
     public async getPlayStatus(gameId: number): Promise<PlayStatus> {
         if (!this.isUserAuthenticated) {
