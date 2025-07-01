@@ -107,14 +107,7 @@ function GamePage() {
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
                                     <DialogReview gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']}/>
-                                    <Rating defaultValue={0} onValueChange={(value) => gameController.changeGameRating(gameName!, value)}>
-                                        {Array.from({ length: 5 }).map((_, index) => (
-                                            <RatingButton key={index} className="rating-button mt-6 self-center" size={30}/>
-                                        ))}
-                                    </Rating>
-                                    <Separator className="my-4" />
-
-                                    <div className="status-buttons flex flex-row items-center">
+                                    <div className="status-buttons flex flex-row items-center mt-10">
 
                                         {
                                             !isPlayed ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.PLAYED)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
