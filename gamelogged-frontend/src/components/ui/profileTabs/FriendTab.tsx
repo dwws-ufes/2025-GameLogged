@@ -1,3 +1,7 @@
+import "./profileTabs.css"
+
+import FriendCard from "@/components/ui/FriendCard";
+
 function FriendTab() {
     return (
         <div className="profile-tabs-friends">
@@ -10,7 +14,7 @@ function FriendTab() {
                 </button>
             </div>
             <div className={"profile-tabs-friends-list"}>
-                
+                <FriendCard/>
             </div>
 
         </div>
