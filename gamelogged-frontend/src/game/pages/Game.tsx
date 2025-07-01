@@ -18,6 +18,10 @@ import playIconFull from "@/assets/icons/play-verde.png";
 import { GameController } from "../controllers/GameController";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton"
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { DialogReview } from "@/components/ui/dialog-review";
+import { PlayStatus } from "../enum/PlayStatus";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
 
 const loadGame = {
@@ -86,6 +90,7 @@ function GamePage() {
     const totalAvaliacoes = ratingsData.reduce((acc, curr) => acc + curr.count, 0);
     const mediaNotas = totalAvaliacoes > 0 ? (totalNotas / totalAvaliacoes).toFixed(2) : "0.00";
 
+
     return (
         !isLoading ? (
             <div className="flex flex-col min-h-screen content comfortaa">
@@ -101,21 +106,14 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <Button className="bg-blue-500 text-white font-bold w-full hover:bg-blue-800" size="sm">Fazer Review</Button>
-                                    <Rating defaultValue={0}>
-                                        {Array.from({ length: 5 }).map((_, index) => (
-                                            <RatingButton key={index} className="rating-button mt-6 self-center" size={30} />
-                                        ))}
-                                    </Rating>
-                                    <Separator className="my-4" />
-
-                                    <div className="status-buttons flex flex-row items-center">
+                                    <DialogReview gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']}/>
+                                    <div className="status-buttons flex flex-row items-center mt-10">
 
                                         {
-                                            !isPlayed ? (<button className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            !isPlayed ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.PLAYED)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={controleIcon} alt="Status Icon" className="w-6 h-6" />
                                                 Joguei
-                                            </button>) : (<button className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            </button>) : (<button onClick={() => gameController.changePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={controleIconFull} alt="Status Icon" className="w-6 h-6" />
                                                 Joguei
                                             </button>)
@@ -123,10 +121,10 @@ function GamePage() {
 
 
                                         {
-                                            !isPlaying ? (<button className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            !isPlaying ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.PLAYING)}  className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={playIcon} alt="Status Icon" className="w-6 h-6" />
                                                 Jogando
-                                            </button>) : <button className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            </button>) : <button onClick={() => gameController.changePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={playIconFull} alt="Status Icon" className="w-6 h-6" />
                                                 Jogando
                                             </button>
@@ -134,12 +132,12 @@ function GamePage() {
 
 
                                         {
-                                            !isLiked ? (<button className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            !isLiked ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.WISHLIST)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={favIcon} alt="Status Icon" className="w-6 h-6" />
-                                                Curtir
-                                            </button>) : (<button className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                                Wishlist
+                                            </button>) : (<button onClick={() => gameController.changePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={favIconFull} alt="Status Icon" className="w-6 h-6" />
-                                                Curtir
+                                                Wishlist
                                             </button>)
                                         }
                                     </div>
@@ -203,7 +201,7 @@ function GamePage() {
                                 </div>
                                 <Separator className="my-4" />
                                 <div className="col-auto mb-4">
-                                    <div className="row ml-0 review-button">
+                                    <div className="row ml-0 reviews-button">
                                         <Button className="bg-blue-500 text-white hover:bg-blue-800 font-bold " size="sm">Reviews</Button>
                                     </div>
                                 </div>
@@ -232,7 +230,7 @@ function GamePage() {
         ) : (
             <div className="flex flex-col items-center justify-center h-screen">
 
-                <Progress value={progress} className="w-[30%]" />
+                <Spinner />
             </div>
         )
     );
