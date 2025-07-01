@@ -109,4 +109,19 @@ public class UserController {
         }
     }
 
+    @GetMapping("/game-interactions")
+    public ResponseEntity<?> getCurrentUserGameInteractions() {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            Set<Map<String, Object>> gameInteractions = userService.getGameInteractionsForUser(uuid);
+
+            return ResponseEntity.ok(gameInteractions);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error na GetMapping(game-interacitions)", e.getMessage()));
+        }
+    }
 }

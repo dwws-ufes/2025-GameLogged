@@ -19,7 +19,7 @@ const igdbApi = {
 function GameTab() {
 
     // Simulating a list of games for demonstration purposes
-    const GAMES_PER_PAGE = 24;
+    const GAMES_PER_PAGE = 12;
 
     const [games, setGames] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);

@@ -18,4 +18,5 @@ public interface UserService {
 
     Set<User> getFollowersForUser(String uuid);
 
+    Set<GameInteraction> getGameInteractionsForUser(String uuid);
 }

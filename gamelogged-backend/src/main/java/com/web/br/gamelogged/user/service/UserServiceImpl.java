@@ -89,6 +89,11 @@ public class UserServiceImpl implements UserService {
         return user.getFollowers();
     }
 
+    @Override
+    public Set<GameInteraction> getGameInteractionsForUser(String uuid) {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
-    
+        return user.getGameInteractions();
+    }
+
 }
