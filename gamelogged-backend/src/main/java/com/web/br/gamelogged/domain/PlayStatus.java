@@ -6,5 +6,6 @@ public enum PlayStatus {
     COMPLETED,
     ABANDONED,
     SHELVED,
-    WISHLIST
+    WISHLIST,
+    NONE
 }

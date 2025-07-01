@@ -50,6 +50,12 @@ public class GameInteractionServiceImpl implements GameInteractionService {
     @Override
     @Transactional
     public void updatePlayStatus(String userId, Integer gameId, String playStatus) {
+
+        if (gameInteractionRepository.findByUserUuidAndGameIgdbId(userId, gameId).isEmpty()) {
+            this.createGameInteraction(userId, gameId, playStatus);
+            return;
+        }
+
         GameInteraction existingInteraction = gameInteractionRepository
                 .findByUserUuidAndGameIgdbId(userId, gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Interação de jogo não encontrada para o usuário: " + userId + " e jogo: " + gameId));
@@ -67,5 +73,14 @@ public class GameInteractionServiceImpl implements GameInteractionService {
                 .orElseThrow(() -> new EntityNotFoundException("Interação de jogo não encontrada para o usuário: " + userId + " e jogo: " + gameId));
 
         gameInteractionRepository.delete(existingInteraction);
+    }
+
+    @Override
+    public String getPlayStatus(String userId, Integer gameId) {
+        GameInteraction existingInteraction = gameInteractionRepository
+                .findByUserUuidAndGameIgdbId(userId, gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Interação de jogo não encontrada para o usuário: " + userId + " e jogo: " + gameId));
+
+        return existingInteraction.getPlayStatus().toString();
     }
 }

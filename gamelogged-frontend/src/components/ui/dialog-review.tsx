@@ -18,16 +18,18 @@ import { Separator } from "@radix-ui/react-separator";
 import favIcon from "@/assets/icons/heart.png";
 import { GameController } from "@/game/controllers/GameController";
 import { useState, useRef } from "react";
-import { PlayStatus } from "@/game/enum/PlayStatus";
+import { PlayStatus, PlayStatusLabel } from "@/game/enum/PlayStatus";
 
 type DialogReviewProps = {
+    playStatus: PlayStatus;
+    gameId : number;
     gameName: string;
     releaseYear: string;
     imageUrl: string;
     plataforms: string[];
 };
 
-export function DialogReview({ gameName, releaseYear, imageUrl, plataforms }: DialogReviewProps) {
+export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, playStatus, gameId }: DialogReviewProps) {
     const gameController = GameController.getInstance();
     const [nota, setNota] = useState(0);
     const formRef = useRef<HTMLFormElement>(null);
@@ -47,7 +49,7 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms }: Di
         reviewData.nota = nota.toString();
         console.log("Dados da Review:", reviewData);
 
-        gameController.sendReview(gameName, reviewData);
+        gameController.sendReview(gameId, reviewData);
     }
 
 
@@ -66,8 +68,8 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms }: Di
                             <img src={imageUrl} className="w-70 h-72 object-cover rounded" />
                             <div>
                                 <Label htmlFor="playStatus" className="mt-10 w-full mb-2">Situação</Label>
-                                <select name="playStatus" defaultValue={PlayStatus.NONE} className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
-                                    {Object.entries(PlayStatus).map(([value, label]) => (
+                                <select name="playStatus" defaultValue={playStatus} className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                                    {Object.entries(PlayStatusLabel).map(([value, label]) => (
                                         <option key={value} value={value}>{label}</option>
                                     ))}
                                 </select>
@@ -92,6 +94,19 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms }: Di
                                             <option key={plataform} value={plataform}>{plataform}</option>
                                         ))}
                                     </select>
+                                </div>
+                                <div className="ml-10">
+                                    <Label htmlFor="time-picker" className="mb-2">
+                                        Tempo de Jogo
+                                    </Label>
+                                    <Input
+                                        type="time"
+                                        id="time-picker"
+                                        step="1"
+                                        name="timePlayed"
+                                        defaultValue="00:00:00"
+                                        className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                                    />
                                 </div>
                             </div>
                             <Label htmlFor="review" className="mt-5">Review</Label>
