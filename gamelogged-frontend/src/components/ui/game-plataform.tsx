@@ -1,8 +1,9 @@
 function GamePlataform({ platforms }: { platforms: string[] }) {
     const plataformColors: { [key: string]: string } = {
         "PlayStation 5": "bg-blue-600",
-        "Xbox Series X/S": "bg-green-600",
+        "Xbox Series X|S": "bg-green-600",
         "PC": "bg-gray-400",
+        "PC (Microsoft Windows)": "bg-gray-400",
         "Nintendo Switch": "bg-red-600",
         "PlayStation 4": "bg-blue-600",
         "Xbox One": "bg-green-600",

@@ -3,6 +3,7 @@ package com.web.br.gamelogged.user.service;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.web.br.gamelogged.domain.GameInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -66,7 +66,7 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
             {isAuthenticated && nickname ? (
               <span>Bem vindo, <span className="font-semibold">{nickname}</span>!</span>
             ) : (
-              <a href="/login" className="hover:text-blue-500">Login</a>
+              <a href="/" className="hover:text-blue-500">Login</a>
             )}
           </div>
 
