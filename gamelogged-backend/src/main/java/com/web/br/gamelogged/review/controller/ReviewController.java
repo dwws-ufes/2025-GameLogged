@@ -3,10 +3,8 @@ package com.web.br.gamelogged.review.controller;
 import com.web.br.gamelogged.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -21,10 +19,11 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createReview(String userId, Integer gameId, String reviewText, double rating, String platform, Double playTimeInHours) {
+    public ResponseEntity<Map<String, Object>> createReview(@RequestBody Integer gameId, @RequestBody  String reviewText, @RequestBody Double rating, @RequestBody  String platform, @RequestBody Double playTimeInHours) {
         try {
-            reviewService.createReview(userId, gameId, reviewText, rating, platform, playTimeInHours);
+            reviewService.createReview(SecurityContextHolder.getContext().getAuthentication().getName(), gameId, reviewText, rating, platform, playTimeInHours);
             return ResponseEntity.ok(Map.of("message", "Review criada com sucesso"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -32,10 +31,9 @@ public class ReviewController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Map<String, Object>> updateReview(String userId, Integer gameId, String reviewText, double rating, String platform, Double playTimeInHours) {
+    public ResponseEntity<Map<String, Object>> updateReview(Integer gameId, String reviewText, double rating, String platform, Double playTimeInHours) {
         try {
-            System.out.println("Updating review for user: " + userId + ", gameId: " + gameId + ", reviewText: " + reviewText + ", rating: " + rating + ", platform: " + platform + ", playTimeInHours: " + playTimeInHours);
-            reviewService.updateReview(userId, gameId, reviewText, rating, platform, playTimeInHours);
+            reviewService.updateReview(SecurityContextHolder.getContext().getAuthentication().getName(), gameId, reviewText, rating, platform, playTimeInHours);
             return ResponseEntity.ok(Map.of("message", "Review atualizada com sucesso"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
