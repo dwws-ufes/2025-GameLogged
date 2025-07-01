@@ -1,5 +1,6 @@
 package com.web.br.gamelogged.user.service;
 
+import com.web.br.gamelogged.domain.GameInteraction;
 import com.web.br.gamelogged.domain.User;
 
 import java.util.Set;

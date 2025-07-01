@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class UserMapper {
 
-    public static Map<String, String> toMap(User user) {
+    public static Map<String, String> toDTO(User user) {
         if (user == null) {
             return null;
         }
@@ -20,7 +20,10 @@ public class UserMapper {
                 "nickname", user.getNickname() != null ? user.getNickname() : "",
                 "profilePictureUrl", user.getProfilePictureUrl() != null ? user.getProfilePictureUrl() : "",
                 "biography", user.getBiography() != null ? user.getBiography() : "",
-                "creationDate", user.getCreationDate() != null ? user.getCreationDate().toString() : "");
+                "creationDate", user.getCreationDate() != null ? user.getCreationDate().toString() : "",
+                "followersCount", String.valueOf(user.getFollowers().size()),
+                "playedCount", String.valueOf(user.getGameInteractions().size()),
+                "reviewCount", String.valueOf(user.getGameInteractions().stream().filter(gi -> gi.getReview() != null).toList().size()));
     }
 
     public static UserDTO toSummaryDTO(User user) {
