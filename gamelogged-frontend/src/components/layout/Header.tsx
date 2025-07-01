@@ -40,6 +40,10 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
     setTheme(currentTheme => (currentTheme === 'dark' ? 'light' : 'dark'));
   };
 
+  const redirectToHome = () => {
+    navigate('/');
+  }
+
   const logout = () => {
     authController.logout();
     navigate('');
@@ -51,10 +55,10 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
     }
   }
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-md">
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header className="block bg-transparent absolute border-box top-0 w-full z-50">
+      <nav className="container border-none z-15 bg-transparent mx-15 px-6 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-800 dark:text-white">
-          <a>GameLogged</a>
+          <a onClick={redirectToHome} className='cursor-pointer'>GameLogged</a>
         </div>
         
         <div className="flex items-center gap-4">

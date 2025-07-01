@@ -29,9 +29,9 @@ function Layout() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div className="min-h-screen">
       <Header isAuthenticated={isAuthenticated} nickname={nickname} />
-      <main>
+      <main className='mt-20'>
         <Outlet />
       </main>
     </div>

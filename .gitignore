@@ -171,3 +171,5 @@ fabric.properties
 .idea
 
 gamelogged-backend/src/main/resources/firebase-service-account.json
+
+.env

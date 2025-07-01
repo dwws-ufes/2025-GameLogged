@@ -2,8 +2,8 @@ import './LandingPage.css'
 import { useEffect, useState } from 'react';
 import Balatro from '../../blocks/Backgrounds/Balatro/Balatro';
 import DecryptedText from '@/blocks/TextAnimations/DecryptedText/DecryptedText';
-import LoginCard from '../../authentication/components/Login-Card';
-import CadastroCard from '../../authentication/components/Cadastro-Card';
+import LoginCard from '../components/Login-Card';
+import CadastroCard from '../components/Cadastro-Card';
 import { useNavigate } from 'react-router-dom';
 import { AuthController } from '@/authentication/controllers/AuthController';
 
