@@ -46,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         gameInteractionRepository.save(interaction);
 
-        gameService.updateGameAverageRating(gameId, rating);
+        gameService.addRatingToGame(gameId, rating);
 
     }
 
@@ -59,6 +59,8 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalStateException("Usuário não possui uma review para este jogo");
         }
 
+        double oldRating = interaction.getReview().getRating();
+
         Review existingReview = interaction.getReview();
         existingReview.setDescription(reviewText);
         existingReview.setRating(rating);
@@ -67,6 +69,9 @@ public class ReviewServiceImpl implements ReviewService {
         existingReview.setPlayTimeInHours(playTimeInHours);
 
         gameInteractionRepository.save(interaction);
+
+        gameService.updateGameRating(gameId, oldRating, rating);
+
     }
 
     @Override
@@ -78,10 +83,12 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalStateException("Usuário não possui uma review para este jogo");
         }
 
+        double ratingToRemove = interaction.getReview().getRating();
+
         interaction.setReview(null);
         gameInteractionRepository.save(interaction);
 
-        gameService.updateGameAverageRating(gameId, 0.0);
+        gameService.removeRatingFromGame(gameId, ratingToRemove);
     }
 
     private GameInteraction findGameInteraction(String userId, Integer gameId) {

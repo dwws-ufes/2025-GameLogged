@@ -2,6 +2,7 @@ package com.web.br.gamelogged.game.service;
 
 import com.web.br.gamelogged.domain.Game;
 import com.web.br.gamelogged.game.repository.GameRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -25,24 +26,67 @@ public class GameServiceImpl implements GameService {
         gameRepository.save(newGame);
     }
 
+    @Transactional
+    public void addRatingToGame(Integer igdbId, Double newRating) {
+        Game game = gameRepository.findByIgdbId(igdbId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found with IGDB ID: " + igdbId));
+
+        double currentAverage = game.getAverageRating();
+        int currentTotal = game.getTotalUserRatings();
+
+        double newSum = (currentAverage * currentTotal) + newRating;
+        int newTotal = currentTotal + 1;
+
+        game.setAverageRating(newSum / newTotal);
+        game.setTotalUserRatings(newTotal);
+
+        gameRepository.save(game);
+    }
+
     @Override
     @Transactional
-    public void updateGameAverageRating(Integer igdbId, Double newRating) {
-        Game game = gameRepository.findByIgdbId(igdbId).orElseThrow(() -> new RuntimeException("Game not found"));
-
-        Double currentAverage = game.getAverageRating();
-        Integer currentTotalRatings = game.getTotalUserRatings();
-
-        if (currentAverage == null) {
-            currentAverage = 0.0;
-        }
-        if (currentTotalRatings == null) {
-            currentTotalRatings = 0;
+    public void updateGameRating(Integer igdbId, Double oldRating, Double newRating) {
+        if (oldRating.equals(newRating)) {
+            return;
         }
 
-        Double updatedAverage = ((currentAverage * currentTotalRatings) + newRating) / (currentTotalRatings + 1);
-        game.setAverageRating(updatedAverage);
-        game.setTotalUserRatings(currentTotalRatings + 1);
+        Game game = gameRepository.findByIgdbId(igdbId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found with IGDB ID: " + igdbId));
+
+        int totalRatings = game.getTotalUserRatings();
+
+        if (totalRatings <= 0) {
+            throw new IllegalStateException("Cannot update rating for a game with no ratings.");
+        }
+
+        double currentAverage = game.getAverageRating();
+        double currentSum = currentAverage * totalRatings;
+        double newSum = currentSum - oldRating + newRating;
+        game.setAverageRating(newSum / totalRatings);
+
+        gameRepository.save(game);
+    }
+
+    @Override
+    @Transactional
+    public void removeRatingFromGame(Integer igdbId, Double ratingToRemove) {
+        Game game = gameRepository.findByIgdbId(igdbId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found with IGDB ID: " + igdbId));
+
+        double currentAverage = game.getAverageRating();
+        int currentTotal = game.getTotalUserRatings();
+
+        if (currentTotal <= 0) {
+            throw new IllegalStateException("Cannot remove rating from a game with no ratings.");
+        }
+
+        double currentSum = currentAverage * currentTotal;
+        double newSum = currentSum - ratingToRemove;
+        int newTotal = currentTotal - 1;
+
+        game.setAverageRating(newSum / newTotal);
+        game.setTotalUserRatings(newTotal);
+
         gameRepository.save(game);
     }
 
