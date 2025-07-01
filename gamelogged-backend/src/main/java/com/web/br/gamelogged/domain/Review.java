@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
@@ -26,6 +27,9 @@ public class Review implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private PlatformType platformType;
+
+    @Column(nullable = false)
+    private LocalDateTime creationDate;
 
     @OneToOne
     @MapsId
@@ -82,5 +86,13 @@ public class Review implements Serializable {
 
     public void setGameInteraction(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 }
