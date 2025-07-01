@@ -1,10 +1,8 @@
 package com.web.br.gamelogged.user.controller;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.web.br.gamelogged.user.dto.UserDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,6 @@
 package com.web.br.gamelogged.user.service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,16 +64,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void unfollowUser(String currentUserUuid, String targetUserUuid) {
-        User currentUser = userRepository.findByUuid(currentUserUuid).orElse(null);
-        User targetUser = userRepository.findByUuid(targetUserUuid).orElse(null);
-
-        if (currentUser == null) {
-            throw new IllegalArgumentException("Usuário atual não encontrado.");
-        }
-
-        if (targetUser == null) {
-            throw new IllegalArgumentException("Usuário alvo não encontrado.");
-        }
+        User currentUser = userRepository.findByUuid(currentUserUuid).orElseThrow(() -> new IllegalArgumentException("Usuário atual não encontrado."));
+        User targetUser = userRepository.findByUuid(targetUserUuid).orElseThrow(() -> new IllegalArgumentException("Usuário alvo não encontrado."));
 
         if (!currentUser.getFollowing().contains(targetUser)) {
             throw new IllegalArgumentException("Você não está seguindo este usuário.");
