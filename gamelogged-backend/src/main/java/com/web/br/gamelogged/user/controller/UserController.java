@@ -1,19 +1,14 @@
 package com.web.br.gamelogged.user.controller;
 
 import java.util.Map;
+import java.util.Set;
 
+import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.google.api.Context;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.web.br.gamelogged.auth.services.AuthService;
 import com.web.br.gamelogged.domain.User;
 import com.web.br.gamelogged.user.service.UserService;
 
@@ -39,11 +34,79 @@ public class UserController {
             return ResponseEntity.status(404).body(Map.of("error", "Usuário não encontrado."));
         }
 
-        return ResponseEntity.ok(Map.of(
-                "uuid", user.getUuid() != null ? user.getUuid() : "",
-                "nickname", user.getNickname() != null ? user.getNickname() : "",
-                "profilePictureUrl", user.getProfilePictureUrl() != null ? user.getProfilePictureUrl() : "",
-                "biography", user.getBiography() != null ? user.getBiography() : "",
-                "creationDate", user.getCreationDate() != null ? user.getCreationDate().toString() : ""));
+        return ResponseEntity.ok(UserMapper.toMap(user));
     }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Map<String, String>> getUserProfile(@PathVariable String uuid) {
+        try {
+            User user = userService.findByUuid(uuid);
+            if (user == null) {
+                return ResponseEntity.status(404).body(Map.of("error", "Usuário não encontrado."));
+            }
+
+            return ResponseEntity.ok(UserMapper.toMap(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/{uuid}/follow")
+    public ResponseEntity<Map<String, String>> followUser(@PathVariable String uuid) {
+        try {
+            String currentUserUuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            userService.followUser(currentUserUuid, uuid);
+            return ResponseEntity.ok(Map.of("message", "Usuário seguido com sucesso."));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{uuid}/unfollow")
+    public ResponseEntity<Map<String, String>> unfollowUser(@PathVariable String uuid) {
+        try {
+            String currentUserUuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            userService.unfollowUser(currentUserUuid, uuid);
+            return ResponseEntity.ok(Map.of("message", "Usuário deixado de seguir com sucesso."));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/following")
+    public ResponseEntity<?> getCurrentUserFollowing() {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            Set<User> followingSet = userService.getFollowingForUser(uuid);
+
+            return ResponseEntity.ok(UserMapper.toUserDTOList(followingSet));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/followers")
+    public ResponseEntity<?> getCurrentUserFollowers() {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            Set<User> followersSet = userService.getFollowersForUser(uuid);
+
+            return ResponseEntity.ok(UserMapper.toUserDTOList(followersSet));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
 }
