@@ -5,7 +5,13 @@ import com.web.br.gamelogged.domain.Game;
 public interface GameService {
     void createGame(Integer igdbId);
 
-    void updateGameAverageRating(Integer igdbId, Double newRating);
+    void addRatingToGame(Integer igdbId, Double newRating);
+
+    void updateGameRating(Integer igdbId, Double oldRating, Double newRating);
+
+    void removeRatingFromGame(Integer igdbId, Double ratingToRemove);
 
     Game findGameByIgdbId(Integer igdbId);
+
+    Game findOrCreateGameByIgdbId(Integer igdbId);
 }
