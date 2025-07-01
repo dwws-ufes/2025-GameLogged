@@ -13,7 +13,7 @@ interface UserProfile {
     profilePictureUrl: string;
     biography: string;
     creationDate: string;
-    followerCount: number;
+    followersCount: number;
     totalGamesPlayed: number;
     totalReviewsWritten: number;
   }
@@ -71,7 +71,7 @@ function PerfilPage() {
 
                 <TabsContent value="profile">
                     <ProfileTab biography={user?.biography ?? "No biography available."} 
-                                followerCount={user?.followerCount ?? 0}
+                                followerCount={user?.followersCount ?? 0}
                                 totalGamesPlayed={user?.totalGamesPlayed ?? 0}
                                 totalReviewsWritten={user?.totalReviewsWritten ?? 0}/>
                 </TabsContent>
