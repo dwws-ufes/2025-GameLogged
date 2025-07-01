@@ -28,20 +28,13 @@ export class GameController {
 
     public async sendReview(gameId : number, event: any) {
 
-        const formData = new FormData(event.currentTarget);
-        const playStatus = formData.get("playStatus");
-        const platform = formData.get("plataform");
-        const rating = formData.get("nota");
-        const reviewText = formData.get("review");
-        const timePlayed = formData.get("timePlayed");
-
         const reviewData = {
             gameId: Number(gameId),
             playStatus : event.playStatus,
             platform : event.plataform,
             rating: event.nota,
             reviewText: event.review,
-            timePlayed : event.timePlayed,
+            playTimeInHours : event.timePlayed,
         };
 
 
@@ -51,7 +44,7 @@ export class GameController {
         }
 
         try {
-            await gameAPI.createReview(reviewData.gameId, reviewData);
+            await gameAPI.sendReview(reviewData);
             toast.success("Review enviada com sucesso!");
         } catch (error) {
             console.error("Erro ao enviar a review:", error);

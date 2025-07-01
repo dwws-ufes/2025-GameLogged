@@ -141,17 +141,6 @@ export const gameAPI = {
         };
     },
 
-    createReview: async (gameId: number, reviewData: any) => {
-        await APIService.getInstance().request(API_ENDPOINTS.CREATE_REVIEW, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-            },
-            body: JSON.stringify({ reviewData, gameId }),
-        })
-    },
-
     changePlayStatus: async (gameId: number, playStatus: string) => {
         const response = await fetch(`http://localhost:8080/game-interaction/update`, {
             method: 'POST',
