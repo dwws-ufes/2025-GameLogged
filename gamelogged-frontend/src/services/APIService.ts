@@ -10,7 +10,8 @@ export const API_ENDPOINTS = {
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
-    UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
+	GET_REVIEWS: `${API_BASE_URL}/review/game`,
+	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`
 };
 
 
@@ -94,7 +95,6 @@ export const userAPI = {
     },
 
     updateUser: async (userData: { nickname: string; biography?: string; profilePictureUrl?: string }) => {
-        console.log('Updating user with data:', userData);
         return await APIService.getInstance().request(API_ENDPOINTS.UPDATE_PROFILE, {
             method: 'PUT',
             headers: {
@@ -104,6 +104,16 @@ export const userAPI = {
             body: JSON.stringify(userData),
         });
     },
+
+    getCurrentUserReviews: async () => {
+        return await APIService.getInstance().request(`${API_BASE_URL}/user/reviews`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    }
 };
 
 export const gameAPI = {
@@ -177,17 +187,6 @@ export const gameAPI = {
         };
     },
 
-    createReview: async (gameId: number, reviewData: any) => {
-        await APIService.getInstance().request(API_ENDPOINTS.CREATE_REVIEW, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-            },
-            body: JSON.stringify({ reviewData, gameId }),
-        })
-    },
-
     changePlayStatus: async (gameId: number, playStatus: string) => {
         const response = await fetch(`http://localhost:8080/game-interaction/update`, {
             method: 'POST',
@@ -233,5 +232,22 @@ export const gameAPI = {
         }
         return await response.json();
 
+    },
+
+
+    getReviews: async (gameId : number) => {
+        const response = await fetch(`${API_ENDPOINTS.GET_REVIEWS}/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+        }
+
+        return await response.json();
     }
 };

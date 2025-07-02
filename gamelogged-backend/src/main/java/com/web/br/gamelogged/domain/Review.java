@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,10 +24,9 @@ public class Review implements Serializable {
     @Column(length = 400)
     private String description;
 
-    private Double playTimeInHours;
+    private Time playTimeInHours;
 
-    @Enumerated(EnumType.STRING)
-    private PlatformType platformType;
+    private String platformType;
 
     @Column(nullable = false)
     private LocalDateTime creationDate;
@@ -64,19 +64,19 @@ public class Review implements Serializable {
         this.description = description;
     }
 
-    public Double getPlayTimeInHours() {
+    public Time getPlayTimeInHours() {
         return playTimeInHours;
     }
 
-    public void setPlayTimeInHours(Double playTimeInHours) {
+    public void setPlayTimeInHours(Time playTimeInHours) {
         this.playTimeInHours = playTimeInHours;
     }
 
-    public PlatformType getPlatformType() {
+    public String getPlatformType() {
         return platformType;
     }
 
-    public void setPlatformType(PlatformType platformType) {
+    public void setPlatformType(String platformType) {
         this.platformType = platformType;
     }
 

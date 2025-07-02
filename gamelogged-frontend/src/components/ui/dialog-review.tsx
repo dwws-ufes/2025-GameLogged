@@ -12,10 +12,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Rating, RatingButton } from "./shadcn-io/rating";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { Textarea } from "./textarea";
 import { Separator } from "@radix-ui/react-separator";
-import favIcon from "@/assets/icons/heart.png";
 import { GameController } from "@/game/controllers/GameController";
 import { useState, useRef } from "react";
 import { PlayStatus, PlayStatusLabel } from "@/game/enum/PlayStatus";

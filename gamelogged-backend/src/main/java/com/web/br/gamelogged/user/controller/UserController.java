@@ -1,9 +1,11 @@
 package com.web.br.gamelogged.user.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.web.br.gamelogged.domain.GameInteraction;
+import com.web.br.gamelogged.domain.Review;
 import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,15 +124,34 @@ public class UserController {
         }
     }
 
+    @GetMapping("/reviews")
+    public ResponseEntity<?> getCurrentUserReviews() {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            Set<GameInteraction> gameInteractions = userService.getGameInteractionsForUser(uuid);
+
+            List<Review> reviews = gameInteractions.stream()
+                    .filter(interaction -> interaction.getReview() != null)
+                    .map(GameInteraction::getReview)
+                    .toList();
+
+            return ResponseEntity.ok(reviews);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error na GetMapping(game-interacitions)", e.getMessage()));
+        }
+    }
+
+
     @PutMapping("/update-profile")
     public ResponseEntity<Map<String, String>> updateUserProfile(@RequestBody UpdateProfileDTO profileData) {
         try {
             String uuid = SecurityContextHolder.getContext()
                     .getAuthentication()
                     .getName();
-
-            System.out.println("Atualizando perfil do usuário: " + uuid);
-            System.out.println("Dados do perfil: " + profileData.getNickname() + ", " + profileData.getProfilePictureUrl() + ", " + profileData.getBiography());
             userService.updateUserProfile(uuid, profileData.getNickname(), profileData.getProfilePictureUrl(), profileData.getBiography());
             return ResponseEntity.ok(Map.of("message", "Perfil atualizado com sucesso."));
         } catch (Exception e) {

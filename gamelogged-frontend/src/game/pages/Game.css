@@ -145,3 +145,11 @@
 .reviews-button {
     margin-left: 0;
 }
+
+.review-card {
+    background-color: #ffffff9e;
+}
+
+.content-game {
+    max-height: 600px;
+}
