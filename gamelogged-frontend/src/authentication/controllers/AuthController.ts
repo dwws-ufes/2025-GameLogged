@@ -5,6 +5,7 @@ import { AuthStateService } from '@/authentication/services/AuthStateService';
 import { useState } from 'react';
 import {type NavigateFunction, useNavigate} from 'react-router-dom';
 import { toast } from "sonner"
+import { getDownloadURL, getStorage, uploadBytes, ref } from 'firebase/storage';
 
 export class AuthController {
   private static instance: AuthController;
@@ -78,6 +79,16 @@ export class AuthController {
     return response && response.nickname ? response.nickname : null;
 
 
+  }
+
+  public async uploadProfilePicture(file: File, userId: string): Promise<string> {
+    const storage = getStorage();
+
+    const storageRef = ref(storage, `profile_pictures/${userId}/avatar.jpg`);
+    
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
   }
 
   public static useLoginForm() {

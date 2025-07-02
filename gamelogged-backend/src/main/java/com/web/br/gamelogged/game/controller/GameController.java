@@ -81,4 +81,15 @@ public class GameController {
         }
     }
 
+    @GetMapping("/igdb/search")
+    public ResponseEntity<List<Map<String, Object>>> searchGameListByName(@RequestParam String name,
+                                                                          @RequestParam(defaultValue = "24") int limit,
+                                                                          @RequestParam(defaultValue = "0") int offset) {
+        try {
+            List<Map<String, Object>> games = igdbService.searchGameListByName(name, limit, offset);
+            return ResponseEntity.ok(games);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(List.of(Map.of("error", "Failed to search game list by name")));
+        }
+    }
 }

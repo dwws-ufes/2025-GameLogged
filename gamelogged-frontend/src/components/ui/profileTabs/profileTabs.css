@@ -1,17 +1,159 @@
-.profile-tabs {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+.profile-tabs-profile {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
 }
-.profile-tab{
 
+.profile-tabs-games {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
-.game-tab{
 
+.profile-tabs-reviews {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
-.review-tab{
 
+.profile-tabs-friends {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
-.friend-tab{
 
+.profile-tabs-friends-bottons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1vh;
+    width: auto;
+    height: 100%;
+    align-self: center;
+    justify-content: space-between;
+    margin-top: 1vh;
+}
+
+.profile-tabs-friends-botton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 120px;
+    font-size: large;
+    cursor: pointer;
+    border-radius: 4px;
+    background: #083b93;
+}
+
+.profile-tabs-friends-list {
+    display: flex;
+    gap: 5vh;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 2vh 10vh 2vh 10vh;
+}
+
+.profile-tabs-friend-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 10vh;
+    padding: 1vh;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 1vh;
+}
+
+.profile-tabs-statitics-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-size: xx-large;
+}
+
+.profile-tabs-bio-rating-title {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    font-size: x-large;
+}
+
+.profile-tabs-review-game-title {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    font-size: xx-large;
+}
+
+.profile-tab-statistics-number {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-size: xxx-large;
+}
+
+.profile-tab-bio-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 20%;
+    margin-top: 2vh;
+}
+
+.profile-tab-statistics {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 80%;
+    margin-top: 2vh;
+    margin-left: 2vh;
+    margin-right: 2vh;
+}
+
+.profile-tab-statistics-elements {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin: 0 1vh;
+}
+
+.profile-tab-statistic-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.profile-tab-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10vw, 1fr));
+    gap: 1vh;
+    width: 100%;
+    height: 100%;
+    padding: 2vh 10vh 2vh 10vh;
+}
+
+.divider {
+    display: block;
+    height: 1px;
+    width: 100%;
+    margin: 1vh 0;
+    background-color: rgba(255, 255, 255, 0.45);
 }

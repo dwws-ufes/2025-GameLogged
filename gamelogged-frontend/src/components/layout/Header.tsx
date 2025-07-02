@@ -56,7 +56,7 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
   }
   return (
     <header className="block bg-transparent absolute border-box top-0 w-full z-50">
-      <nav className="container border-none z-15 bg-transparent mx-15 px-6 py-4 flex justify-between items-center">
+      <nav className="border-none z-15 bg-transparent mx-15 px-6 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-800 dark:text-white">
           <a onClick={redirectToHome} className='cursor-pointer'>GameLogged</a>
         </div>
@@ -66,7 +66,7 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
             {isAuthenticated && nickname ? (
               <span>Bem vindo, <span className="font-semibold">{nickname}</span>!</span>
             ) : (
-              <a href="/login" className="hover:text-blue-500">Login</a>
+              <a href="/" className="hover:text-blue-500">Login</a>
             )}
           </div>
 
