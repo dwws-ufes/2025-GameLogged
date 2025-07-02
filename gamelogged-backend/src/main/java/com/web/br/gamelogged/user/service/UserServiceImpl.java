@@ -97,4 +97,20 @@ public class UserServiceImpl implements UserService {
         return user.getGameInteractions();
     }
 
+    public void updateUserProfile(String uuid, String nickname, String profilePictureUrl, String biography) {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+
+        if (nickname != null && !nickname.isEmpty()) {
+            user.setNickname(nickname);
+        }
+        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+            user.setProfilePictureUrl(profilePictureUrl);
+        }
+        if (biography != null && !biography.isEmpty()) {
+            user.setBiography(biography);
+        }
+
+        userRepository.save(user);
+    }
+
 }

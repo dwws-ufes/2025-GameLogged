@@ -5,6 +5,7 @@ import GameTab from "@/components/ui/profileTabs/GameTab";
 import ReviewTab from "@/components/ui/profileTabs/ReviewTab";
 import FriendTab from "@/components/ui/profileTabs/FriendTab";
 import { userAPI } from "@/services/APIService";
+import { useNavigate } from 'react-router-dom';
 
 import './PerfilPage.css';
 
@@ -24,6 +25,12 @@ function PerfilPage() {
     const [user, setUser] = useState<UserProfile | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
+
+    const handleEditProfileClick = () => {
+        navigate('/perfil/editar');
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -58,7 +65,9 @@ function PerfilPage() {
                     </p>
                 </div>
 
-                <button className="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                <button 
+                    onClick={handleEditProfileClick}
+                    className="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
                     Editar Perfil
                 </button>
             </div>

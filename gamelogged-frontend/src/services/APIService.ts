@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
+    UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
 };
 
 
@@ -89,6 +90,18 @@ export const userAPI = {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
+        });
+    },
+
+    updateUser: async (userData: { nickname: string; biography?: string; profilePictureUrl?: string }) => {
+        console.log('Updating user with data:', userData);
+        return await APIService.getInstance().request(API_ENDPOINTS.UPDATE_PROFILE, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+            body: JSON.stringify(userData),
         });
     },
 };
