@@ -23,7 +23,12 @@ public class UserMapper {
                 "creationDate", user.getCreationDate() != null ? user.getCreationDate().toString() : "",
                 "followersCount", String.valueOf(user.getFollowers().size()),
                 "playedCount", String.valueOf(user.getGameInteractions().size()),
-                "reviewCount", String.valueOf(user.getGameInteractions().stream().filter(gi -> gi.getReview() != null).toList().size()));
+                "reviewCount", String.valueOf(user.getGameInteractions().stream().filter(gi -> gi.getReview() != null).toList().size()),
+                "averageRating", String.valueOf(user.getGameInteractions().stream()
+                        .filter(gi -> gi.getReview() != null)
+                        .mapToDouble(gi -> gi.getReview().getRating())
+                        .average()
+                        .orElse(0.0)));
     }
 
     public static UserDTO toSummaryDTO(User user) {

@@ -19,6 +19,7 @@ interface UserProfile {
     followersCount: number;
     totalGamesPlayed: number;
     totalReviewsWritten: number;
+    averageRating: number;
 }
 
 function PerfilPage() {
@@ -85,6 +86,7 @@ function PerfilPage() {
                         followerCount={user?.followersCount ?? 0}
                         totalGamesPlayed={user?.totalGamesPlayed ?? 0}
                         totalReviewsWritten={user?.totalReviewsWritten ?? 0}
+                        averageRating={user?.averageRating ?? 0.0}
                     />
                 </TabsContent>
 
