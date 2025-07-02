@@ -22,6 +22,7 @@ import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { DialogReview } from "@/components/ui/dialog-review";
 import { PlayStatus } from "../enum/PlayStatus";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
+import { ReviewCard } from "@/components/ui/review-card";
 
 
 const loadGame = {
@@ -49,7 +50,7 @@ function GamePage() {
     const [isPlayed, setIsPlayed] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [playStatus, setPlayStatus] = useState<PlayStatus>(PlayStatus.NONE);
-    const [userReview, setUserReview] = useState(null);
+    const [userReview, setUserReview] = useState([]);
     const [generalReviews, setGeneralReviews] = useState([]);
     const [progress, setProgress] = useState(25)
     const gameController = GameController.getInstance();
@@ -78,10 +79,10 @@ function GamePage() {
 
             if (reviewsResult) {
                 setUserReview(reviewsResult.userReview);
-                setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])]);
+                setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])] || []);
             } else {
                 // Limpa os estados caso a resposta venha no formato errado ou vazia
-                setUserReview(null);
+                setUserReview([]);
                 setGeneralReviews([]);
             }
 
@@ -265,6 +266,19 @@ function GamePage() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div>
+                        {
+                            generalReviews[0] != null ? (
+                                generalReviews.map((review, idx) => (
+                                    <ReviewCard review={review} />
+                                ))
+                            ) : (
+                                <div className="flex flex-col items-center justify-center">
+                                    <p className="text-white">Nenhuma review encontrada para este jogo.</p>
+                                </div>
+                            )
+                        }
                     </div>
                 </div >
             </div>

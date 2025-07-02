@@ -127,6 +127,10 @@ public class ReviewServiceImpl implements ReviewService {
                 reviewResponse.setNickname(interaction.getUser().getNickname());
                 reviewResponse.setProfilePicUrl(interaction.getUser().getProfilePictureUrl());
                 reviewResponse.setReviewText(interaction.getReview().getDescription());
+                reviewResponse.setCreationDate(interaction.getReview().getCreationDate().toLocalDate());
+                reviewResponse.setRating(interaction.getReview().getRating());
+                reviewResponse.setPlatform(interaction.getReview().getPlatformType());
+
                 if (interaction.getReview().getPlayTimeInHours() != null) {
                     reviewResponse.setTimePlayed(interaction.getReview().getPlayTimeInHours().toString());
                 }
