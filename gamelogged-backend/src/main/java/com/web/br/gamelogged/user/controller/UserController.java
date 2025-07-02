@@ -10,6 +10,7 @@ import com.web.br.gamelogged.game.dto.GameDTO;
 import com.web.br.gamelogged.game.service.IgdbService;
 import com.web.br.gamelogged.review.dto.ReviewResponse;
 import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
+import com.web.br.gamelogged.user.dto.UserDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -181,5 +182,17 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> searchUserByNickname(@RequestParam String nickname) {
+        try {
+            List<User> users = userService.findUsersByNickname(nickname);
+            List<UserDTO> userDTOs = UserMapper.toUserDTOList(Set.copyOf(users));
+            return ResponseEntity.ok(userDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(List.of());
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.web.br.gamelogged.user.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.web.br.gamelogged.domain.GameInteraction;
@@ -112,6 +113,14 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findUsersByNickname(String nickname) {
+        if (nickname == null || nickname.isEmpty()) {
+            return List.of();
+        }
+        return userRepository.findByNicknameContainingIgnoreCase(nickname);
     }
 
 }
