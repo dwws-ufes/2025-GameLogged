@@ -1,5 +1,6 @@
 package com.web.br.gamelogged.user.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -147,7 +148,7 @@ public class UserController {
 
             List<Review> reviews = gameInteractions.stream()
                     .filter(interaction -> interaction.getReview() != null)
-                    .map(GameInteraction::getReview)
+                    .map(GameInteraction::getReview).sorted(Comparator.comparing(Review::getCreationDate).reversed())
                     .toList();
 
             List<ReviewResponse> reviewResponses = reviews.stream()
