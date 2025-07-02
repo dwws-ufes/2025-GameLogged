@@ -36,6 +36,7 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
     const gameController = GameController.getInstance();
     const [nota, setNota] = useState(0);
     const formRef = useRef<HTMLFormElement>(null);
+    const [open, setOpen] = useState(false);
 
     function handleSubmit() {
 
@@ -53,11 +54,13 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
         console.log("Dados da Review:", reviewData);
             
         gameController.sendReview(gameId, reviewData, isReviewed);
+        setOpen(false);
+        window.location.reload();
     }
 
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className="bg-blue-500 review-button text-white font-bold w-full hover:bg-blue-800" size="sm" variant="outline">{
                     isReviewed ? "Editar Review" : "Fazer Review"}
