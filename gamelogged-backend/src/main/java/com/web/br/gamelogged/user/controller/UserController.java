@@ -1,9 +1,13 @@
 package com.web.br.gamelogged.user.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.web.br.gamelogged.domain.GameInteraction;
+import com.web.br.gamelogged.domain.Review;
+import com.web.br.gamelogged.review.dto.ReviewResponse;
+import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -118,6 +122,54 @@ public class UserController {
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error na GetMapping(game-interacitions)", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<?> getCurrentUserReviews() {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            Set<GameInteraction> gameInteractions = userService.getGameInteractionsForUser(uuid);
+
+            List<Review> reviews = gameInteractions.stream()
+                    .filter(interaction -> interaction.getReview() != null)
+                    .map(GameInteraction::getReview)
+                    .toList();
+
+            List<ReviewResponse> reviewResponses = reviews.stream()
+                    .map(review -> new ReviewResponse(
+                            review.getGameInteraction().getUser().getNickname(),
+                            review.getDescription(),
+                            review.getGameInteraction().getPlayStatus().toString(),
+                            review.getPlayTimeInHours().toString(),
+                            review.getGameInteraction().getUser().getProfilePictureUrl(),
+                            review.getRating(),
+                            review.getPlatformType(),
+                            review.getCreationDate().toLocalDate(),
+                            review.getGameInteraction().getGame().getIgdbId().toString()))
+                    .toList();
+
+            return ResponseEntity.ok(reviewResponses);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error na GetMapping(game-interacitions)", e.getMessage()));
+        }
+    }
+
+
+    @PutMapping("/update-profile")
+    public ResponseEntity<Map<String, String>> updateUserProfile(@RequestBody UpdateProfileDTO profileData) {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            userService.updateUserProfile(uuid, profileData.getNickname(), profileData.getProfilePictureUrl(), profileData.getBiography());
+            return ResponseEntity.ok(Map.of("message", "Perfil atualizado com sucesso."));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
     }
 }

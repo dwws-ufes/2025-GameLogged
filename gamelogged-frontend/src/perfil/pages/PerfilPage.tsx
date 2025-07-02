@@ -5,8 +5,10 @@ import GameTab from "@/components/ui/profileTabs/GameTab";
 import ReviewTab from "@/components/ui/profileTabs/ReviewTab";
 import FriendTab from "@/components/ui/profileTabs/FriendTab";
 import { userAPI } from "@/services/APIService";
+import { useNavigate } from 'react-router-dom';
 
 import './PerfilPage.css';
+import { Button } from '@/components/ui/button';
 
 
 interface UserProfile {
@@ -17,13 +19,20 @@ interface UserProfile {
     creationDate: string;
     followersCount: number;
     totalGamesPlayed: number;
-    totalReviewsWritten: number;
+    reviewCount: number;
+    averageRating: number;
 }
 
 function PerfilPage() {
     const [user, setUser] = useState<UserProfile | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
+
+    const handleEditProfileClick = () => {
+        navigate('/perfil/editar');
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -58,7 +67,9 @@ function PerfilPage() {
                     </p>
                 </div>
 
-                <button className="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                <button 
+                    onClick={handleEditProfileClick}
+                    className="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
                     Editar Perfil
                 </button>
             </div>
@@ -75,7 +86,8 @@ function PerfilPage() {
                         biography={user?.biography ?? "Nenhuma biografia disponível."}
                         followerCount={user?.followersCount ?? 0}
                         totalGamesPlayed={user?.totalGamesPlayed ?? 0}
-                        totalReviewsWritten={user?.totalReviewsWritten ?? 0}
+                        reviewCount={user?.reviewCount ?? 0}
+                        averageRating={user?.averageRating ?? 0.0}
                     />
                 </TabsContent>
 

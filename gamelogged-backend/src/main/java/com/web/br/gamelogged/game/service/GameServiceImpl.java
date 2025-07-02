@@ -1,18 +1,29 @@
 package com.web.br.gamelogged.game.service;
 
 import com.web.br.gamelogged.domain.Game;
+import com.web.br.gamelogged.domain.GameInteraction;
+import com.web.br.gamelogged.domain.Review;
 import com.web.br.gamelogged.game.repository.GameRepository;
+import com.web.br.gamelogged.gameInteraction.repository.GameInteractionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
+    private final GameInteractionRepository gameInteractionRepository;
 
-    public GameServiceImpl(GameRepository gameRepository) {
+    public GameServiceImpl(GameRepository gameRepository, GameInteractionRepository gameInteractionRepository) {
         this.gameRepository = gameRepository;
+        this.gameInteractionRepository = gameInteractionRepository;
     }
 
     @Override
@@ -105,5 +116,35 @@ public class GameServiceImpl implements GameService {
                     newGame.setTotalUserRatings(0);
                     return gameRepository.save(newGame);
                 });
+    }
+
+    public Double getGameRating(Integer igdbId) {
+        Game game = gameRepository.findByIgdbId(igdbId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found with IGDB ID: " + igdbId));
+        return game.getAverageRating();
+    }
+
+    @Override
+    public Map<String, Object> getGameRatingInfo(Integer igdbId) {
+
+        Game game = gameRepository.findByIgdbId(igdbId).orElse(null);
+        if (game == null) {
+            throw new EntityNotFoundException("Game not found with IGDB ID: " + igdbId);
+        }
+
+        List<GameInteraction> interactions = gameInteractionRepository.findByGameIgdbId(igdbId);
+        List<Review> reviews = interactions.stream()
+                .map(GameInteraction::getReview)
+                .filter(Objects::nonNull)
+                .toList();
+
+        Map<Double, Long> ratingsCount = reviews.stream()
+                .collect(Collectors.groupingBy(Review::getRating, Collectors.counting()));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("averageRating", game.getAverageRating());
+        response.put("ratingsCount", ratingsCount);
+
+        return response;
     }
 }

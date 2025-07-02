@@ -9,7 +9,11 @@ export const API_ENDPOINTS = {
     USER_BY_TOKEN: `${API_BASE_URL}/user/findByToken`,
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
+    UPDATE_REVIEW: `${API_BASE_URL}/review/update`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
+	GET_REVIEWS: `${API_BASE_URL}/review/game`,
+	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
+    GET_ALL_REVIEWS: `${API_BASE_URL}/user/reviews`,
 };
 
 
@@ -91,6 +95,27 @@ export const userAPI = {
             },
         });
     },
+
+    updateUser: async (userData: { nickname: string; biography?: string; profilePictureUrl?: string }) => {
+        return await APIService.getInstance().request(API_ENDPOINTS.UPDATE_PROFILE, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+            body: JSON.stringify(userData),
+        });
+    },
+
+    getCurrentUserReviews: async () => {
+        return await APIService.getInstance().request(API_ENDPOINTS.GET_ALL_REVIEWS, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    }
 };
 
 export const gameAPI = {
@@ -164,17 +189,6 @@ export const gameAPI = {
         };
     },
 
-    createReview: async (gameId: number, reviewData: any) => {
-        await APIService.getInstance().request(API_ENDPOINTS.CREATE_REVIEW, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-            },
-            body: JSON.stringify({ reviewData, gameId }),
-        })
-    },
-
     changePlayStatus: async (gameId: number, playStatus: string) => {
         const response = await fetch(`http://localhost:8080/game-interaction/update`, {
             method: 'POST',
@@ -220,5 +234,56 @@ export const gameAPI = {
         }
         return await response.json();
 
+    },
+
+    updateReview: async (reviewData: any) => {
+        const response = await fetch(`${API_ENDPOINTS.UPDATE_REVIEW}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                },
+                body: JSON.stringify(reviewData),
+            });
+        if (!response.ok) {
+            throw new Error(`Failed to update review: ${response.statusText}`);
+        }
+        return await response.json();
+    },
+
+
+    getReviews: async (gameId : number) => {
+        const response = await fetch(`${API_ENDPOINTS.GET_REVIEWS}/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+        }
+
+        return await response.json();
+    },
+
+    getGameRating: async (gameId: number) => {
+        const response = await fetch(`http://localhost:8080/game/rating/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch game rating: ${response.statusText}`);
+        }
+
+        console.log("Game Rating Response:", response);
+
+        return await response.json();
     }
 };

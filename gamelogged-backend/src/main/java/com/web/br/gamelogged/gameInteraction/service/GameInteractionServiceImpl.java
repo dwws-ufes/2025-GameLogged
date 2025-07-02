@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameInteractionServiceImpl implements GameInteractionService {
 
@@ -29,7 +31,7 @@ public class GameInteractionServiceImpl implements GameInteractionService {
 
     @Override
     @Transactional
-    public void createGameInteraction(String userId, Integer gameId, String playStatus) {
+    public GameInteraction createGameInteraction(String userId, Integer gameId, String playStatus) {
         if (gameInteractionRepository.findByUserUuidAndGameIgdbId(userId, gameId).isPresent()) {
             throw new IllegalArgumentException("Interação de jogo já existe para o usuário: " + userId + " e jogo: " + gameId);
         }
@@ -44,7 +46,7 @@ public class GameInteractionServiceImpl implements GameInteractionService {
         gameInteraction.setGame(game);
         gameInteraction.setPlayStatus(PlayStatus.valueOf(playStatus.toUpperCase()));
 
-        gameInteractionRepository.save(gameInteraction);
+        return gameInteractionRepository.save(gameInteraction);
     }
 
     @Override
@@ -82,5 +84,10 @@ public class GameInteractionServiceImpl implements GameInteractionService {
                 .orElseThrow(() -> new EntityNotFoundException("Interação de jogo não encontrada para o usuário: " + userId + " e jogo: " + gameId));
 
         return existingInteraction.getPlayStatus().toString();
+    }
+
+    @Override
+    public List<GameInteraction> findByGameIgdbId(Integer igdbId) {
+        return gameInteractionRepository.findByGameIgdbId(igdbId);
     }
 }

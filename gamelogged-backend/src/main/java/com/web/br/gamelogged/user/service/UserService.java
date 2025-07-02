@@ -20,4 +20,6 @@ public interface UserService {
     Set<User> getFollowersForUser(String uuid);
 
     Set<GameInteraction> getGameInteractionsForUser(String uuid);
+
+    void updateUserProfile(String uuid, String nickname, String profilePictureUrl, String biography);
 }

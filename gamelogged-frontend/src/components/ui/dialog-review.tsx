@@ -12,29 +12,33 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Rating, RatingButton } from "./shadcn-io/rating";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { Textarea } from "./textarea";
 import { Separator } from "@radix-ui/react-separator";
-import favIcon from "@/assets/icons/heart.png";
 import { GameController } from "@/game/controllers/GameController";
 import { useState, useRef } from "react";
 import { PlayStatus, PlayStatusLabel } from "@/game/enum/PlayStatus";
 
 type DialogReviewProps = {
     playStatus: PlayStatus;
-    gameId : number;
+    gameId: number;
     gameName: string;
     releaseYear: string;
     imageUrl: string;
     plataforms: string[];
+    reviewText?: string;
+    rating?: number;
+    timePlayed?: string;
+    isReviewed?: boolean;
+
 };
 
-export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, playStatus, gameId }: DialogReviewProps) {
+export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, playStatus, gameId, reviewText, rating, timePlayed, isReviewed}: DialogReviewProps) {
     const gameController = GameController.getInstance();
     const [nota, setNota] = useState(0);
     const formRef = useRef<HTMLFormElement>(null);
+    const [open, setOpen] = useState(false);
 
-    function handleSubmit() {
+    async function handleSubmit() {
 
         if (!formRef.current) {
             console.error("Referência do formulário não encontrada.");
@@ -49,14 +53,18 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
         reviewData.nota = nota.toString();
         console.log("Dados da Review:", reviewData);
 
-        gameController.sendReview(gameId, reviewData);
+        const isReviewSuccess = gameController.sendReview(gameId, reviewData, isReviewed);
+            
+        setOpen(await isReviewSuccess);
     }
 
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-blue-500 review-button text-white font-bold w-full hover:bg-blue-800" size="sm" variant="outline">Fazer Review</Button>
+                <Button className="bg-blue-500 review-button text-white font-bold w-full hover:bg-blue-800" size="sm" variant="outline">{
+                    isReviewed ? "Editar Review" : "Fazer Review"}
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[900px] sm:max-h-[1000px]">
                 <DialogHeader>
@@ -81,7 +89,7 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
 
                                 <div className="flex flex-col mr-20">
                                     <Label htmlFor="nota" className="mb-2">Nota</Label>
-                                    <Rating onValueChange={setNota} defaultValue={0}>
+                                    <Rating onValueChange={setNota} defaultValue={isReviewed ? rating : 0}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <RatingButton key={index} className="rating-button self-center" name="nota" size={30} />
                                         ))}
@@ -104,13 +112,13 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
                                         id="time-picker"
                                         step="1"
                                         name="timePlayed"
-                                        defaultValue="00:00:00"
+                                        defaultValue={isReviewed ? timePlayed : "00:00:00"}
                                         className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                                     />
                                 </div>
                             </div>
                             <Label htmlFor="review" className="mt-5">Review</Label>
-                            <Textarea name="review" placeholder="Type your message here." className="h-80" />
+                            <Textarea name="review" defaultValue={isReviewed ? reviewText : ''} placeholder="Type your message here." className="h-80" />
                         </div>
                     </div>
                 </form>

@@ -22,23 +22,7 @@ import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { DialogReview } from "@/components/ui/dialog-review";
 import { PlayStatus } from "../enum/PlayStatus";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
-
-
-const loadGame = {
-    fetchGame: async () => {
-        //console.log(`Buscando na API: limit=${limit}, offset=${offset}`);
-
-        // TODO: implementar consulta no igdb 
-
-        return {
-            'screenshot_url': 'https://images.igdb.com/igdb/image/upload/t_1080p_2x/bkgxmg2m4h8wf5g9tblh.jpg',
-            'game_cover_url': 'https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co93cr.jpg',
-            'plataforms': ["PlayStation 5", "Xbox Series X/S", "PC", "Nintendo Switch"],
-            'release_date': '2023-10-20',
-            'genres': ["Ação", "Aventura"],
-        }
-    },
-};
+import { ReviewCard } from "@/components/ui/review-card";
 
 
 function GamePage() {
@@ -49,7 +33,12 @@ function GamePage() {
     const [isPlayed, setIsPlayed] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [playStatus, setPlayStatus] = useState<PlayStatus>(PlayStatus.NONE);
+    const [userReview, setUserReview] = useState([]);
+    const [isReviewed, setIsReviewed] = useState<boolean>(false);
+    const [generalReviews, setGeneralReviews] = useState([]);
     const [progress, setProgress] = useState(25)
+    const [ratings, setRatings] = useState<{ [key: number]: number }>({});
+    const [avgRating, setAvgRating] = useState<number>(0);
     const gameController = GameController.getInstance();
 
     useEffect(() => {
@@ -57,7 +46,11 @@ function GamePage() {
             setProgress(50);
             const details = await gameController.searchGameByName(gameName || '');
             setGameDetails(details);
-            const statusResult = await gameController.getPlayStatus(details['id']);
+            const [statusResult, reviewsResult, ratingsResult] = await Promise.all([
+                gameController.getPlayStatus(details['id']),
+                gameController.getReviews(details['id']),
+                gameController.getRatings(details['id'])
+            ]);
             setIsLoading(false);
             setProgress(100);
             if (Array.isArray(statusResult)) {
@@ -70,7 +63,30 @@ function GamePage() {
                 setIsPlaying(false);
                 setIsLiked(false);
             }
+
+            if (reviewsResult) {
+                setUserReview(reviewsResult.userReview);
+                setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])] || []);
+
+                if(reviewsResult.userReview){
+                    setIsReviewed(true);
+                }
+
+            } else {
+                setUserReview([]);
+                setGeneralReviews([]);
+            }
+
+            if (ratingsResult) {
+                setRatings(ratingsResult.ratingsCount || {});
+                setAvgRating(ratingsResult.averageRating || 0);
+            } else {
+                setRatings({});
+                setAvgRating(0);
+            }
         };
+
+
 
         fetchData().catch((error) => {
             console.error("Erro ao obter dados do jogo:", error);
@@ -86,19 +102,9 @@ function GamePage() {
     } satisfies ChartConfig
 
 
-    const ratingsData = [
-        { value: 1, count: 3 },
-        { value: 2, count: 5 },
-        { value: 3, count: 12 },
-        { value: 3.5, count: 10 },
-        { value: 2.8, count: 6 },
-        { value: 4, count: 8 },
-        { value: 5, count: 7 },
-    ];
-
-    const data = ratingsData.map(rating => ({
-        nota: rating.value,
-        quantidade: rating.count,
+    const ratingsData = Object.entries(ratings).map(([key, value]) => ({
+        nota: parseFloat(key),
+        quantidade: value as number,
     }));
 
     const handleChangePlayStatus = async (status: PlayStatus) => {
@@ -108,11 +114,6 @@ function GamePage() {
         setIsLiked(status === PlayStatus.WISHLIST);
         setPlayStatus(status);
     };
-
-    const totalNotas = ratingsData.reduce((acc, curr) => acc + curr.value * curr.count, 0);
-    const totalAvaliacoes = ratingsData.reduce((acc, curr) => acc + curr.count, 0);
-    const mediaNotas = totalAvaliacoes > 0 ? (totalNotas / totalAvaliacoes).toFixed(2) : "0.00";
-
 
     return (
         !isLoading ? (
@@ -129,7 +130,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogReview playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
+                                    <DialogReview reviewText={isReviewed ? userReview.reviewText : ""} isReviewed={isReviewed} timePlayed={isReviewed ? userReview.timePlayed : "00:00:00"} rating={isReviewed ? userReview.rating : 0} playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
                                     <div className="status-buttons flex flex-row items-center mt-10">
 
                                         {
@@ -170,11 +171,11 @@ function GamePage() {
                                     <div className="rating-chart-content">
                                         <div className="rating-header mb-4">
                                             <h2 className="text-2xl text-black font-bold mb-2">Nota Média</h2>
-                                            <h2 className="text-2xl text-black font-bold mb-2">{mediaNotas}</h2>
+                                            <h2 className="text-2xl text-black font-bold mb-2">{avgRating}</h2>
                                         </div>
                                         <div className="rating-chart">
                                             <ChartContainer config={chartConfig}>
-                                                <BarChart accessibilityLayer data={data} barCategoryGap="0%" barGap={0}>
+                                                <BarChart accessibilityLayer data={ratingsData} barCategoryGap="0%" barGap={0}>
                                                     <CartesianGrid vertical={false} />
                                                     <XAxis
                                                         dataKey="nota"
@@ -223,10 +224,18 @@ function GamePage() {
                                     <span className="game-genres text-base text-white">{gameDetails['summary']}</span>
                                 </div>
                                 <Separator className="my-4" />
-                                <div className="col-auto mb-4">
-                                    <div className="row ml-0 reviews-button">
-                                        <Button className="bg-blue-500 text-white hover:bg-blue-800 font-bold " size="sm">Reviews</Button>
-                                    </div>
+                                <div>
+                                    {
+                                        generalReviews[0] != null ? (
+                                            generalReviews.map((review, idx) => (
+                                                <ReviewCard review={review} />
+                                            ))
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center">
+                                                <p className="text-white">Nenhuma review encontrada para este jogo.</p>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -73,7 +73,7 @@ function HomePage() {
       <div className='flex flex-row justify-between items-center'>
       <h1 className="text-2xl font-bold mb-6">Catálogo de Jogos</h1>
         
-      <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-auto">
+      <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-auto mb-6">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             type="text"
