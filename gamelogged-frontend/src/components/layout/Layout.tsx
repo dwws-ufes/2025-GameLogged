@@ -19,7 +19,7 @@ function Layout() {
           const name = await authController.getUserNickname();
           setNickname(name);
         } catch {
-          setNickname(null);
+          navigate('/');
         }
       };
       fetchNickname();

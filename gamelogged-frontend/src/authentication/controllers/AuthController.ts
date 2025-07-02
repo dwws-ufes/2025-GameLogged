@@ -1,9 +1,9 @@
 import { authAPI, userAPI } from '@/services/APIService';
-import type { LoginCredentials, RegisterData} from '../dto/auth';
+import type { LoginCredentials, RegisterData } from '../dto/auth';
 import { AuthValidationService } from '@/authentication/services/AuthValidationService';
 import { AuthStateService } from '@/authentication/services/AuthStateService';
 import { useState } from 'react';
-import {type NavigateFunction, useNavigate} from 'react-router-dom';
+import { type NavigateFunction, useNavigate } from 'react-router-dom';
 import { toast } from "sonner"
 import { getDownloadURL, getStorage, uploadBytes, ref } from 'firebase/storage';
 
@@ -76,7 +76,15 @@ export class AuthController {
 
     const response = await userAPI.getCurrentUser();
 
-    return response && response.nickname ? response.nickname : null;
+    try {
+      const response = await userAPI.getCurrentUser();
+      return response && response.nickname ? response.nickname : null;
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        window.location.href = '/';
+      }
+      return null;
+    }
 
 
   }
@@ -85,7 +93,7 @@ export class AuthController {
     const storage = getStorage();
 
     const storageRef = ref(storage, `profile_pictures/${userId}/avatar.jpg`);
-    
+
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
     return downloadURL;
@@ -198,5 +206,7 @@ export class AuthController {
       clearForm
     };
   }
+
+
 
 }
