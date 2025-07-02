@@ -81,6 +81,7 @@ public class GameController {
         }
     }
 
+
     @GetMapping("/igdb/search")
     public ResponseEntity<List<Map<String, Object>>> searchGameListByName(@RequestParam String name,
                                                                           @RequestParam(defaultValue = "24") int limit,
