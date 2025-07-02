@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.web.br.gamelogged.domain.User;
 import com.web.br.gamelogged.user.repository.UserRepository;
+import com.web.br.gamelogged.domain.GameInteraction;
 
 import jakarta.transaction.Transactional;
 
