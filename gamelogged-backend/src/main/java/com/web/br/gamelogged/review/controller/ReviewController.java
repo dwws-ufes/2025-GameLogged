@@ -36,7 +36,7 @@ public class ReviewController {
     @PostMapping("/update")
     public ResponseEntity<Map<String, Object>> updateReview(@RequestBody CreateReviewRequest request) {
         try {
-            reviewService.updateReview(SecurityContextHolder.getContext().getAuthentication().getName(), request.getGameId(), request.getReviewText(), request.getRating(), request.getPlatform(), request.getPlayTimeInHours());
+            reviewService.updateReview(SecurityContextHolder.getContext().getAuthentication().getName(), request.getGameId(), request.getReviewText(), request.getRating(), request.getPlatform(), request.getPlayTimeInHours(), request.getPlayStatus());
             return ResponseEntity.ok(Map.of("message", "Review atualizada com sucesso"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

@@ -148,7 +148,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogReview playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
+                                    <DialogReview reviewText={userReview && userReview.reviewText ? userReview.reviewText : ""} isReviewed={userReview && userReview.reviewText} timePlayed={userReview.timePlayed} rating={userReview.rating} playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
                                     <div className="status-buttons flex flex-row items-center mt-10">
 
                                         {
@@ -242,6 +242,19 @@ function GamePage() {
                                     <span className="game-genres text-base text-white">{gameDetails['summary']}</span>
                                 </div>
                                 <Separator className="my-4" />
+                                <div>
+                                    {
+                                        generalReviews[0] != null ? (
+                                            generalReviews.map((review, idx) => (
+                                                <ReviewCard review={review} />
+                                            ))
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center">
+                                                <p className="text-white">Nenhuma review encontrada para este jogo.</p>
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
                         </div>
                         <div className="col text-white game-plataforms-column comfortaa">
@@ -261,19 +274,6 @@ function GamePage() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        {
-                            generalReviews[0] != null ? (
-                                generalReviews.map((review, idx) => (
-                                    <ReviewCard review={review} />
-                                ))
-                            ) : (
-                                <div className="flex flex-col items-center justify-center">
-                                    <p className="text-white">Nenhuma review encontrada para este jogo.</p>
-                                </div>
-                            )
-                        }
                     </div>
                 </div >
             </div>

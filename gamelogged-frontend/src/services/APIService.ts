@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     USER_BY_TOKEN: `${API_BASE_URL}/user/findByToken`,
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
+    UPDATE_REVIEW: `${API_BASE_URL}/review/update`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
     GET_REVIEWS: `${API_BASE_URL}/review/game`,
 };
@@ -187,6 +188,22 @@ export const gameAPI = {
         }
         return await response.json();
 
+    },
+
+    updateReview: async (reviewData: any) => {
+        const response = await fetch(`${API_ENDPOINTS.UPDATE_REVIEW}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                },
+                body: JSON.stringify(reviewData),
+            });
+        if (!response.ok) {
+            throw new Error(`Failed to update review: ${response.statusText}`);
+        }
+        return await response.json();
     },
 
 
