@@ -87,7 +87,7 @@ function PerfilPage() {
                         followerCount={user?.followersCount ?? 0}
                         totalGamesPlayed={user?.totalGamesPlayed ?? 0}
                         reviewCount={user?.reviewCount ?? 0}
-                        averageRating={user?.averageRating ?? 0.0}
+                        averageRating={parseFloat(Number(user?.averageRating!).toFixed(2)) ?? 0.0}
                     />
                 </TabsContent>
 
