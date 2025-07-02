@@ -25,23 +25,6 @@ import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { ReviewCard } from "@/components/ui/review-card";
 
 
-const loadGame = {
-    fetchGame: async () => {
-        //console.log(`Buscando na API: limit=${limit}, offset=${offset}`);
-
-        // TODO: implementar consulta no igdb 
-
-        return {
-            'screenshot_url': 'https://images.igdb.com/igdb/image/upload/t_1080p_2x/bkgxmg2m4h8wf5g9tblh.jpg',
-            'game_cover_url': 'https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co93cr.jpg',
-            'plataforms': ["PlayStation 5", "Xbox Series X/S", "PC", "Nintendo Switch"],
-            'release_date': '2023-10-20',
-            'genres': ["Ação", "Aventura"],
-        }
-    },
-};
-
-
 function GamePage() {
     const { gameName } = useParams<{ gameName: string }>();
     const [gameDetails, setGameDetails] = useState<any>({});
