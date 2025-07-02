@@ -2,6 +2,7 @@ package com.web.br.gamelogged.gameInteraction.controller;
 
 import com.web.br.gamelogged.gameInteraction.dto.UpdatePlayStatusRequest;
 import com.web.br.gamelogged.gameInteraction.service.GameInteractionService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,6 +57,8 @@ public class GameInteractionController {
         try {
             String playStatus = gameInteractionService.getPlayStatus(SecurityContextHolder.getContext().getAuthentication().getName(), gameId);
             return ResponseEntity.ok(List.of(Map.of("playStatus", playStatus)));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.ok(List.of(Map.of("playStatus", "NONE")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(List.of(Map.of("error", e.getMessage())));
         }

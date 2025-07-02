@@ -64,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void updateReview(String userId, Integer gameId, String reviewText, double rating, String platform, Time playTimeInHours) {
+    public void updateReview(String userId, Integer gameId, String reviewText, double rating, String platform, Time playTimeInHours, PlayStatus playStatus) {
         Optional<GameInteraction> interaction = findGameInteraction(userId, gameId);
 
         if (interaction.isEmpty()) {
@@ -85,6 +85,7 @@ public class ReviewServiceImpl implements ReviewService {
         existingReview.setPlatformType(platform);
         existingReview.setCreationDate(LocalDateTime.now());
         existingReview.setPlayTimeInHours(playTimeInHours);
+        gameInteraction.setPlayStatus(playStatus);
 
         gameInteractionRepository.save(gameInteraction);
 

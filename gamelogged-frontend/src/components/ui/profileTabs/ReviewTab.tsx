@@ -48,9 +48,6 @@ function ReviewTab() {
                 const gamesData: GameSummaryFromAPI[] = await gameAPI.findGameByListOfIgdbId(gameIdList);
                 const gamesDataMap = new Map(gamesData.map(game => [game.id, game]));
 
-                console.log("Dados das reviews do usuário:", userReviewsData);
-                console.log("Dados dos jogos:", gamesData);
-
                 const combinedData = userReviewsData.map((review): EnrichedReview => {
                     const gameDetails = gamesDataMap.get(review.gameId);
                     return {

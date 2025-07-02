@@ -33,6 +33,28 @@ git clone https://github.com/dwws-ufes/2025-GameLogged.git
 cd 2025-GameLogged
 ```
 
+Em seguida deve ser adicionado um arquivo `firebase-service-account.json` no caminho:
+
+```
+gamelogged-backend/
+└── src/
+    └── main/
+        └── resources/
+            firebase-service-account.json
+```
+
+Isso nos permitirá utilizar das api's do firebase.
+
+Também deve ser criado um arquivo `.env` na raiz do projeto com os seguintes dados:
+
+```
+IGDB_CLIENT_ID=seu_client_id_aqui
+IGDB_ACCESS_TOKEN=seu_access_token_aqui
+```
+
+Já esse, irá servir para nos autenticar nas requisições para o igdb.
+
+
 ### 2. Subir os Contêineres
 
 Para iniciar todos os serviços (backend, frontend e banco de dados) em modo de desenvolvimento com live-reload, execute o seguinte comando na pasta raiz do projeto (onde o arquivo `docker-compose.yml` está localizado):

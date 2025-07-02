@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.web.br.gamelogged.domain.User;
 import com.web.br.gamelogged.user.service.UserService;
+import com.web.br.gamelogged.domain.GameInteraction;
 
 @RestController
 @RequestMapping("/user")
@@ -119,9 +120,8 @@ public class UserController {
             Set<GameInteraction> gameInteractions = userService.getGameInteractionsForUser(uuid);
 
             return ResponseEntity.ok(gameInteractions);
-
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error na GetMapping(game-interacitions)", e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
     }
 

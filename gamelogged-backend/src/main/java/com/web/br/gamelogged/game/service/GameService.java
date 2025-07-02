@@ -5,6 +5,8 @@ import com.web.br.gamelogged.game.dto.GameDTO;
 
 import java.util.List;
 
+import java.util.Map;
+
 public interface GameService {
     void createGame(Integer igdbId);
 
@@ -17,4 +19,6 @@ public interface GameService {
     Game findGameByIgdbId(Integer igdbId);
 
     Game findOrCreateGameByIgdbId(Integer igdbId);
+
+    Map<String, Object> getGameRatingInfo(Integer igdbId);
 }

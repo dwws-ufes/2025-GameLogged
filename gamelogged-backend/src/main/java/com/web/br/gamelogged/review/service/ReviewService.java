@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ReviewService {
     void createReview(String userId, Integer gameId, String reviewText, double rating, String platform, Time playTimeInHours, PlayStatus playStatus);
-    void updateReview(String userId, Integer gameId, String reviewText, double rating, String platform, Time playTimeInHours);
+    void updateReview(String userId, Integer gameId, String reviewText, double rating, String platform, Time playTimeInHours, PlayStatus playStatus);
     void deleteReview(String userId, Integer gameId);
     GameReviewsResponseDTO getGameReviews(Integer gameId, String userId);
 }

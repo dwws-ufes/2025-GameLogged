@@ -58,7 +58,7 @@ function Header({ isAuthenticated, nickname }: HeaderProps) {
     <header className="block bg-transparent absolute border-box top-0 w-full z-50">
       <nav className="border-none z-15 bg-transparent mx-15 px-6 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-800 dark:text-white">
-          <a onClick={redirectToHome} className='cursor-pointer'>GameLogged</a>
+          <a onClick={redirectToHome} className='cursor-pointer venite-adoremus'>GameLogged</a>
         </div>
         
         <div className="flex items-center gap-4">
