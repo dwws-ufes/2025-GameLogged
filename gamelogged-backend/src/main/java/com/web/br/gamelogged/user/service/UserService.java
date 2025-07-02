@@ -4,6 +4,7 @@ import com.web.br.gamelogged.domain.GameInteraction;
 import com.web.br.gamelogged.domain.User;
 import com.web.br.gamelogged.domain.GameInteraction;
 
+import java.util.List;
 import java.util.Set;
 
 public interface UserService {
@@ -23,4 +24,6 @@ public interface UserService {
     Set<GameInteraction> getGameInteractionsForUser(String uuid);
 
     void updateUserProfile(String uuid, String nickname, String profilePictureUrl, String biography);
+
+    List<User> findUsersByNickname(String nickname);
 }

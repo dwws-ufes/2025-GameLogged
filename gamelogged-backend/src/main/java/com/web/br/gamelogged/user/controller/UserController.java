@@ -1,5 +1,6 @@
 package com.web.br.gamelogged.user.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +11,7 @@ import com.web.br.gamelogged.game.dto.GameDTO;
 import com.web.br.gamelogged.game.service.IgdbService;
 import com.web.br.gamelogged.review.dto.ReviewResponse;
 import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
+import com.web.br.gamelogged.user.dto.UserDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -146,7 +148,7 @@ public class UserController {
 
             List<Review> reviews = gameInteractions.stream()
                     .filter(interaction -> interaction.getReview() != null)
-                    .map(GameInteraction::getReview)
+                    .map(GameInteraction::getReview).sorted(Comparator.comparing(Review::getCreationDate).reversed())
                     .toList();
 
             List<ReviewResponse> reviewResponses = reviews.stream()
@@ -181,5 +183,23 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> searchUserByNickname(@RequestParam String nickname) {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            List<User> users = userService.findUsersByNickname(nickname);
+            users.removeIf(user -> user.getUuid().equals(uuid));
+
+            List<UserDTO> userDTOs = UserMapper.toUserDTOList(Set.copyOf(users));
+            return ResponseEntity.ok(userDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(List.of());
+        }
+
     }
 }

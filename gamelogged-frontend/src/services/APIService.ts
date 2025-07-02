@@ -15,6 +15,9 @@ export const API_ENDPOINTS = {
 	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
     GET_ALL_REVIEWS: `${API_BASE_URL}/user/reviews`,
     GET_GAMES_BY_LIST_IGDB_ID: `${API_BASE_URL}/game/find-list`,
+    GET_USER_FOLLOWERS: `${API_BASE_URL}/user/followers`,
+    GET_USER_FOLLOWING: `${API_BASE_URL}/user/following`,
+    SEARCH_USERS: `${API_BASE_URL}/user/search`,
 };
 
 
@@ -116,7 +119,35 @@ export const userAPI = {
                 'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
             },
         });
-    }
+    },
+
+    getUserFollowers: async () => {
+        return await APIService.getInstance().request(API_ENDPOINTS.GET_USER_FOLLOWERS, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    },
+
+    getUserFollowing: async () => {
+        return await APIService.getInstance().request(API_ENDPOINTS.GET_USER_FOLLOWING, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    },
+
+    searchUsers: async (nickname: string) => {
+        return await APIService.getInstance().request(`${API_ENDPOINTS.SEARCH_USERS}?nickname=${nickname}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    },
+
 };
 
 export const gameAPI = {
