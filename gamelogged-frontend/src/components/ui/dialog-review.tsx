@@ -38,7 +38,7 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
     const formRef = useRef<HTMLFormElement>(null);
     const [open, setOpen] = useState(false);
 
-    function handleSubmit() {
+    async function handleSubmit() {
 
         if (!formRef.current) {
             console.error("Referência do formulário não encontrada.");
@@ -52,10 +52,10 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
         const reviewData = Object.fromEntries(formData.entries());
         reviewData.nota = nota.toString();
         console.log("Dados da Review:", reviewData);
+
+        const isReviewSuccess = gameController.sendReview(gameId, reviewData, isReviewed);
             
-        gameController.sendReview(gameId, reviewData, isReviewed);
-        setOpen(false);
-        window.location.reload();
+        setOpen(await isReviewSuccess);
     }
 
 

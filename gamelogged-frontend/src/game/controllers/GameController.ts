@@ -26,7 +26,7 @@ export class GameController {
         return game;
     }
 
-    public async sendReview(gameId: number, event: any, isReviewed: boolean = false) {
+    public async sendReview(gameId: number, event: any, isReviewed: boolean = false) : Promise<boolean>{
 
         const reviewData = {
             gameId: Number(gameId),
@@ -37,27 +37,36 @@ export class GameController {
             playTimeInHours: event.timePlayed,
         };
 
+        if(reviewData.playStatus === "NONE" || reviewData.playStatus === "WISHLIST" ){
+            toast.error("É necessário ter experienciado o jogo para avaliar.");
+            return true;
+        }
+
 
         if (!this.isUserAuthenticated) {
             toast.error("Você precisa estar logado para enviar uma review.");
-            return;
+            return false;
         }
 
         if (!isReviewed) {
             try {
                 await gameAPI.sendReview(reviewData);
                 toast.success("Review enviada com sucesso!");
+                return false;
             } catch (error) {
                 console.error("Erro ao enviar a review:", error);
                 toast.error("Erro ao enviar a review. Tente novamente mais tarde.");
+                return true;
             }
         } else {
             try {
                 await gameAPI.updateReview(reviewData);
                 toast.success("Review atualizada com sucesso!");
+                return false;
             } catch (error) {
                 console.error("Erro ao enviar a review:", error);
                 toast.error("Erro ao enviar a review. Tente novamente mais tarde.");
+                return true;
             }
         }
 
