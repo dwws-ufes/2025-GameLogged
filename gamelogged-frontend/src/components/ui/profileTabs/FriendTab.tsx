@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import FriendCard from "@/components/ui/FriendCard";
 import { userAPI } from "@/services/APIService";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Search } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+import { Button } from '@heroui/react';
 
 interface Friend {
     id: number;
@@ -16,6 +18,8 @@ function FriendTab() {
     const [following, setFollowing] = useState<Friend[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchFriendsData = async () => {
@@ -40,6 +44,10 @@ function FriendTab() {
         fetchFriendsData();
     }, []);
 
+    const goToSearchPage = () => {
+        navigate('/users/search');
+    };
+
     if (isLoading) {
         return <div className="flex justify-center p-8"><LoaderCircle className="h-8 w-8 animate-spin" /></div>;
     }
@@ -50,14 +58,20 @@ function FriendTab() {
 
     return (
         <Tabs defaultValue="following" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="following">
-                    Seguindo ({following.length})
-                </TabsTrigger>
-                <TabsTrigger value="followers">
-                    Seguidores ({followers.length})
-                </TabsTrigger>
-            </TabsList>
+            <div className="flex justify-between items-center mb-4">
+                <TabsList className="grid w-full max-w-sm grid-cols-2">
+                    <TabsTrigger value="following">
+                        Seguindo ({following.length})
+                    </TabsTrigger>
+                    <TabsTrigger value="followers">
+                        Seguidores ({followers.length})
+                    </TabsTrigger>
+                </TabsList>
+                <Button onPress={goToSearchPage}>
+                    <Search className="h-4 w-4 mr-2" />
+                    Buscar Usuários
+                </Button>
+            </div>
 
             <TabsContent value="following" className="mt-4">
                 {following.length > 0 ? (

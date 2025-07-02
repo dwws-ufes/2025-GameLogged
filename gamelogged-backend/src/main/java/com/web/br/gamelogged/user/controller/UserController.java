@@ -187,7 +187,13 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<List<UserDTO>> searchUserByNickname(@RequestParam String nickname) {
         try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
             List<User> users = userService.findUsersByNickname(nickname);
+            users.removeIf(user -> user.getUuid().equals(uuid));
+
             List<UserDTO> userDTOs = UserMapper.toUserDTOList(Set.copyOf(users));
             return ResponseEntity.ok(userDTOs);
         } catch (Exception e) {
