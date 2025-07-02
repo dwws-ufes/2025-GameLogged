@@ -3,6 +3,8 @@ package com.web.br.gamelogged.user.controller;
 import java.util.Map;
 import java.util.Set;
 
+import com.web.br.gamelogged.domain.GameInteraction;
+import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +27,12 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<Map<String, String>> getCurrentUser() {
+    public ResponseEntity<?> getCurrentUser() {
         String uuid = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
-        User user = userService.findByUuid(uuid);
 
-        if (user == null) {
-            return ResponseEntity.status(404).body(Map.of("error", "Usuário não encontrado."));
-        }
-
-        return ResponseEntity.ok(UserMapper.toMap(user));
+        return this.getUserProfile(uuid);
     }
 
     @GetMapping("/{uuid}")
@@ -46,7 +43,7 @@ public class UserController {
                 return ResponseEntity.status(404).body(Map.of("error", "Usuário não encontrado."));
             }
 
-            return ResponseEntity.ok(UserMapper.toMap(user));
+            return ResponseEntity.ok(UserMapper.toDTO(user));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
@@ -120,6 +117,22 @@ public class UserController {
             Set<GameInteraction> gameInteractions = userService.getGameInteractionsForUser(uuid);
 
             return ResponseEntity.ok(gameInteractions);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/update-profile")
+    public ResponseEntity<Map<String, String>> updateUserProfile(@RequestBody UpdateProfileDTO profileData) {
+        try {
+            String uuid = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+
+            System.out.println("Atualizando perfil do usuário: " + uuid);
+            System.out.println("Dados do perfil: " + profileData.getNickname() + ", " + profileData.getProfilePictureUrl() + ", " + profileData.getBiography());
+            userService.updateUserProfile(uuid, profileData.getNickname(), profileData.getProfilePictureUrl(), profileData.getBiography());
+            return ResponseEntity.ok(Map.of("message", "Perfil atualizado com sucesso."));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }

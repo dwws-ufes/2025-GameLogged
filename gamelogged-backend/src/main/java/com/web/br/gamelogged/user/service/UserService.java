@@ -1,5 +1,6 @@
 package com.web.br.gamelogged.user.service;
 
+import com.web.br.gamelogged.domain.GameInteraction;
 import com.web.br.gamelogged.domain.User;
 import com.web.br.gamelogged.domain.GameInteraction;
 
@@ -20,4 +21,6 @@ public interface UserService {
     Set<User> getFollowersForUser(String uuid);
 
     Set<GameInteraction> getGameInteractionsForUser(String uuid);
+
+    void updateUserProfile(String uuid, String nickname, String profilePictureUrl, String biography);
 }

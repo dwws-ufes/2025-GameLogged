@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
+    UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
 };
 
 
@@ -91,6 +92,18 @@ export const userAPI = {
             },
         });
     },
+
+    updateUser: async (userData: { nickname: string; biography?: string; profilePictureUrl?: string }) => {
+        console.log('Updating user with data:', userData);
+        return await APIService.getInstance().request(API_ENDPOINTS.UPDATE_PROFILE, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+            body: JSON.stringify(userData),
+        });
+    },
 };
 
 export const gameAPI = {
@@ -105,6 +118,29 @@ export const gameAPI = {
 
         if (!response.ok) {
             throw new Error("Failed to fetch games from IGDB");
+        }
+
+        const data = await response.json();
+        return data.map((game: any) => ({
+            id: game.id,
+            name: game.name,
+            coverUrl: game.cover?.url
+                ? `https:${game.cover.url.replace('t_thumb', 't_cover_big_2x')}`
+                : defaultImage,
+            hasCover: !!game.cover,
+        }));
+    },
+
+    searchGameListByName: async (gameName: string, limit: number, offset: number) => {
+        const response = await fetch(`http://localhost:8080/game/igdb/search?name=${encodeURIComponent(gameName)}&limit=${limit}&offset=${offset}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to search games by name from IGDB");
         }
 
         const data = await response.json();

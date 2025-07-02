@@ -1,10 +1,15 @@
 import "./profileTabs.css"
 import CountUp from './CountUp'
 
-function ProfileTab() {
+interface ProfileTabProps {
+    biography: string,
+    followerCount: number,
+    totalGamesPlayed: number,
+    totalReviewsWritten: number;
+  }
+  
 
-    const placeholderqtdgames = 100; // Placeholder for total games played, can be replaced with actual data
-
+function ProfileTab({ biography, followerCount,totalGamesPlayed,totalReviewsWritten }: ProfileTabProps) {
     return (
         <div className="profile-tabs-profile">
             <div className={"profile-tab-bio-rating"}>
@@ -12,7 +17,7 @@ function ProfileTab() {
                     Bio
                 </h1>
                 <span>
-                    Nothing here yet, but you can add a bio in your profile settings.
+                    {biography}
                 </span>
                 <div className="divider"/>
                 <h1 className={"profile-tabs-bio-rating-title"}>
@@ -24,7 +29,7 @@ function ProfileTab() {
                     <div className={"profile-tab-statistic-element"}>
                         <CountUp
                             from={0}
-                            to={placeholderqtdgames}
+                            to={totalGamesPlayed}
                             duration={0.5}
                             className={"profile-tab-statistics-number"}/>
                         <h1 className={"profile-tabs-statitics-title"}>
@@ -34,7 +39,7 @@ function ProfileTab() {
                     <div className={"profile-tab-statistic-element"}>
                         <CountUp
                             from={0}
-                            to={placeholderqtdgames}
+                            to={totalReviewsWritten}
                             duration={0.5}
                             className={"profile-tab-statistics-number"}
                         />
@@ -45,7 +50,7 @@ function ProfileTab() {
                     <div className={"profile-tab-statistic-element"}>
                         <CountUp
                             from={0}
-                            to={placeholderqtdgames}
+                            to={followerCount}
                             duration={0.5}
                             className={"profile-tab-statistics-number"}/>
                         <h1 className={"profile-tabs-statitics-title"}>

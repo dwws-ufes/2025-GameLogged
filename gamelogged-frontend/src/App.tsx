@@ -6,6 +6,7 @@ import Layout from './components/layout/Layout';
 import { Toaster } from "@/components/ui/sonner"
 import GamePage from './game/pages/Game';
 import PerfilPage from "@/perfil/pages/PerfilPage";
+import EditProfilePage from "@/perfil/pages/EditProfilePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/games/:gameName" element={<GamePage />} />
           <Route path="/perfil" element={<PerfilPage />} />
+          <Route path="/perfil/editar" element={<EditProfilePage />} /> {/* ROTA NOVA */}
         </Route>
       </Routes>
     </BrowserRouter>
