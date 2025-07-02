@@ -3,6 +3,8 @@ package com.web.br.gamelogged.game.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.web.br.gamelogged.game.dto.GameDTO;
+import com.web.br.gamelogged.review.dto.GameReviewsResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,5 +75,15 @@ public class GameController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(List.of(Map.of("error", "Failed to search game list by name")));
         }
+    }
+
+    @GetMapping("/find-list")
+    public ResponseEntity<List<GameDTO>> findGameByListOfIgdbId(
+            @RequestParam List<Integer> igdbIds) {
+
+        List<GameDTO> games = igdbService.findGamesByListOfIgdbId(igdbIds);
+
+        return ResponseEntity.ok(games);
+
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.web.br.gamelogged.game.dto.GameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -113,6 +114,25 @@ public class IgdbServiceImpl implements IgdbService {
                 .bodyValue(body)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Map<String, Object>>>() {
+                })
+                .block();
+    }
+
+    public List<GameDTO> findGamesByListOfIgdbId(List<Integer> igdbIds) {
+        if (igdbIds == null || igdbIds.isEmpty()) {
+            return List.of();
+        }
+
+        String body = String.format("fields id, name, cover.url; where id = (%s);",
+                String.join(",", igdbIds.stream().map(String::valueOf).toList()));
+
+        System.out.println("Request body for finding games by IGDB IDs: " + body);
+
+        return webClient.post()
+                .uri("/games")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<GameDTO>>() {
                 })
                 .block();
     }
