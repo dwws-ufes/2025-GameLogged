@@ -94,7 +94,6 @@ export const userAPI = {
     },
 
     updateUser: async (userData: { nickname: string; biography?: string; profilePictureUrl?: string }) => {
-        console.log('Updating user with data:', userData);
         return await APIService.getInstance().request(API_ENDPOINTS.UPDATE_PROFILE, {
             method: 'PUT',
             headers: {
@@ -104,6 +103,16 @@ export const userAPI = {
             body: JSON.stringify(userData),
         });
     },
+
+    getCurrentUserReviews: async () => {
+        return await APIService.getInstance().request(`${API_BASE_URL}/user/reviews`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+    }
 };
 
 export const gameAPI = {
