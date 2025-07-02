@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+import com.web.br.gamelogged.game.dto.GameDTO;
+import com.web.br.gamelogged.review.dto.GameReviewsResponseDTO;
 import com.web.br.gamelogged.domain.Review;
 import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,6 +98,15 @@ public class GameController {
         }
     }
 
+    @GetMapping("/find-list")
+    public ResponseEntity<List<GameDTO>> findGameByListOfIgdbId(
+            @RequestParam List<Integer> igdbIds) {
+
+        List<GameDTO> games = igdbService.findGamesByListOfIgdbId(igdbIds);
+
+        return ResponseEntity.ok(games);
+
+    }
 
     @GetMapping("/rating/{gameId}")
     public ResponseEntity<Map<String, Object>> getGameRating(@PathVariable Integer gameId) {

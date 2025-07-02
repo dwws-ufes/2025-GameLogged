@@ -1,6 +1,7 @@
 package com.web.br.gamelogged.game.service;
 
 import com.web.br.gamelogged.domain.Game;
+import com.web.br.gamelogged.game.dto.GameDTO;
 import com.web.br.gamelogged.domain.GameInteraction;
 import com.web.br.gamelogged.domain.Review;
 import com.web.br.gamelogged.game.repository.GameRepository;
@@ -9,11 +10,13 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 
 @Service
 public class GameServiceImpl implements GameService {

@@ -1,6 +1,9 @@
 package com.web.br.gamelogged.game.service;
 
 import com.web.br.gamelogged.domain.Game;
+import com.web.br.gamelogged.game.dto.GameDTO;
+
+import java.util.List;
 
 import java.util.Map;
 
