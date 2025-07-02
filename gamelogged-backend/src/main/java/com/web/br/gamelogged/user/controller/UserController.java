@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.web.br.gamelogged.domain.GameInteraction;
 import com.web.br.gamelogged.domain.Review;
+import com.web.br.gamelogged.game.dto.GameDTO;
+import com.web.br.gamelogged.game.service.IgdbService;
 import com.web.br.gamelogged.review.dto.ReviewResponse;
 import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
@@ -23,10 +25,12 @@ import com.web.br.gamelogged.domain.GameInteraction;
 public class UserController {
 
     private final UserService userService;
+    private final IgdbService igdbService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, IgdbService igdbService) {
         this.userService = userService;
+        this.igdbService = igdbService;
     }
 
     @GetMapping("/current")
@@ -119,7 +123,13 @@ public class UserController {
 
             Set<GameInteraction> gameInteractions = userService.getGameInteractionsForUser(uuid);
 
-            return ResponseEntity.ok(gameInteractions);
+            List<Integer> igdbIds = gameInteractions.stream()
+                    .map(interaction -> interaction.getGame().getIgdbId())
+                    .toList();
+
+            List<GameDTO> games = igdbService.findGamesByListOfIgdbId(igdbIds);
+
+            return ResponseEntity.ok(games);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }

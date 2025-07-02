@@ -307,5 +307,21 @@ export const gameAPI = {
         console.log("Game Rating Response:", response);
 
         return await response.json();
+    },
+
+    getCurrentGameInteractions: async () => {
+        const response = await fetch(`http://localhost:8080/user/game-interactions`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch current game interactions: ${response.statusText}`);
+        }
+
+        return await response.json();
+
     }
 };

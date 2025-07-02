@@ -54,6 +54,7 @@ public class GameDTO {
     private void unpackCover(Map<String, String> cover) {
         if (cover != null && cover.get("url") != null) {
             this.coverUrl = "https://" + cover.get("url").substring(2);
+            this.coverUrl = this.coverUrl.replace("t_thumb", "t_1080p");
         }
     }
 }
