@@ -13,6 +13,7 @@ export const API_ENDPOINTS = {
 	GET_REVIEWS: `${API_BASE_URL}/review/game`,
 	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
     GET_ALL_REVIEWS: `${API_BASE_URL}/user/reviews`,
+    GET_GAMES_BY_LIST_IGDB_ID: `${API_BASE_URL}/game/find-list`,
 };
 
 
@@ -247,6 +248,27 @@ export const gameAPI = {
 
         if (!response.ok) {
             throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+        }
+
+        return await response.json();
+    },
+
+    findGameByListOfIgdbId: async (igdbIds: number[]) => {
+        if (!igdbIds || igdbIds.length === 0) {
+            return Promise.resolve([]);
+        }
+
+        const idsAsString = igdbIds.join(',');
+
+        const response = await fetch(`${API_ENDPOINTS.GET_GAMES_BY_LIST_IGDB_ID}?igdbIds=${idsAsString}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch games by IGDB IDs: ${response.statusText}`);
         }
 
         return await response.json();
