@@ -100,4 +100,20 @@ public class IgdbServiceImpl implements IgdbService {
 
         return singleGame;
     }
+
+    public List<Map<String, Object>> searchGameListByName(String name, int limit, int offset) {
+        String body = String.format(
+                "fields id, name, cover.url, first_release_date, platforms.name, summary, genres.name; " +
+                        "search \"%s\"; where cover != null & themes != 42; " +
+                        "limit %d; offset %d;",
+                name, limit, offset);
+
+        return webClient.post()
+                .uri("/games")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<Map<String, Object>>>() {
+                })
+                .block();
+    }
 }

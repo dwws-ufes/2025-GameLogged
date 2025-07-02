@@ -18,7 +18,10 @@ export class HomeController {
         return HomeController.instance;
     }
 
-    public async fetchGames(limit: number, offset: number): Promise<any> {
+    public async fetchGames(limit: number, offset: number, activeSearch: string): Promise<any> {
+        if (activeSearch) {
+            return await gameAPI.searchGameListByName(activeSearch, limit, offset);
+        }
         return await gameAPI.fetchPaginatedGames(limit, offset);
     }
 

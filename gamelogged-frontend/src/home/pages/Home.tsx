@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { gameAPI } from '@/services/APIService';
 import { HomeController } from '../controllers/HomeController';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
+
 
 function HomePage() {
   const GAMES_PER_PAGE = 24;
@@ -15,6 +18,9 @@ function HomePage() {
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const homeController = HomeController.getInstance();
   const isAuthenticated = homeController.isAuthenticated;
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeSearch, setActiveSearch] = useState('');
+
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -23,7 +29,8 @@ function HomePage() {
 
       try {
         const offset = (currentPage - 1) * GAMES_PER_PAGE;
-        const newGames = await homeController.fetchGames(GAMES_PER_PAGE, offset);
+        console.log(`Fetching games for page ${currentPage} with offset ${offset} and search term "${activeSearch}"`);
+        const newGames = await homeController.fetchGames(GAMES_PER_PAGE, offset, activeSearch);
 
         setGames(newGames);
         setHasNextPage(newGames.length === GAMES_PER_PAGE);
@@ -37,7 +44,13 @@ function HomePage() {
     };
 
     fetchGames();
-  }, [currentPage]);
+  }, [currentPage, activeSearch]);
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); 
+    setCurrentPage(1);
+    setActiveSearch(searchTerm);
+  };
 
   const goToNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
   const goToPreviousPage = () => setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
@@ -57,7 +70,21 @@ function HomePage() {
 
   return (
     <div className="container mx-auto px-24 py-8">
+      <div className='flex flex-row justify-between items-center'>
       <h1 className="text-2xl font-bold mb-6">Catálogo de Jogos</h1>
+        
+      <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-auto">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Buscar por nome"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 w-full sm:w-64 md:w-80"
+          />
+        </form>
+        
+      </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {games
