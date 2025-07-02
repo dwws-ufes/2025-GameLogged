@@ -8,6 +8,8 @@ export const API_ENDPOINTS = {
     CADASTRO: `${API_BASE_URL}/auth/cadastro`,
     USER_BY_TOKEN: `${API_BASE_URL}/user/findByToken`,
     USER: `${API_BASE_URL}/user/current`,
+    CREATE_REVIEW: `${API_BASE_URL}/review/create`,
+    ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
 };
 
 
@@ -137,5 +139,63 @@ export const gameAPI = {
             genres: game.genres?.map((genre: any) => genre.name),
             screenshot: game.single_screenshot_url
         };
+    },
+
+    createReview: async (gameId: number, reviewData: any) => {
+        await APIService.getInstance().request(API_ENDPOINTS.CREATE_REVIEW, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+            body: JSON.stringify({ reviewData, gameId }),
+        })
+    },
+
+    changePlayStatus: async (gameId: number, playStatus: string) => {
+        const response = await fetch(`http://localhost:8080/game-interaction/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+            body: JSON.stringify({ gameId, playStatus }),
+        });
+
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+    },
+
+    getPlayStatus: async (gameId: number) => {
+        const response = await fetch(`http://localhost:8080/game-interaction/status/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        return await response.json();
+    },
+
+    sendReview: async (reviewData: any) => {
+        const response = await fetch(API_ENDPOINTS.CREATE_REVIEW, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+            body: JSON.stringify(reviewData),
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to send review: ${response.statusText}`);
+        }
+        return await response.json();
+
     }
-}
+};

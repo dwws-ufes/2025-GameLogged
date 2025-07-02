@@ -48,19 +48,34 @@ function GamePage() {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [isPlayed, setIsPlayed] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [playStatus, setPlayStatus] = useState<PlayStatus>(PlayStatus.NONE);
     const [progress, setProgress] = useState(25)
     const gameController = GameController.getInstance();
 
     useEffect(() => {
-        const fetchGameDetails = async () => {
+        const fetchData = async () => {
             setProgress(50);
             const details = await gameController.searchGameByName(gameName || '');
-            setGameDetails(details)
+            setGameDetails(details);
+            const statusResult = await gameController.getPlayStatus(details['id']);
             setIsLoading(false);
             setProgress(100);
+            if (Array.isArray(statusResult)) {
+                setIsPlayed(statusResult[0].playStatus === PlayStatus.PLAYED);
+                setIsPlaying(statusResult[0].playStatus === PlayStatus.PLAYING);
+                setIsLiked(statusResult[0].playStatus === PlayStatus.WISHLIST);
+                setPlayStatus(statusResult[0].playStatus);
+            } else {
+                setIsPlayed(false);
+                setIsPlaying(false);
+                setIsLiked(false);
+            }
         };
 
-        fetchGameDetails();
+        fetchData().catch((error) => {
+            console.error("Erro ao obter dados do jogo:", error);
+            toast.error("Erro ao obter dados do jogo. Tente novamente mais tarde.");
+        });
     }, [gameName]);
 
     const chartConfig = {
@@ -86,6 +101,14 @@ function GamePage() {
         quantidade: rating.count,
     }));
 
+    const handleChangePlayStatus = async (status: PlayStatus) => {
+        await gameController.changePlayStatus(gameDetails['id'], status);
+        setIsPlayed(status === PlayStatus.PLAYED);
+        setIsPlaying(status === PlayStatus.PLAYING);
+        setIsLiked(status === PlayStatus.WISHLIST);
+        setPlayStatus(status);
+    };
+
     const totalNotas = ratingsData.reduce((acc, curr) => acc + curr.value * curr.count, 0);
     const totalAvaliacoes = ratingsData.reduce((acc, curr) => acc + curr.count, 0);
     const mediaNotas = totalAvaliacoes > 0 ? (totalNotas / totalAvaliacoes).toFixed(2) : "0.00";
@@ -106,14 +129,14 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogReview gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']}/>
+                                    <DialogReview playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
                                     <div className="status-buttons flex flex-row items-center mt-10">
 
                                         {
-                                            !isPlayed ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.PLAYED)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            !isPlayed ? (<button onClick={() => handleChangePlayStatus(PlayStatus.PLAYED)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={controleIcon} alt="Status Icon" className="w-6 h-6" />
                                                 Joguei
-                                            </button>) : (<button onClick={() => gameController.changePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            </button>) : (<button onClick={() => handleChangePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={controleIconFull} alt="Status Icon" className="w-6 h-6" />
                                                 Joguei
                                             </button>)
@@ -121,10 +144,10 @@ function GamePage() {
 
 
                                         {
-                                            !isPlaying ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.PLAYING)}  className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            !isPlaying ? (<button onClick={() => handleChangePlayStatus(PlayStatus.PLAYING)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={playIcon} alt="Status Icon" className="w-6 h-6" />
                                                 Jogando
-                                            </button>) : <button onClick={() => gameController.changePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            </button>) : <button onClick={() => handleChangePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={playIconFull} alt="Status Icon" className="w-6 h-6" />
                                                 Jogando
                                             </button>
@@ -132,10 +155,10 @@ function GamePage() {
 
 
                                         {
-                                            !isLiked ? (<button onClick={() => gameController.changePlayStatus(PlayStatus.WISHLIST)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            !isLiked ? (<button onClick={() => handleChangePlayStatus(PlayStatus.WISHLIST)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={favIcon} alt="Status Icon" className="w-6 h-6" />
                                                 Wishlist
-                                            </button>) : (<button onClick={() => gameController.changePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
+                                            </button>) : (<button onClick={() => handleChangePlayStatus(PlayStatus.NONE)} className="text-white font-bold mr-3 flex items-center justify-center flex-col">
                                                 <img src={favIconFull} alt="Status Icon" className="w-6 h-6" />
                                                 Wishlist
                                             </button>)

@@ -26,31 +26,56 @@ export class GameController {
         return game;
     }
 
-    public async sendReview(gameName: string, event: any) {
+    public async sendReview(gameId : number, event: any) {
 
         const formData = new FormData(event.currentTarget);
         const playStatus = formData.get("playStatus");
-        const plataforma = formData.get("plataform");
-        const nota = formData.get("nota");
-        const review = formData.get("review");
-    }
+        const platform = formData.get("plataform");
+        const rating = formData.get("nota");
+        const reviewText = formData.get("review");
+        const timePlayed = formData.get("timePlayed");
 
-    public async changePlayStatus(playStatus: PlayStatus) {
+        const reviewData = {
+            gameId: Number(gameId),
+            playStatus : event.playStatus,
+            platform : event.plataform,
+            rating: event.nota,
+            reviewText: event.review,
+            timePlayed : event.timePlayed,
+        };
+
+
         if (!this.isUserAuthenticated) {
-            toast.error("Você precisa estar logado para alterar o status do jogo.");
+            toast.error("Você precisa estar logado para enviar uma review.");
             return;
         }
 
         try {
-            //await gameAPI.changePlayStatus(gameName, playStatus);
-            toast.success("Status do jogo alterado com sucesso!" + playStatus);
+            await gameAPI.createReview(reviewData.gameId, reviewData);
+            toast.success("Review enviada com sucesso!");
+        } catch (error) {
+            console.error("Erro ao enviar a review:", error);
+            toast.error("Erro ao enviar a review. Tente novamente mais tarde.");
+        }
+
+
+    }
+
+    public async changePlayStatus(gameId: number, playStatus: PlayStatus) {
+        if (!this.isUserAuthenticated) {
+            toast.error("Você precisa estar logado para alterar o status do jogo.");
+            return;
+        }
+        try {
+            await gameAPI.changePlayStatus(gameId, playStatus);
+            toast.success("Status do jogo alterado com sucesso!");
         } catch (error) {
             console.error("Erro ao alterar o status do jogo:", error);
             toast.error("Erro ao alterar o status do jogo. Tente novamente mais tarde.");
         }
     }
 
-    public async changeGameRating(gameName: string, rating: number) {
+    public async changeGameRating(gameId: number, rating: number) {
         if (!this.isUserAuthenticated) {
             toast.error("Você precisa estar logado para avaliar o jogo.");
             return;
@@ -62,6 +87,23 @@ export class GameController {
         } catch (error) {
             console.error("Erro ao alterar a avaliação do jogo:", error);
             toast.error("Erro ao alterar a avaliação do jogo. Tente novamente mais tarde.");
+        }
+    }
+    
+
+    public async getPlayStatus(gameId: number): Promise<PlayStatus> {
+        if (!this.isUserAuthenticated) {
+            toast.error("Você precisa estar logado para ver o status do jogo.");
+            return "NONE";
+        }
+        
+        try {
+            const playStatus = await gameAPI.getPlayStatus(gameId);
+            return playStatus as PlayStatus;
+        } catch (error) {
+            console.error("Erro ao obter o status do jogo:", error);
+            toast.error("Erro ao obter o status do jogo. Tente novamente mais tarde.");
+            return "NONE";
         }
     }
 
