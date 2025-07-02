@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.web.br.gamelogged.domain.GameInteraction;
 import com.web.br.gamelogged.domain.Review;
+import com.web.br.gamelogged.review.dto.ReviewResponse;
 import com.web.br.gamelogged.user.dto.UpdateProfileDTO;
 import com.web.br.gamelogged.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +139,20 @@ public class UserController {
                     .map(GameInteraction::getReview)
                     .toList();
 
-            return ResponseEntity.ok(reviews);
+            List<ReviewResponse> reviewResponses = reviews.stream()
+                    .map(review -> new ReviewResponse(
+                            review.getGameInteraction().getUser().getNickname(),
+                            review.getDescription(),
+                            review.getGameInteraction().getPlayStatus().toString(),
+                            review.getPlayTimeInHours().toString(),
+                            review.getGameInteraction().getUser().getProfilePictureUrl(),
+                            review.getRating(),
+                            review.getPlatformType(),
+                            review.getCreationDate().toLocalDate(),
+                            review.getGameInteraction().getGame().getIgdbId().toString()))
+                    .toList();
+
+            return ResponseEntity.ok(reviewResponses);
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error na GetMapping(game-interacitions)", e.getMessage()));

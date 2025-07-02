@@ -11,7 +11,8 @@ export const API_ENDPOINTS = {
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
 	GET_REVIEWS: `${API_BASE_URL}/review/game`,
-	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`
+	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`,
+    GET_ALL_REVIEWS: `${API_BASE_URL}/user/reviews`,
 };
 
 
@@ -106,7 +107,7 @@ export const userAPI = {
     },
 
     getCurrentUserReviews: async () => {
-        return await APIService.getInstance().request(`${API_BASE_URL}/user/reviews`, {
+        return await APIService.getInstance().request(API_ENDPOINTS.GET_ALL_REVIEWS, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

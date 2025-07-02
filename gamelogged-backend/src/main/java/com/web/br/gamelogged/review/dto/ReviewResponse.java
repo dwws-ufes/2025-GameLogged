@@ -11,10 +11,24 @@ public class ReviewResponse {
     private Double rating;
     private String platform;
     private LocalDate creationDate;
+    private String gameId;
 
 
 
     public ReviewResponse() {
+    }
+
+    public ReviewResponse(String nickname, String reviewText, String playStatus, String timePlayed,
+                          String profilePicUrl, Double rating, String platform, LocalDate creationDate, String gameId) {
+        this.nickname = nickname;
+        this.reviewText = reviewText;
+        this.playStatus = playStatus;
+        this.timePlayed = timePlayed;
+        this.profilePicUrl = profilePicUrl;
+        this.rating = rating;
+        this.platform = platform;
+        this.creationDate = creationDate;
+        this.gameId = gameId;
     }
 
     public Double getRating() {
@@ -79,5 +93,13 @@ public class ReviewResponse {
 
     public void setTimePlayed(String timePlayed) {
         this.timePlayed = timePlayed;
+    }
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 }

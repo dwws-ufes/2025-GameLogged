@@ -8,6 +8,7 @@ import { userAPI } from "@/services/APIService";
 import { useNavigate } from 'react-router-dom';
 
 import './PerfilPage.css';
+import { Button } from '@/components/ui/button';
 
 
 interface UserProfile {
@@ -38,7 +39,6 @@ function PerfilPage() {
             try {
                 const userData = await userAPI.getCurrentUser();
                 setUser(userData);
-                console.log("Dados do usuário:", userData);
             } catch (err) {
                 console.error("Erro ao buscar dados do perfil:", err);
                 setError("Não foi possível carregar o perfil. Tente novamente mais tarde.");
