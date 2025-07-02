@@ -242,11 +242,6 @@ function GamePage() {
                                     <span className="game-genres text-base text-white">{gameDetails['summary']}</span>
                                 </div>
                                 <Separator className="my-4" />
-                                <div className="col-auto mb-4">
-                                    <div className="row ml-0 reviews-button">
-                                        <Button className="bg-blue-500 text-white hover:bg-blue-800 font-bold " size="sm">Reviews</Button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div className="col text-white game-plataforms-column comfortaa">

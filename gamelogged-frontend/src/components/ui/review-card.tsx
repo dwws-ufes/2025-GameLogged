@@ -1,4 +1,5 @@
-import { PlayStatus } from "@/game/enum/PlayStatus";
+import { PlayStatus, PlayStatusLabel } from "@/game/enum/PlayStatus";
+import { formatDate } from "@/services/DateFormater";
 
 type ReviewCardProps = {
     review: {
@@ -26,17 +27,17 @@ export function ReviewCard({ review }: ReviewCardProps) {
                     <img src={review.profilePicUrl} alt="Avatar" className="w-12 h-12 rounded-full" />
                     <div className="ml-5">
                         <h3 className="text-lg font-semibold">{review.nickname}</h3>
-                        <p className="text-sm text-black">{review.creationDate}</p>
-                        <div className="flex items-center">
+                        <p className="text-sm text-black">{formatDate(review.creationDate)}</p>
+                        <div className="flex items-center text-2xl">
                             <span className="text-yellow-500">{'★'.repeat(review.rating)}</span>
                             <span className="text-gray-400">{'★'.repeat(5 - review.rating)}</span>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col items-end ml-auto">
-                    <p className="text-sm text-black"><span className="font-bold">Plataforma: </span>{review.platform}</p>
-                    <p className="text-sm text-black"><span className="font-bold">Status:</span> {review.playStatus}</p>
-                    <p className="text-sm text-black"><span className="font-bold">Tempo jogado: </span> {review.timePlayed} horas</p>
+                    <p className="text-sm text-black"><span className="font-bold text-lg">Plataforma: </span>{review.platform}</p>
+                    <p className="text-sm text-black"><span className="font-bold text-lg">Status:</span> {PlayStatusLabel[review.playStatus]}</p>
+                    <p className="text-sm text-black"><span className="font-bold text-lg">Tempo jogado: </span> {review.timePlayed} horas</p>
                 </div>
             </div>
             <div className="mt-4">
