@@ -1,11 +1,14 @@
 package com.web.br.gamelogged.review.controller;
 
+import com.web.br.gamelogged.review.dto.CreateReviewRequest;
+import com.web.br.gamelogged.review.dto.GameReviewsResponseDTO;
 import com.web.br.gamelogged.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.util.Map;
 
 @RestController
@@ -21,9 +24,9 @@ public class ReviewController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createReview(@RequestBody Integer gameId, @RequestBody  String reviewText, @RequestBody Double rating, @RequestBody  String platform, @RequestBody Double playTimeInHours) {
+    public ResponseEntity<Map<String, Object>> createReview(@RequestBody CreateReviewRequest request) {
         try {
-            reviewService.createReview(SecurityContextHolder.getContext().getAuthentication().getName(), gameId, reviewText, rating, platform, playTimeInHours);
+            reviewService.createReview(SecurityContextHolder.getContext().getAuthentication().getName(), request.getGameId(), request.getReviewText(), request.getRating(), request.getPlatform(), request.getPlayTimeInHours(), request.getPlayStatus());
             return ResponseEntity.ok(Map.of("message", "Review criada com sucesso"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -31,9 +34,9 @@ public class ReviewController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Map<String, Object>> updateReview(Integer gameId, String reviewText, double rating, String platform, Double playTimeInHours) {
+    public ResponseEntity<Map<String, Object>> updateReview(@RequestBody CreateReviewRequest request) {
         try {
-            reviewService.updateReview(SecurityContextHolder.getContext().getAuthentication().getName(), gameId, reviewText, rating, platform, playTimeInHours);
+            reviewService.updateReview(SecurityContextHolder.getContext().getAuthentication().getName(), request.getGameId(), request.getReviewText(), request.getRating(), request.getPlatform(), request.getPlayTimeInHours());
             return ResponseEntity.ok(Map.of("message", "Review atualizada com sucesso"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -45,6 +48,16 @@ public class ReviewController {
         try {
             reviewService.deleteReview(userId, gameId);
             return ResponseEntity.ok(Map.of("message", "Review deletada com sucesso"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<?> getReview(@PathVariable Integer gameId) {
+        try {
+            GameReviewsResponseDTO review = reviewService.getGameReviews(gameId, SecurityContextHolder.getContext().getAuthentication().getName());
+            return ResponseEntity.ok(review);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

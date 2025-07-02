@@ -29,7 +29,7 @@ public class GameInteractionServiceImpl implements GameInteractionService {
 
     @Override
     @Transactional
-    public void createGameInteraction(String userId, Integer gameId, String playStatus) {
+    public GameInteraction createGameInteraction(String userId, Integer gameId, String playStatus) {
         if (gameInteractionRepository.findByUserUuidAndGameIgdbId(userId, gameId).isPresent()) {
             throw new IllegalArgumentException("Interação de jogo já existe para o usuário: " + userId + " e jogo: " + gameId);
         }
@@ -44,7 +44,7 @@ public class GameInteractionServiceImpl implements GameInteractionService {
         gameInteraction.setGame(game);
         gameInteraction.setPlayStatus(PlayStatus.valueOf(playStatus.toUpperCase()));
 
-        gameInteractionRepository.save(gameInteraction);
+        return gameInteractionRepository.save(gameInteraction);
     }
 
     @Override

@@ -22,6 +22,7 @@ import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { DialogReview } from "@/components/ui/dialog-review";
 import { PlayStatus } from "../enum/PlayStatus";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
+import { ReviewCard } from "@/components/ui/review-card";
 
 
 const loadGame = {
@@ -49,6 +50,8 @@ function GamePage() {
     const [isPlayed, setIsPlayed] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [playStatus, setPlayStatus] = useState<PlayStatus>(PlayStatus.NONE);
+    const [userReview, setUserReview] = useState([]);
+    const [generalReviews, setGeneralReviews] = useState([]);
     const [progress, setProgress] = useState(25)
     const gameController = GameController.getInstance();
 
@@ -57,7 +60,10 @@ function GamePage() {
             setProgress(50);
             const details = await gameController.searchGameByName(gameName || '');
             setGameDetails(details);
-            const statusResult = await gameController.getPlayStatus(details['id']);
+            const [statusResult, reviewsResult] = await Promise.all([
+                gameController.getPlayStatus(details['id']),
+                gameController.getReviews(details['id'])
+            ]);
             setIsLoading(false);
             setProgress(100);
             if (Array.isArray(statusResult)) {
@@ -70,7 +76,20 @@ function GamePage() {
                 setIsPlaying(false);
                 setIsLiked(false);
             }
+
+            if (reviewsResult) {
+                setUserReview(reviewsResult.userReview);
+                setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])] || []);
+            } else {
+                // Limpa os estados caso a resposta venha no formato errado ou vazia
+                setUserReview([]);
+                setGeneralReviews([]);
+            }
+
+
         };
+
+
 
         fetchData().catch((error) => {
             console.error("Erro ao obter dados do jogo:", error);
@@ -223,11 +242,6 @@ function GamePage() {
                                     <span className="game-genres text-base text-white">{gameDetails['summary']}</span>
                                 </div>
                                 <Separator className="my-4" />
-                                <div className="col-auto mb-4">
-                                    <div className="row ml-0 reviews-button">
-                                        <Button className="bg-blue-500 text-white hover:bg-blue-800 font-bold " size="sm">Reviews</Button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div className="col text-white game-plataforms-column comfortaa">
@@ -247,6 +261,19 @@ function GamePage() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div>
+                        {
+                            generalReviews[0] != null ? (
+                                generalReviews.map((review, idx) => (
+                                    <ReviewCard review={review} />
+                                ))
+                            ) : (
+                                <div className="flex flex-col items-center justify-center">
+                                    <p className="text-white">Nenhuma review encontrada para este jogo.</p>
+                                </div>
+                            )
+                        }
                     </div>
                 </div >
             </div>
