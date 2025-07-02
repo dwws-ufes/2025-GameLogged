@@ -55,6 +55,11 @@ function EditProfilePage() {
         try {
             let newImageUrl: string | undefined;
 
+            if (!formData.nickname.trim()) {
+                alert("Nickname não pode ser vazio.");
+                return;
+            }
+
             const dataToUpdate: { nickname: string; biography?: string; profilePictureUrl?: string } = {
                 ...formData,
             };
