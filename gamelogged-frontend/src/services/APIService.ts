@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
+    GET_REVIEWS: `${API_BASE_URL}/review/game`,
 };
 
 
@@ -186,5 +187,22 @@ export const gameAPI = {
         }
         return await response.json();
 
+    },
+
+
+    getReviews: async (gameId : number) => {
+        const response = await fetch(`${API_ENDPOINTS.GET_REVIEWS}/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+        }
+
+        return await response.json();
     }
 };

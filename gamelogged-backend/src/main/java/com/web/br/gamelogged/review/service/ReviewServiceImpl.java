@@ -7,6 +7,8 @@ import com.web.br.gamelogged.domain.Review;
 import com.web.br.gamelogged.game.service.GameService;
 import com.web.br.gamelogged.gameInteraction.repository.GameInteractionRepository;
 import com.web.br.gamelogged.gameInteraction.service.GameInteractionService;
+import com.web.br.gamelogged.review.dto.GameReviewsResponseDTO;
+import com.web.br.gamelogged.review.dto.ReviewResponse;
 import com.web.br.gamelogged.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -107,6 +112,37 @@ public class ReviewServiceImpl implements ReviewService {
         gameInteraction.setReview(null);
         gameInteractionRepository.save(gameInteraction);
         gameService.removeRatingFromGame(gameId, ratingToRemove);
+    }
+
+    @Override
+    public GameReviewsResponseDTO getGameReviews(Integer gameId, String userId) {
+        List<GameInteraction> interactions = gameInteractionRepository.findByGameIgdbId(gameId);
+        GameReviewsResponseDTO response = new GameReviewsResponseDTO();
+        List<ReviewResponse> reviews = new ArrayList<>();
+        ReviewResponse userReview = null;
+
+        for (GameInteraction interaction : interactions) {
+            if (interaction.getReview() != null) {
+                ReviewResponse reviewResponse = new ReviewResponse();
+                reviewResponse.setNickname(interaction.getUser().getNickname());
+                reviewResponse.setProfilePicUrl(interaction.getUser().getProfilePictureUrl());
+                reviewResponse.setReviewText(interaction.getReview().getDescription());
+                if (interaction.getReview().getPlayTimeInHours() != null) {
+                    reviewResponse.setTimePlayed(interaction.getReview().getPlayTimeInHours().toString());
+                }
+                reviewResponse.setPlayStatus(interaction.getPlayStatus().name());
+
+                if (interaction.getUser().getUuid().equals(userId)) {
+                    userReview = reviewResponse;
+                } else {
+                    reviews.add(reviewResponse);
+                }
+            }
+        }
+
+        response.setReviews(reviews);
+        response.setUserReview(userReview);
+        return response;
     }
 
     private Optional<GameInteraction> findGameInteraction(String userId, Integer gameId) {

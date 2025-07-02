@@ -1,6 +1,7 @@
 package com.web.br.gamelogged.review.controller;
 
 import com.web.br.gamelogged.review.dto.CreateReviewRequest;
+import com.web.br.gamelogged.review.dto.GameReviewsResponseDTO;
 import com.web.br.gamelogged.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,16 @@ public class ReviewController {
         try {
             reviewService.deleteReview(userId, gameId);
             return ResponseEntity.ok(Map.of("message", "Review deletada com sucesso"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<?> getReview(@PathVariable Integer gameId) {
+        try {
+            GameReviewsResponseDTO review = reviewService.getGameReviews(gameId, SecurityContextHolder.getContext().getAuthentication().getName());
+            return ResponseEntity.ok(review);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

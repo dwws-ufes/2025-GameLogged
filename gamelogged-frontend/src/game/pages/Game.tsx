@@ -49,6 +49,8 @@ function GamePage() {
     const [isPlayed, setIsPlayed] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [playStatus, setPlayStatus] = useState<PlayStatus>(PlayStatus.NONE);
+    const [userReview, setUserReview] = useState(null);
+    const [generalReviews, setGeneralReviews] = useState([]);
     const [progress, setProgress] = useState(25)
     const gameController = GameController.getInstance();
 
@@ -57,7 +59,10 @@ function GamePage() {
             setProgress(50);
             const details = await gameController.searchGameByName(gameName || '');
             setGameDetails(details);
-            const statusResult = await gameController.getPlayStatus(details['id']);
+            const [statusResult, reviewsResult] = await Promise.all([
+                gameController.getPlayStatus(details['id']),
+                gameController.getReviews(details['id'])
+            ]);
             setIsLoading(false);
             setProgress(100);
             if (Array.isArray(statusResult)) {
@@ -70,7 +75,20 @@ function GamePage() {
                 setIsPlaying(false);
                 setIsLiked(false);
             }
+
+            if (reviewsResult) {
+                setUserReview(reviewsResult.userReview);
+                setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])]);
+            } else {
+                // Limpa os estados caso a resposta venha no formato errado ou vazia
+                setUserReview(null);
+                setGeneralReviews([]);
+            }
+
+
         };
+
+
 
         fetchData().catch((error) => {
             console.error("Erro ao obter dados do jogo:", error);

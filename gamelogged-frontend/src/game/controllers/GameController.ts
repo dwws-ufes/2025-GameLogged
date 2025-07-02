@@ -85,4 +85,21 @@ export class GameController {
         }
     }
 
+    public async getReviews(gameId: number): Promise<any[]> {
+        if (!this.isUserAuthenticated) {
+            toast.error("Você precisa estar logado para ver as reviews do jogo.");
+            return [];
+        }
+        
+        try {
+            const reviews = await gameAPI.getReviews(gameId);
+            console.log("Reviews obtidas:", reviews);
+            return reviews;
+        } catch (error) {
+            console.error("Erro ao obter as reviews do jogo:", error);
+            toast.error("Erro ao obter as reviews do jogo. Tente novamente mais tarde.");
+            return [];
+        }
+    }
+
 }
