@@ -76,7 +76,7 @@ export function DialogReview({ gameName, releaseYear, imageUrl, plataforms, play
                             <img src={imageUrl} className="w-70 h-72 object-cover rounded" />
                             <div>
                                 <Label htmlFor="playStatus" className="mt-10 w-full mb-2">Situação</Label>
-                                <select name="playStatus" defaultValue={isReviewed ? playStatus : "NONE"} className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                                <select name="playStatus" defaultValue={playStatus} className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
                                     {Object.entries(PlayStatusLabel).map(([value, label]) => (
                                         <option key={value} value={value}>{label}</option>
                                     ))}

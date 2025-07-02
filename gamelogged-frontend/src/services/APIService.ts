@@ -289,7 +289,7 @@ export const gameAPI = {
         }
 
         return await response.json();
-    }
+    },
 
     getGameRating: async (gameId: number) => {
         const response = await fetch(`http://localhost:8080/game/rating/${gameId}`, {
