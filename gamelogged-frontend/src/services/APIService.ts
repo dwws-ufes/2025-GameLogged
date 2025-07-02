@@ -221,5 +221,23 @@ export const gameAPI = {
         }
 
         return await response.json();
+    },
+
+    getGameRating: async (gameId: number) => {
+        const response = await fetch(`http://localhost:8080/game/rating/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch game rating: ${response.statusText}`);
+        }
+
+        console.log("Game Rating Response:", response);
+
+        return await response.json();
     }
 };

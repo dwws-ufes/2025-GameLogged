@@ -112,4 +112,22 @@ export class GameController {
         }
     }
 
+
+    public async getRatings(gameId: number): Promise<any[]> {
+        if (!this.isUserAuthenticated) {
+            toast.error("Você precisa estar logado para ver as avaliações do jogo.");
+            return [];
+        }
+
+        try {
+            const ratings = await gameAPI.getGameRating(gameId);
+            console.log("Avaliações obtidas:", ratings);
+            return ratings;
+        } catch (error) {
+            console.error("Erro ao obter as avaliações do jogo:", error);
+            toast.error("Erro ao obter as avaliações do jogo. Tente novamente mais tarde.");
+            return [];
+        }
+    }
+
 }

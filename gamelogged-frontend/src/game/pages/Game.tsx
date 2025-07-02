@@ -53,6 +53,8 @@ function GamePage() {
     const [userReview, setUserReview] = useState([]);
     const [generalReviews, setGeneralReviews] = useState([]);
     const [progress, setProgress] = useState(25)
+    const [ratings, setRatings] = useState<{ [key: number]: number }>({});
+    const [avgRating, setAvgRating] = useState<number>(0);
     const gameController = GameController.getInstance();
 
     useEffect(() => {
@@ -60,9 +62,10 @@ function GamePage() {
             setProgress(50);
             const details = await gameController.searchGameByName(gameName || '');
             setGameDetails(details);
-            const [statusResult, reviewsResult] = await Promise.all([
+            const [statusResult, reviewsResult, ratingsResult] = await Promise.all([
                 gameController.getPlayStatus(details['id']),
-                gameController.getReviews(details['id'])
+                gameController.getReviews(details['id']),
+                gameController.getRatings(details['id'])
             ]);
             setIsLoading(false);
             setProgress(100);
@@ -81,12 +84,17 @@ function GamePage() {
                 setUserReview(reviewsResult.userReview);
                 setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])] || []);
             } else {
-                // Limpa os estados caso a resposta venha no formato errado ou vazia
                 setUserReview([]);
                 setGeneralReviews([]);
             }
 
-
+            if (ratingsResult) {
+                setRatings(ratingsResult.ratingsCount || {});
+                setAvgRating(ratingsResult.averageRating || 0);
+            } else {
+                setRatings({});
+                setAvgRating(0);
+            }
         };
 
 
@@ -105,19 +113,9 @@ function GamePage() {
     } satisfies ChartConfig
 
 
-    const ratingsData = [
-        { value: 1, count: 3 },
-        { value: 2, count: 5 },
-        { value: 3, count: 12 },
-        { value: 3.5, count: 10 },
-        { value: 2.8, count: 6 },
-        { value: 4, count: 8 },
-        { value: 5, count: 7 },
-    ];
-
-    const data = ratingsData.map(rating => ({
-        nota: rating.value,
-        quantidade: rating.count,
+    const ratingsData = Object.entries(ratings).map(([key, value]) => ({
+        nota: parseFloat(key),
+        quantidade: value as number,
     }));
 
     const handleChangePlayStatus = async (status: PlayStatus) => {
@@ -127,11 +125,6 @@ function GamePage() {
         setIsLiked(status === PlayStatus.WISHLIST);
         setPlayStatus(status);
     };
-
-    const totalNotas = ratingsData.reduce((acc, curr) => acc + curr.value * curr.count, 0);
-    const totalAvaliacoes = ratingsData.reduce((acc, curr) => acc + curr.count, 0);
-    const mediaNotas = totalAvaliacoes > 0 ? (totalNotas / totalAvaliacoes).toFixed(2) : "0.00";
-
 
     return (
         !isLoading ? (
@@ -189,11 +182,11 @@ function GamePage() {
                                     <div className="rating-chart-content">
                                         <div className="rating-header mb-4">
                                             <h2 className="text-2xl text-black font-bold mb-2">Nota Média</h2>
-                                            <h2 className="text-2xl text-black font-bold mb-2">{mediaNotas}</h2>
+                                            <h2 className="text-2xl text-black font-bold mb-2">{avgRating}</h2>
                                         </div>
                                         <div className="rating-chart">
                                             <ChartContainer config={chartConfig}>
-                                                <BarChart accessibilityLayer data={data} barCategoryGap="0%" barGap={0}>
+                                                <BarChart accessibilityLayer data={ratingsData} barCategoryGap="0%" barGap={0}>
                                                     <CartesianGrid vertical={false} />
                                                     <XAxis
                                                         dataKey="nota"
