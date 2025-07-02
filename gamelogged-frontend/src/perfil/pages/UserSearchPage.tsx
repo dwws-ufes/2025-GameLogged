@@ -3,7 +3,8 @@ import { userAPI } from '@/services/APIService';
 import FriendCard from '@/components/ui/FriendCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, LoaderCircle } from 'lucide-react';
+import { Search, LoaderCircle, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Friend {
@@ -20,7 +21,7 @@ function UserSearchPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [hasSearched, setHasSearched] = useState<boolean>(false);
-
+    const navigate = useNavigate();
 
     const handleSearchSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -91,6 +92,10 @@ function UserSearchPage() {
                 <Button type="submit" disabled={isLoading}>
                     <Search className="h-4 w-4 mr-2" />
                     Buscar
+                </Button>
+                <Button onClick={() => navigate(-1)}>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Voltar
                 </Button>
             </form>
 
