@@ -69,6 +69,25 @@ function GameTab() {
                 )}
             </div>
             <div className={"divider"}/>
+            <div className="pagination-controls">
+                <button
+                    className="pagination-button"
+                    onClick={goToPreviousPage}
+                    disabled={currentPage === 1}
+                >
+                    Anterior
+                </button>
+                <span className="pagination-info">
+                    Página {currentPage}
+                </span>
+                <button
+                    className="pagination-button"
+                    onClick={goToNextPage}
+                    disabled={!hasNextPage}
+                >
+                    Próxima
+                </button>
+            </div>
         </div>
     );
 }

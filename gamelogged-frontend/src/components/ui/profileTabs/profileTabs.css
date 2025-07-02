@@ -157,3 +157,24 @@
     margin: 1vh 0;
     background-color: rgba(255, 255, 255, 0.45);
 }
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 3vh;
+    margin-top: 2vh;
+}
+
+.pagination-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 100px;
+    font-size: large;
+    cursor: pointer;
+    border-radius: 4px;
+    background: #083b93;
+}
