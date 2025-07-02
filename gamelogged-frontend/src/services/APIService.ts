@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     USER_BY_TOKEN: `${API_BASE_URL}/user/findByToken`,
     USER: `${API_BASE_URL}/user/current`,
     CREATE_REVIEW: `${API_BASE_URL}/review/create`,
+    UPDATE_REVIEW: `${API_BASE_URL}/review/update`,
     ALTER_PLAY_STATUS: `${API_BASE_URL}/game-interaction/update`,
 	GET_REVIEWS: `${API_BASE_URL}/review/game`,
 	UPDATE_PROFILE: `${API_BASE_URL}/user/update-profile`
@@ -234,6 +235,22 @@ export const gameAPI = {
 
     },
 
+    updateReview: async (reviewData: any) => {
+        const response = await fetch(`${API_ENDPOINTS.UPDATE_REVIEW}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                },
+                body: JSON.stringify(reviewData),
+            });
+        if (!response.ok) {
+            throw new Error(`Failed to update review: ${response.statusText}`);
+        }
+        return await response.json();
+    },
+
 
     getReviews: async (gameId : number) => {
         const response = await fetch(`${API_ENDPOINTS.GET_REVIEWS}/${gameId}`, {
@@ -247,6 +264,24 @@ export const gameAPI = {
         if (!response.ok) {
             throw new Error(`Failed to fetch reviews: ${response.statusText}`);
         }
+
+        return await response.json();
+    },
+
+    getGameRating: async (gameId: number) => {
+        const response = await fetch(`http://localhost:8080/game/rating/${gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch game rating: ${response.statusText}`);
+        }
+
+        console.log("Game Rating Response:", response);
 
         return await response.json();
     }

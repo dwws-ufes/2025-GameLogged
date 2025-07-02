@@ -22,10 +22,10 @@ export function ReviewCard({ review }: ReviewCardProps) {
 
     return (
         <div className="bg-white shadow-md rounded-lg p-4 review-card">
-            <div className="flex items-center justify-between space-x-4">
+            <div className="flex items-center justify-between space-x-7">
                 <div className="flex items-center space-x-4">
                     <img src={review.profilePicUrl} alt="Avatar" className="w-12 h-12 rounded-full" />
-                    <div className="ml-5">
+                    <div className="ml-2">
                         <h3 className="text-lg font-semibold">{review.nickname}</h3>
                         <p className="text-sm text-black">{formatDate(review.creationDate)}</p>
                         <div className="flex items-center text-2xl">
@@ -34,10 +34,10 @@ export function ReviewCard({ review }: ReviewCardProps) {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col items-end ml-auto">
-                    <p className="text-sm text-black"><span className="font-bold text-lg">Plataforma: </span>{review.platform}</p>
-                    <p className="text-sm text-black"><span className="font-bold text-lg">Status:</span> {PlayStatusLabel[review.playStatus]}</p>
-                    <p className="text-sm text-black"><span className="font-bold text-lg">Tempo jogado: </span> {review.timePlayed} horas</p>
+                <div className="flex flex-col items-end ml-5">
+                    <p className="text-sm text-black"><span className="font-bold text-sm">Plataforma: </span>{review.platform}</p>
+                    <p className="text-sm text-black"><span className="font-bold text-sm">Status:</span> {PlayStatusLabel[review.playStatus]}</p>
+                    <p className="text-sm text-black"><span className="font-bold text-sm">Tempo jogado: </span> {review.timePlayed} horas</p>
                 </div>
             </div>
             <div className="mt-4">
