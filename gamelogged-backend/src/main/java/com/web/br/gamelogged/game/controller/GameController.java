@@ -107,18 +107,4 @@ public class GameController {
         return ResponseEntity.ok(games);
 
     }
-
-    @GetMapping("/rating/{gameId}")
-    public ResponseEntity<Map<String, Object>> getGameRating(@PathVariable Integer gameId) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("averageRating", 0.0);
-        response.put("ratingsCount", 0);
-        try {
-            response = gameService.getGameRatingInfo(gameId);
-            return ResponseEntity.ok(response);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.ok(response);
-        }
-    }
-
 }
