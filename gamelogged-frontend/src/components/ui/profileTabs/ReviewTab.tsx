@@ -1,5 +1,3 @@
-import GameCard from "@/components/ui/GameCard.tsx";
-
 function ReviewTab() {
 
     interface GameReview {
