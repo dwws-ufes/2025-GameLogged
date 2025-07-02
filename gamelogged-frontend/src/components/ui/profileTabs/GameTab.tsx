@@ -1,26 +1,12 @@
-import "./profileTabs.css"
+import "./profileTabs.css";
 import GameCard from '@/components/ui/GameCard';
 import {useEffect, useState} from "react";
+import {AuthController} from "@/authentication/controllers/AuthController.ts";
 
-const igdbApi = {
-    fetchPaginatedGames: async (limit: number, offset: number) => {
-        console.log(`Buscando na API: limit=${limit}, offset=${offset}`);
-
-        // TODO: implementar consulta no igdb
-
-        return Array.from({length: limit}, (_, index) => ({
-            id: offset + index + 1,
-            name: `Game #${offset + index + 1}`,
-            coverUrl: `https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co93cr.jpg?text=Game+${offset + index + 1}`, // URL de imagem de placeholder
-        }));
-    },
-};
+const GAMES_PER_PAGE = 12;
 
 function GameTab() {
-
-    // Simulating a list of games for demonstration purposes
-    const GAMES_PER_PAGE = 12;
-
+    const {user} = AuthController.getInstance();
     const [games, setGames] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -28,30 +14,39 @@ function GameTab() {
     const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
     useEffect(() => {
-        const fetchGames = async () => {
+        const fetchUserGames = async () => {
             setIsLoading(true);
             setError(null);
 
             try {
-                const offset = (currentPage - 1) * GAMES_PER_PAGE;
-                const newGames = await igdbApi.fetchPaginatedGames(GAMES_PER_PAGE, offset);
+                if (!user?.id) return;
 
-                setGames(newGames);
-                setHasNextPage(newGames.length === GAMES_PER_PAGE);
+                const offset = (currentPage - 1) * GAMES_PER_PAGE;
+                const response = await fetch(
+                    `https://api.gamelogged.com/users/${user.id}/games?limit=${GAMES_PER_PAGE}&offset=${offset}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar jogos');
+                }
+
+                const data = await response.json();
+                setGames(data);
+                setHasNextPage(data.length === GAMES_PER_PAGE);
 
             } catch (err) {
-                setError('Falha ao carregar os jogos. Tente novamente mais tarde.');
-                console.error(err);
+                setError(err instanceof Error ? err.message : 'Erro desconhecido');
+                console.error("Erro na busca:", err);
             } finally {
                 setIsLoading(false);
             }
         };
 
-        fetchGames();
-    }, [currentPage]);
+        fetchUserGames();
+    }, [currentPage, user?.id]);
 
-    const goToNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
-    const goToPreviousPage = () => setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+    const goToNextPage = () => hasNextPage && setCurrentPage(prev => prev + 1);
+    const goToPreviousPage = () => setCurrentPage(prev => Math.max(1, prev - 1));
 
     if (isLoading) {
         return <div className="text-center p-10">Carregando jogos...</div>;
@@ -61,27 +56,29 @@ function GameTab() {
         return <div className="text-center p-10 text-red-500">{error}</div>;
     }
 
+    if (games.length === 0) {
+        return <div className="text-center p-10">Nenhum jogo encontrado</div>;
+    }
+
     return (
         <div className="profile-tabs-games">
-            <div className={"profile-tab-grid-container"}>
-                {games.map((game) =>
+            <div className="profile-tab-grid-container">
+                {games.map((game) => (
                     <GameCard key={game.id} game={game}/>
-                )}
+                ))}
             </div>
-            <div className={"divider"}/>
+
             <div className="pagination-controls">
                 <button
-                    className="pagination-button"
                     onClick={goToPreviousPage}
                     disabled={currentPage === 1}
                 >
                     Anterior
                 </button>
-                <span className="pagination-info">
-                    Página {currentPage}
-                </span>
+
+                <span>Página {currentPage}</span>
+
                 <button
-                    className="pagination-button"
                     onClick={goToNextPage}
                     disabled={!hasNextPage}
                 >
