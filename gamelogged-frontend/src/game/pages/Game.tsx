@@ -51,6 +51,7 @@ function GamePage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [playStatus, setPlayStatus] = useState<PlayStatus>(PlayStatus.NONE);
     const [userReview, setUserReview] = useState([]);
+    const [isReviewed, setIsReviewed] = useState<boolean>(false);
     const [generalReviews, setGeneralReviews] = useState([]);
     const [progress, setProgress] = useState(25)
     const [ratings, setRatings] = useState<{ [key: number]: number }>({});
@@ -83,6 +84,11 @@ function GamePage() {
             if (reviewsResult) {
                 setUserReview(reviewsResult.userReview);
                 setGeneralReviews([reviewsResult.userReview, ...(reviewsResult.reviews || [])] || []);
+
+                if(reviewsResult.userReview){
+                    setIsReviewed(true);
+                }
+
             } else {
                 setUserReview([]);
                 setGeneralReviews([]);
@@ -141,7 +147,7 @@ function GamePage() {
                             </div>
                             <div className="game-button items-center p-4 shadow-md mt-4">
                                 <div className="game-buttons-content items-center">
-                                    <DialogReview reviewText={userReview && userReview.reviewText ? userReview.reviewText : ""} isReviewed={userReview && userReview.reviewText} timePlayed={userReview.timePlayed} rating={userReview.rating} playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
+                                    <DialogReview reviewText={isReviewed ? userReview.reviewText : ""} isReviewed={isReviewed} timePlayed={isReviewed ? userReview.timePlayed : "00:00:00"} rating={isReviewed ? userReview.rating : 0} playStatus={playStatus} gameId={gameDetails['id']} gameName={gameName!} imageUrl={gameDetails['coverUrl']} releaseYear={new Date(gameDetails['firstReleaseDate'] * 1000).getFullYear().toString()} plataforms={gameDetails['platforms']} />
                                     <div className="status-buttons flex flex-row items-center mt-10">
 
                                         {
