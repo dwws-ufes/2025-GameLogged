@@ -41,6 +41,10 @@
   font-family: 'Comfortaa';
 }
 
+.venite-adoremus {
+  font-family: 'Venite Adoremus';
+}
+
 @custom-variant dark (&:is(.dark *));
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -88,6 +92,8 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
+
+
 
 /* a {
   font-weight: 500;
