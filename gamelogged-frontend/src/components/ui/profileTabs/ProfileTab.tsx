@@ -6,12 +6,12 @@ interface ProfileTabProps {
     biography: string,
     followerCount: number,
     totalGamesPlayed: number,
-    totalReviewsWritten: number;
+    reviewCount: number;
     averageRating: number;
 }
 
 
-function ProfileTab({ biography, followerCount, totalGamesPlayed, totalReviewsWritten, averageRating }: ProfileTabProps) {
+function ProfileTab({ biography, followerCount, totalGamesPlayed, reviewCount, averageRating }: ProfileTabProps) {
     return (
         <div className="profile-tabs-profile">
             <div className={"profile-tab-bio-rating"}>
@@ -31,7 +31,7 @@ function ProfileTab({ biography, followerCount, totalGamesPlayed, totalReviewsWr
                         {averageRating}
                     </span>
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                        ({totalReviewsWritten} reviews)
+                        ({reviewCount} reviews)
                     </span>
                 </div>
             </div>
@@ -50,7 +50,7 @@ function ProfileTab({ biography, followerCount, totalGamesPlayed, totalReviewsWr
                     <div className={"profile-tab-statistic-element"}>
                         <CountUp
                             from={0}
-                            to={totalReviewsWritten}
+                            to={reviewCount}
                             duration={0.5}
                             className={"profile-tab-statistics-number"}
                         />

@@ -18,7 +18,7 @@ interface UserProfile {
     creationDate: string;
     followersCount: number;
     totalGamesPlayed: number;
-    totalReviewsWritten: number;
+    reviewCount: number;
     averageRating: number;
 }
 
@@ -38,6 +38,7 @@ function PerfilPage() {
             try {
                 const userData = await userAPI.getCurrentUser();
                 setUser(userData);
+                console.log("Dados do usuário:", userData);
             } catch (err) {
                 console.error("Erro ao buscar dados do perfil:", err);
                 setError("Não foi possível carregar o perfil. Tente novamente mais tarde.");
@@ -85,7 +86,7 @@ function PerfilPage() {
                         biography={user?.biography ?? "Nenhuma biografia disponível."}
                         followerCount={user?.followersCount ?? 0}
                         totalGamesPlayed={user?.totalGamesPlayed ?? 0}
-                        totalReviewsWritten={user?.totalReviewsWritten ?? 0}
+                        reviewCount={user?.reviewCount ?? 0}
                         averageRating={user?.averageRating ?? 0.0}
                     />
                 </TabsContent>
