@@ -141,31 +141,31 @@ public class IgdbServiceImpl implements IgdbService {
 
         ParameterizedSparqlString pss = new ParameterizedSparqlString();
         pss.setCommandText("""
-        PREFIX dbo: <http://dbpedia.org/ontology/>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-        SELECT ?nomeDoJogo ?desenvolvedora ?genero ?dataLancamento ?imagem
-        WHERE {
-          ?jogo a dbo:VideoGame ;
-                rdfs:label ?nomeDoJogo ;
-                dbo:developer ?desenvolvedoraURI ;
-                dbo:genre ?generoURI ;
-                dbo:releaseDate ?dataLancamento .
-
-        OPTIONAL { ?jogo dbo:thumbnail ?imagem . }
-
-
-          ?desenvolvedoraURI rdfs:label ?desenvolvedora .
-          ?generoURI rdfs:label ?genero .
-
-          FILTER (lang(?nomeDoJogo) = "en")
-          FILTER (lang(?desenvolvedora) = "en")
-          FILTER (lang(?genero) = "en")
-          FILTER (CONTAINS(LCASE(STR(?nomeDoJogo)), ?searchTerm))
-        }
-        LIMIT %d
-        OFFSET %d
-    """);
+                    PREFIX dbo: <http://dbpedia.org/ontology/>
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                
+                    SELECT ?nomeDoJogo ?desenvolvedora ?genero ?dataLancamento ?imagem
+                    WHERE {
+                      ?jogo a dbo:VideoGame ;
+                            rdfs:label ?nomeDoJogo ;
+                            dbo:developer ?desenvolvedoraURI ;
+                            dbo:genre ?generoURI ;
+                            dbo:releaseDate ?dataLancamento .
+                
+                    OPTIONAL { ?jogo dbo:thumbnail ?imagem . }
+                
+                
+                      ?desenvolvedoraURI rdfs:label ?desenvolvedora .
+                      ?generoURI rdfs:label ?genero .
+                
+                      FILTER (lang(?nomeDoJogo) = "en")
+                      FILTER (lang(?desenvolvedora) = "en")
+                      FILTER (lang(?genero) = "en")
+                      FILTER (CONTAINS(LCASE(STR(?nomeDoJogo)), ?searchTerm))
+                    }
+                    LIMIT %d
+                    OFFSET %d
+                """);
 
         pss.setLiteral("searchTerm", name.toLowerCase());
 
@@ -209,7 +209,6 @@ public class IgdbServiceImpl implements IgdbService {
             System.err.println("Erro ao consultar a DBpedia: " + e.getMessage());
             e.printStackTrace();
         }
-
         return resultList;
     }
 
