@@ -1,10 +1,9 @@
 package com.web.br.gamelogged.game.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import com.web.br.gamelogged.game.dto.GameDTO;
+import org.apache.jena.query.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -136,4 +135,82 @@ public class IgdbServiceImpl implements IgdbService {
                 })
                 .block();
     }
+
+    public List<Map<String, Object>> searchGamesFromDBpedia(String name, int limit, int offset) {
+        String sparqlEndpoint = "https://dbpedia.org/sparql";
+
+        ParameterizedSparqlString pss = new ParameterizedSparqlString();
+        pss.setCommandText("""
+        PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+        SELECT ?nomeDoJogo ?desenvolvedora ?genero ?dataLancamento ?imagem
+        WHERE {
+          ?jogo a dbo:VideoGame ;
+                rdfs:label ?nomeDoJogo ;
+                dbo:developer ?desenvolvedoraURI ;
+                dbo:genre ?generoURI ;
+                dbo:releaseDate ?dataLancamento .
+
+        OPTIONAL { ?jogo dbo:thumbnail ?imagem . }
+
+
+          ?desenvolvedoraURI rdfs:label ?desenvolvedora .
+          ?generoURI rdfs:label ?genero .
+
+          FILTER (lang(?nomeDoJogo) = "en")
+          FILTER (lang(?desenvolvedora) = "en")
+          FILTER (lang(?genero) = "en")
+          FILTER (CONTAINS(LCASE(STR(?nomeDoJogo)), ?searchTerm))
+        }
+        LIMIT %d
+        OFFSET %d
+    """);
+
+        pss.setLiteral("searchTerm", name.toLowerCase());
+
+        String finalQueryString = pss.toString().formatted(limit, offset * limit);
+
+        Query query = QueryFactory.create(finalQueryString);
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        try (QueryExecution qexec = QueryExecution.service(sparqlEndpoint).query(query).build()) {
+            ResultSet results = qexec.execSelect();
+            while (results.hasNext()) {
+                QuerySolution sol = results.next();
+                Map<String, Object> gameData = new HashMap<>();
+
+                if (sol.contains("nomeDoJogo")) {
+                    gameData.put("name", sol.getLiteral("nomeDoJogo").getString());
+                }
+                if (sol.contains("desenvolvedora")) {
+                    gameData.put("developer", sol.getLiteral("desenvolvedora").getString());
+                } else {
+                    gameData.put("developer", "Not available");
+                }
+                if (sol.contains("genero")) {
+                    gameData.put("genre", sol.getLiteral("genero").getString());
+                } else {
+                    gameData.put("genre", "Not available");
+                }
+                if (sol.contains("dataLancamento")) {
+                    gameData.put("releaseDate", sol.getLiteral("dataLancamento").getString());
+                }
+
+                if (sol.contains("imagem")) {
+                    gameData.put("image", sol.getResource("imagem").getURI());
+                } else {
+                    gameData.put("image", "Not available");
+                }
+
+                resultList.add(gameData);
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao consultar a DBpedia: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return resultList;
+    }
+
 }

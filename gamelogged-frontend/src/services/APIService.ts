@@ -176,7 +176,7 @@ export const gameAPI = {
     },
 
     searchGameListByName: async (gameName: string, limit: number, offset: number) => {
-        const response = await fetch(`http://localhost:8080/game/igdb/search?name=${encodeURIComponent(gameName)}&limit=${limit}&offset=${offset}`, {
+        const response = await fetch(`http://localhost:8080/game/dbpedia/search?name=${encodeURIComponent(gameName)}&limit=${limit}&offset=${offset}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -191,10 +191,8 @@ export const gameAPI = {
         return data.map((game: any) => ({
             id: game.id,
             name: game.name,
-            coverUrl: game.cover?.url
-                ? `https:${game.cover.url.replace('t_thumb', 't_cover_big_2x')}`
-                : defaultImage,
-            hasCover: !!game.cover,
+            coverUrl: game.image,
+            hasCover: true,
         }));
     },
 

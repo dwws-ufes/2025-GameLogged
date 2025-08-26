@@ -98,6 +98,19 @@ public class GameController {
         }
     }
 
+    @GetMapping("/dbpedia/search")
+    public ResponseEntity<List<Map<String, Object>>> searchGameListByNameDBpedia(@RequestParam String name,
+                                                                          @RequestParam(defaultValue = "24") int limit,
+                                                                          @RequestParam(defaultValue = "0") int offset) {
+        try {
+            List<Map<String, Object>> games = igdbService.searchGamesFromDBpedia(name, limit, offset);
+            return ResponseEntity.ok(games);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(500).body(List.of(Map.of("error", "Failed to search game list by name")));
+        }
+    }
+
     @GetMapping("/find-list")
     public ResponseEntity<List<GameDTO>> findGameByListOfIgdbId(
             @RequestParam List<Integer> igdbIds) {
