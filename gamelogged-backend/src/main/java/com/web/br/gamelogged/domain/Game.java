@@ -57,4 +57,5 @@ public class Game implements Serializable {
     public void setTotalUserRatings(Integer totalUserRatings) {
         this.totalUserRatings = totalUserRatings;
     }
+    
 }

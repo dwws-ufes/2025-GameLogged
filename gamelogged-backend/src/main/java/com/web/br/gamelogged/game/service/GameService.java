@@ -21,4 +21,6 @@ public interface GameService {
     Game findOrCreateGameByIgdbId(Integer igdbId);
 
     Map<String, Object> getGameRatingInfo(Integer igdbId);
+
+    List<Game> getAllGames();
 }

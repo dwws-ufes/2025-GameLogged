@@ -36,7 +36,6 @@ public class GameServiceImpl implements GameService {
         newGame.setIgdbId(igdbId);
         newGame.setAverageRating(0.0);
         newGame.setTotalUserRatings(0);
-
         gameRepository.save(newGame);
     }
 
@@ -149,5 +148,10 @@ public class GameServiceImpl implements GameService {
         response.put("ratingsCount", ratingsCount);
 
         return response;
+    }
+
+    @Override
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
     }
 }
